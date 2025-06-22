@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criminal Investigation - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f3f4f6; /* gray-100 */
+            --bg-card: #ffffff;
+            --text-heading: #111827; /* gray-900 */
+            --text-body: #374151; /* gray-700 */
+            --text-muted: #6b7280; /* gray-500 */
+            --accent-primary: #be185d; /* pink-700 */
+            --accent-primary-light: #fce7f3; /* pink-50 */
+            --accent-secondary: #10b981; /* emerald-500 */
+            --border-color: #e5e7eb; /* gray-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 4px;
+            background-color: var(--accent-primary);
+            width: 0%;
+            z-index: 50;
+            transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; margin-top: 1rem; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.9rem; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-fingerprint text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Criminal Investigation</h1>
+            <p class="text-xl text-text-muted mt-2">From Crime Scene to Courtroom</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. Foundations of Investigation</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Three Pillars of Investigation</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>A successful criminal investigation stands on three core pillars:</p>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><strong>Information Gathering:</strong> The most critical element. This involves collecting details from victims, witnesses, suspects, and official records.</li>
+                        <li><strong>Forensic Science:</strong> The application of scientific methods like DNA analysis, fingerprinting, ballistics, and serology to analyze evidence.</li>
+                        <li><strong>Laws of Arrest, Search, and Seizure:</strong> The legal framework (Fourth Amendment, CCP) that governs all investigative protocols to ensure evidence is admissible in court.</li>
+                    </ul>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Criminal Typologies</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700 grid md:grid-cols-2 gap-6">
+                    <div class="bg-pink-50 p-4 rounded-lg border border-pink-200">
+                        <h4 class="font-bold text-lg text-pink-800 mb-2">Professional Criminals</h4>
+                        <ul class="list-disc list-inside text-sm space-y-1">
+                           <li><strong>Thief:</strong> Steals for money, usually with a plan but less stealthy than a burglar.</li>
+                           <li><strong>Burglar:</strong> Breaks into buildings with stealth and skill, often works with a "fence" to sell stolen goods.</li>
+                           <li><strong>Robber:</strong> Uses violence or the threat of violence to take property directly from a person.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-pink-50 p-4 rounded-lg border border-pink-200">
+                        <h4 class="font-bold text-lg text-pink-800 mb-2">Other Offender Types</h4>
+                        <ul class="list-disc list-inside text-sm space-y-1">
+                           <li><strong>Con Artist:</strong> Uses deception and false promises to trick people out of money.</li>
+                           <li><strong>Semi-Professional Thief:</strong> Steals sporadically out of need, with less planning and a higher likelihood of resorting to violence.</li>
+                           <li><strong>White-Collar Criminal:</strong> Commits nonviolent financial offenses like fraud or embezzlement.</li>
+                        </ul>
+                    </div>
+                </div></div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Investigating Specific Crimes</h2>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Homicide Investigation</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p class="mb-3">The initial response is critical: aid the injured, secure the scene, and identify witnesses. Investigators must quickly determine the time, place, cause, and means of death.</p>
+                    <p class="font-bold">Common Homicide Motives:</p>
+                    <ul class="list-disc list-inside mt-2 space-y-1">
+                        <li><strong>Felony Murder:</strong> Occurs during the commission of another serious crime (e.g., robbery).</li>
+                        <li><strong>Anger Killing:</strong> Not premeditated, often resembling a highly violent assault.</li>
+                        <li><strong>Triangle Killing:</strong> Involves a cheating spouse and their partner.</li>
+                        <li><strong>Sadistic Murder:</strong> Involves torture or extreme cruelty, often sexual in nature.</li>
+                    </ul>
+                </div></div>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Sexual Assault Investigation</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <p class="mb-3">These cases are extremely delicate. The officer's first priority is to care for and comfort the victim. Evidence collection and interviews must be done with sensitivity. The general intention of sexual assault is a demonstration of power.</p>
+                     <p class="font-bold">Typology of Rapists:</p>
+                     <ul class="list-disc list-inside mt-2 space-y-1">
+                        <li><strong>Sadistic Rapist:</strong> Finds violence sexually arousing; crimes are often prolonged and involve degradation.</li>
+                        <li><strong>Anger Rapist:</strong> Uses rape to punish and express rage; the act is often brief and violent.</li>
+                        <li><strong>Power Rapist:</strong> Seeks to create a feeling of personal agency and control; may even apologize afterward.</li>
+                        <li><strong>Opportunistic Rapist:</strong> Does not plan the crime; takes advantage of an incapacitated victim.</li>
+                     </ul>
+                </div></div>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Crimes Against Children & the Elderly</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p class="mb-3">These investigations require special care for vulnerable victims.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Child Abuse:</strong> Abusive parents often have a history of being abused, may have substance abuse issues, and may perceive their child as "evil." Children react to violence differently based on age, from regression and bed-wetting to aggression.</li>
+                        <li><strong>Elder Abuse:</strong> Often takes the form of neglect, financial exploitation, or physical/emotional abuse. These cases are difficult because victims may be reluctant or unable to provide information.</li>
+                    </ul>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Auto Theft Investigation</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p class="mb-3">Auto theft can range from joyriding to sophisticated professional operations.</p>
+                     <div class="bg-pink-50 p-4 rounded-lg border-l-4 border-pink-400">
+                        <h4 class="font-bold text-lg text-pink-800 mb-2"><i class="fas fa-car-crash mr-2"></i>In The Field: Identifying Stolen Cars</h4>
+                        <ul class="list-disc list-inside text-sm space-y-1">
+                           <li>Broken window or damaged steering column.</li>
+                           <li>License plate doesn't match VIN, is dirty, or held on by magnets/string.</li>
+                           <li>Driver is nervous, has no ID, or refuses to turn off the car.</li>
+                        </ul>
+                     </div>
+                </div></div>
+            </section>
+            
+            <section>
+                 <h2 class="text-3xl font-bold mb-6 text-text-heading">III. Scene Processing & Evidence</h2>
+                 <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                    <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Crime Scene Search Patterns</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                         <div class="grid md:grid-cols-2 gap-4">
+                            <div><strong>Strip Search:</strong> Searching in parallel lines, best for large outdoor areas.</div>
+                            <div><strong>Circular Search:</strong> Searching in concentric circles from a central point, good for finding a specific missing object.</div>
+                            <div><strong>Quadrant Search:</strong> Dividing the scene into sections, useful for areas with natural landmarks.</div>
+                            <div><strong>Point-to-Point:</strong> Moving from one piece of obvious evidence to the next. Good starting point but lacks organization.</div>
+                         </div>
+                    </div></div>
+                     <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Documenting the Scene</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                        <p>Proper documentation is vital for court. This includes:</p>
+                        <ul class="list-disc list-inside space-y-2 mt-2">
+                           <li><strong>Photography:</strong> Should move from exterior to interior, and from long-range to close-up shots of evidence. A case information card should be the first photo.</li>
+                           <li><strong>Sketches:</strong> Provide a map of the scene and show relationships between objects. Can be perspective, projection (3D), or schematic (showing a path of events).</li>
+                           <li><strong>Measurements:</strong> Use triangulation or rectangulation to fix the position of evidence.</li>
+                        </ul>
+                    </div></div>
+                     <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Evidence Handling & Chain of Custody</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                        <p>The <strong>Chain of Custody</strong> is a detailed log of everyone who has handled a piece of evidence. It is essential to prove the evidence has not been tampered with. Evidence must be carefully packed in separate containers, and wet items like bloodstains must be air-dried before packaging to prevent degradation.</p>
+                    </div></div>
+                 </div>
+            </section>
+
+            <!-- Flashcards Section -->
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Corpus Delicti</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Latin for "body of the crime." The concrete evidence of a crime, such as a dead body or damaged property.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Modus Operandi (M.O.)</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A criminal's characteristic method of operation or "style" of committing a crime.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Circumstantial Evidence</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Evidence that suggests a fact by implication or inference, rather than directly proving it (e.g., a suspect's lack of an alibi).</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Reasonable Doubt</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The standard of proof required for a jury to acquit a defendant in a criminal trial. It's a doubt based on reason and common sense.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Rigor Mortis</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The stiffening of body tissues after death, which can help in estimating the time of death.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Luminol</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A chemical used at crime scenes to detect trace amounts of blood, even if it has been cleaned or is invisible to the naked eye.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Chain of Custody</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A chronological paper trail showing the seizure, custody, control, transfer, analysis, and disposition of evidence.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Complainant</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The person who reports a crime or demands that a criminal investigation be initiated.</p></div></div></div>
+                </div>
+            </section>
+            
+            <!-- Quiz Section -->
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                const isOpening = content.style.display !== 'block';
+                if(isOpening) {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                } else {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'The "body of the crime," or the concrete evidence that a crime occurred, is known by what Latin phrase?', o: ['Modus Operandi', 'Habeas Corpus', 'Corpus Delicti', 'Subpoena Duces Tecum'], a: 'Corpus Delicti', explanation: 'Corpus Delicti translates to "body of the crime" and refers to the evidence that proves a crime was actually committed.' },
+            { q: 'A criminal who uses deception and false promises to steal money, often targeting the elderly, is best described as a:', o: ['Burglar', 'Robber', 'Con Artist', 'Semi-professional thief'], a: 'Con Artist', explanation: 'Con artists specialize in fraud and deception to trick victims into willingly giving them money, distinguishing them from thieves who use stealth or robbers who use force.'},
+            { q: 'Which crime scene search pattern is most effective for large outdoor areas?', o: ['Circular Search', 'Point-to-Point Search', 'Quadrant Search', 'Strip Search'], a: 'Strip Search', explanation: 'A strip search, where officers search in parallel lines, provides a systematic and thorough way to cover a large, open area.' },
+            { q: 'When documenting a crime scene with photographs, what is the proper sequence?', o: ['Close-up shots first, then exterior shots', 'Interior shots, then exterior shots', 'Exterior shots first, then moving to interior shots and finally close-ups', 'Only close-up shots of evidence are needed'], a: 'Exterior shots first, then moving to interior shots and finally close-ups', explanation: 'Proper photographic documentation starts with wide, orienting shots from the exterior and progressively moves inward and closer to specific items of evidence to provide context.'},
+            { q: 'A rapist who is motivated by a desire to feel agency and control over his victim, and may even apologize afterward, fits the profile of a(n):', o: ['Anger Rapist', 'Sadistic Rapist', 'Opportunistic Rapist', 'Power Rapist'], a: 'Power Rapist', explanation: 'The Power Rapist uses assault to compensate for feelings of inadequacy and to exert control. The act is not primarily about violence or sexual gratification, but about domination.'},
+            { q: 'What is the purpose of the Chain of Custody?', o: ['To determine the value of seized property', 'To prove the evidence has not been tampered with', 'To list all potential suspects in a case', 'To document the officer\'s initial observations'], a: 'To prove the evidence has not been tampered with', explanation: 'The Chain of Custody is a meticulous record that accounts for the evidence from the moment of collection to its presentation in court, ensuring its integrity.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

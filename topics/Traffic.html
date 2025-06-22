@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Laws and Procedures - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f1f5f9; /* slate-100 */
+            --bg-card: #ffffff;
+            --text-heading: #1e293b; /* slate-800 */
+            --text-body: #334155; /* slate-700 */
+            --text-muted: #64748b; /* slate-500 */
+            --accent-primary: #0284c7; /* sky-600 */
+            --accent-primary-light: #e0f2fe; /* sky-100 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #bae6fd; /* sky-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-traffic-light text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Traffic Laws and Procedures</h1>
+            <p class="text-xl text-text-muted mt-2">A Comprehensive Guide to the Texas Transportation Code</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Sections for content -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. Driver's Licenses</h2>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">General Licensing & Exemptions</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Sec. 521.021:</strong> Prohibits driving without a license.</li>
+                        <li><strong>Sec. 521.025:</strong> Operators must carry their license and display it on demand to law enforcement.</li>
+                        <li><strong>Sec. 521.027 (Exemptions):</strong> Includes military personnel operating service vehicles, farm tractor operators, and nonresidents on active duty (and their families) with valid home-state licenses.</li>
+                        <li><strong>Sec. 521.029 (New Residents):</strong> May use an out-of-state license for only 90 days after becoming a Texas resident.</li>
+                    </ul>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">License Classes & Restrictions</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Class A (Sec. 521.081):</strong> For vehicles with a GVWR of more than 26,000 lbs.</li>
+                        <li><strong>Class B (Sec. 521.082):</strong> For vehicles over 26,000 lbs or a bus with seating for 24+.</li>
+                        <li><strong>Class C (Sec. 521.083):</strong> For vehicles with a GVWR less than 26,000 lbs.</li>
+                        <li><strong>Class M (Sec. 521.084):</strong> For motorcycles or mopeds.</li>
+                        <li><strong>Provisional License (Sec. 521.123):</strong> Issued to drivers under 18, with restrictions on passengers and late-night driving.</li>
+                    </ul>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">License Violations</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <p><strong>Sec. 521.457:</strong> Driving with a canceled, suspended, revoked, or expired license is a Class C misdemeanor.</p>
+                     <p class="mt-2"><strong>Sec. 521.350:</strong> A license suspended for racing is suspended for one year and requires community service.</p>
+                </div></div>
+            </section>
+            
+             <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Rules of the Road</h2>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">General Operation & Speed</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Sec. 545.051 (Driving on Right Side):</strong> Drivers must stay on the right side of the roadway except when passing, avoiding obstructions, or on one-way roads.</li>
+                        <li><strong>Sec. 545.062 (Following Distance):</strong> Drivers must maintain an assured clear distance to avoid a collision if the front vehicle stops suddenly.</li>
+                        <li><strong>Sec. 545.351 (General Speed Rule):</strong> Drivers may not travel at a speed greater than is reasonable and prudent for the current circumstances.</li>
+                        <li><strong>Sec. 545.352 (Statutory Speed Limits):</strong> 30 mph in an urban district, 15 mph in an urban alley, 70 mph on numbered state/federal highways, 60 mph on other highways.</li>
+                        <li><strong>Sec. 545.401 (Reckless Driving):</strong> Willful or wanton disregard for safety. A misdemeanor.</li>
+                    </ul>
+                 </div></div>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Stopping, Standing, and Parking</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Sec. 545.302 (Prohibited Zones):</strong> Prohibits parking on a sidewalk, in an intersection, on a crosswalk, on a bridge, on railroad tracks, or within 15 feet of a fire hydrant.</li>
+                        <li><strong>Sec. 545.303 (Proper Parking):</strong> Must park with right-hand wheels parallel to and within 18 inches of the right-hand curb.</li>
+                    </ul>
+                </div></div>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Accident Procedures</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Sec. 550.021 (Accident Involving Injury or Death):</strong> Driver must immediately stop, render aid, and remain at the scene. Failure is a third-degree felony.</li>
+                        <li><strong>Sec. 550.022 (Striking Another Vehicle):</strong> Driver must stop and exchange information. Failure is a Class B misdemeanor if damage is $200 or more.</li>
+                        <li><strong>Sec. 550.062 (Officer's Report):</strong> An officer who investigates an accident with injury, death, or damage of $1000+ must file a written report within 10 days.</li>
+                    </ul>
+                </div></div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Reckless Driving</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Sec. 545.401: Operating a vehicle in willful or wanton disregard for the safety of persons or property.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Prima Facie Speed Limit</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The posted speed limit. Driving faster than this limit is considered prima facie (on its face) evidence that the speed is not reasonable or prudent.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Financial Responsibility</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Sec. 601.051: The legal requirement to have motor vehicle liability insurance (or an approved bond/deposit) to operate a vehicle.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Authorized Emergency Vehicle</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Sec. 546.001: A vehicle of a fire department, police department, or ambulance that is permitted to disregard certain traffic laws when responding to an emergency.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'A new resident moves to Texas. How long may they legally drive with their valid out-of-state license?', o: ['30 days', '60 days', '90 days', '1 year'], a: '90 days', explanation: 'Sec. 521.029 of the Transportation Code gives new residents 90 days to obtain a Texas driver\'s license.' },
+            { q: 'When passing a stationary emergency vehicle on a multi-lane road, what should a driver do?', o: ['Speed up to pass quickly', 'Honk to signal their presence', 'Move over to a lane not adjacent to the vehicle and slow down', 'Maintain their lane and speed'], a: 'Move over to a lane not adjacent to the vehicle and slow down', explanation: 'The "Move Over/Slow Down" law (Sec. 545.157) requires drivers to vacate the lane closest to the emergency vehicle if possible, and to reduce their speed.'},
+            { q: 'What is the maximum distance a vehicle\'s wheels can be from the right-hand curb when legally parked?', o: ['6 inches', '12 inches', '18 inches', '24 inches'], a: '18 inches', explanation: 'Sec. 545.303 requires that a vehicle be parked parallel to and with the right-hand wheels within 18 inches of the right-hand curb.' },
+            { q: 'It is illegal to operate a vehicle with a child under the age of ___ who is not secured in a child passenger safety seat system.', o: ['5', '6', '7', '8'], a: '8', explanation: 'Sec. 545.412 mandates a child safety seat for any child under 8 years old, unless they are taller than 4 feet 9 inches.'},
+             { q: 'Under what circumstances may a person legally operate an all-terrain vehicle (ATV) on a public road?', o: ['At any time if they are a licensed driver', 'Only to cross a road that is not an interstate', 'At night with headlights on', 'Never, under any circumstances'], a: 'Only to cross a road that is not an interstate', explanation: 'Sec. 663.037 allows an ATV to cross a public road (but not an interstate or highway) by stopping, yielding to traffic, and crossing directly.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

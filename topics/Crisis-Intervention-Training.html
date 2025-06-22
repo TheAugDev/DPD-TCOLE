@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIT / Mental Health Code - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f0fdfa; /* teal-50 */
+            --bg-card: #ffffff;
+            --text-heading: #134e4a; /* teal-900 */
+            --text-body: #115e59; /* teal-800 */
+            --text-muted: #475569; /* slate-600 */
+            --accent-primary: #0d9488; /* teal-600 */
+            --accent-primary-light: #ccfbf1; /* teal-100 */
+            --accent-secondary: #f97316; /* orange-500 */
+            --border-color: #ccfbf1; /* teal-100 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-brain text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Crisis Intervention & Mental Health Code</h1>
+            <p class="text-xl text-text-muted mt-2">Legal and Tactical Considerations</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. CIT Principles & Legal Framework</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Origins and Intentions of CIT</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Crisis Intervention Training (CIT) was developed in Memphis, TN, after a tragic incident involving the death of a mentally disturbed man. The primary goal of CIT is to provide officers with effective strategies to de-escalate situations involving individuals in crisis, separating mental illness from the criminal justice system whenever possible.</p>
+                    <div class="mt-4 p-4 bg-teal-50 border-l-4 border-teal-400">
+                        <h4 class="font-bold text-lg text-teal-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>The Control Paradox</h4>
+                        <p class="text-sm">A core CIT concept: officers often gain more control over a situation by using less force. De-escalation and communication are key to resolving conflicts with disturbed individuals peacefully and safely.</p>
+                    </div>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Texas Education Code</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700 space-y-2">
+                    <p><strong>Sec. 37.107 - Trespass on School Grounds:</strong> A Class C misdemeanor.</p>
+                    <p><strong>Sec. 37.123 - Intentional Disruptive Behavior:</strong> Illegally seizing control of a school building, preventing a lawful assembly, or obstructing a hallway. A Class B misdemeanor.</p>
+                    <p><strong>Sec. 37.124 - Disrupting Classes:</strong> Intentionally disrupting class or other school activities. A Class C misdemeanor.</p>
+                    <p><strong>Sec. 37.125 - Firearm on School Property:</strong> Exhibiting, using, or threatening to use a firearm on school property or a school bus. A third-degree felony.</p>
+                    <p><strong>Sec. 37.126 - Disrupting Transportation:</strong> Intentionally disrupting the lawful transportation of children on a school bus. A Class C misdemeanor.</p>
+                </div></div>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Code of Criminal Procedure - Victim's Rights</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700 space-y-2">
+                    <p><strong>Art. 56.02 (Rights of Crime Victims):</strong> Victims have the right to protection, to have their safety considered in bail settings, to be informed of proceedings, and to provide testimony at sentencing.</p>
+                    <p><strong>Art. 56.04 (Crime Victim Liaison):</strong> Law enforcement agencies must appoint a liaison to ensure victims' rights are upheld.</p>
+                    <p><strong>Art. 56.045 (Sexual Assault Victims):</strong> Victims have the right to have a special advocate present during forensic medical exams.</p>
+                    <p><strong>Art. 56.07 (Victim Notification):</strong> Law enforcement must provide victims with written notice about emergency services and their rights.</p>
+                    <p><strong>Art. 42.21 (Family Violence Notification):</strong> A reasonable attempt must be made to notify the victim before a person convicted of a family violence offense is released.</p>
+                </div></div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Major Court Decisions on Use of Force</h2>
+                <div class="space-y-4">
+                    <div class="p-4 bg-slate-50 rounded-lg border">
+                        <h3 class="font-bold text-lg text-slate-800">Graham v. Connor (1989)</h3>
+                        <p class="mt-1 text-sm">This is the landmark case establishing the "Objective Reasonableness" standard. An officer's use of force must be judged from the perspective of a reasonable officer on the scene, based on the facts known at that moment, without regard to 20/20 hindsight. The officer's underlying intent or motivation is not the determining factor.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg border">
+                        <h3 class="font-bold text-lg text-slate-800">Young v. City of Killeen</h3>
+                        <p class="mt-1 text-sm">The court found an officer acted negligently by creating a situation that led to the use of deadly force. The officer ordered a driver out of the car, and when the driver reached down (potentially for a weapon), the officer shot him. The court ruled the officer should have used other tactics first.</p>
+                    </div>
+                     <div class="p-4 bg-slate-50 rounded-lg border">
+                        <h3 class="font-bold text-lg text-slate-800">Saucier v. Katz (2001) & Milstead v. Kibler (2001)</h3>
+                        <p class="mt-1 text-sm">These cases helped define "Qualified Immunity." An officer is protected from liability unless their conduct violates a clearly established constitutional or statutory right that a reasonable person would have known about.</p>
+                    </div>
+                     <div class="p-4 bg-slate-50 rounded-lg border">
+                        <h3 class="font-bold text-lg text-slate-800">Okonkwo v. Fernandez (2003)</h3>
+                        <p class="mt-1 text-sm">Reinforced the concept of qualified immunity in Texas, stating that an officer must explicitly plead for it in court to be protected from suit and liability for actions a reasonable person would not have known were illegal.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Crisis Intervention Training (CIT)</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A police training program designed to teach officers how to effectively and peacefully interact with individuals suffering from mental illness or in crisis.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Control Paradox</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A core CIT concept which holds that by using less physical force and a more calming approach, an officer can often gain more control over a situation involving a person in crisis.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Objective Reasonableness</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The standard from Graham v. Connor for judging use of force. The action is viewed from the perspective of a reasonable officer on the scene, without 20/20 hindsight.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Qualified Immunity</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A legal doctrine that shields government officials from liability unless their conduct violates a "clearly established" statutory or constitutional right.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                const isOpening = content.style.display !== 'block';
+                if(isOpening) {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                } else {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'What is the "control paradox" in Crisis Intervention Training?', o: ['Using more force gives an officer more control', 'Losing control of a situation is a sign of weakness', 'Using less force and a calmer approach can give an officer more control', 'CIT has no effect on controlling a situation'], a: 'Using less force and a calmer approach can give an officer more control', explanation: 'The control paradox is a core CIT concept stating that de-escalation and less physical approaches often lead to better control and safer outcomes.' },
+            { q: 'Under Texas Education Code Sec. 37.125, exhibiting or using a firearm on school property is what level of offense?', o: ['Class A Misdemeanor', 'Class C Misdemeanor', 'State Jail Felony', 'Third-Degree Felony'], a: 'Third-Degree Felony', explanation: 'Section 37.125 classifies exhibiting, using, or threatening to use a firearm on school property or a school bus as a third-degree felony.'},
+            { q: 'Which landmark Supreme Court case established the "objective reasonableness" standard for use of force?', o: ['Miranda v. Arizona', 'Terry v. Ohio', 'Graham v. Connor', 'Saucier v. Katz'], a: 'Graham v. Connor', explanation: 'Graham v. Connor (1989) is the seminal case that mandates use of force be judged based on what a reasonable officer would have done given the facts known at the time.'},
+            { q: 'According to CCP Art. 56.02, which of the following is a right of a crime victim?', o: ['The right to determine the suspect\'s sentence', 'The right to have their safety considered when bail is set', 'The right to lead the investigation', 'The right to a state-funded private investigator'], a: 'The right to have their safety considered when bail is set', explanation: 'Article 56.02 grants victims several rights, including the right to protection and the right to have their safety be a factor in bail decisions for the accused.'},
+            { q: 'Qualified immunity protects an officer from liability unless their conduct violates what?', o: ['Department policy', 'A direct order from a supervisor', 'A "clearly established" constitutional or statutory right', 'The victim\'s personal wishes'], a: 'A "clearly established" constitutional or statutory right', explanation: 'The standard for overcoming qualified immunity, established in cases like Saucier v. Katz, requires showing the officer violated a right that was so clearly established that any reasonable officer would have known about it.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

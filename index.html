@@ -1,0 +1,2553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced TCOLE Interactive Study Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-bg: #f8fafc; /* slate-50 */
+            --secondary-bg: #ffffff;
+            --sidebar-bg: #1e293b; /* slate-800 */
+            --sidebar-hover-bg: #334155; /* slate-700 */
+            --sidebar-active-bg: #0ea5e9; /* sky-500 */
+            --text-primary: #1e293b; /* slate-800 */
+            --text-secondary: #64748b; /* slate-500 */
+            --sidebar-text: #cbd5e1; /* slate-300 */
+            --sidebar-text-active: #ffffff;
+            --accent-color: #0ea5e9; /* sky-500 */
+            --flashcard-bg: #e0f2fe; /* sky-100 */
+            --flashcard-border: #7dd3fc; /* sky-300 */
+        }        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+        }        /* Force white text for sidebar header */
+        #sidebar h1 {
+            color: #ffffff !important;
+        }
+
+        /* More specific selector for the header */
+        aside#sidebar div h1 {
+            color: #ffffff !important;
+        }
+
+        /* Override any Tailwind classes */
+        .text-white {
+            color: #ffffff !important;
+        }
+
+        /* Custom scrollbar for webkit browsers */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8; /* slate-400 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b; /* slate-500 */
+        }
+
+        .sidebar-link {
+            transition: background-color 0.2s, color 0.2s, padding-left 0.2s;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar-link:hover {
+            background-color: var(--sidebar-hover-bg);
+            padding-left: 1.25rem; /* Indent on hover */
+        }
+
+        .sidebar-link.active {
+            background-color: var(--sidebar-active-bg);
+            color: var(--sidebar-text-active);
+            border-left-color: var(--sidebar-text-active);
+        }
+        
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+        }
+
+        .collapsible-header {
+            cursor: pointer;
+        }
+        .collapsible-content {
+            display: none;
+        }
+
+        /* Flashcard Styles */
+        .flashcard-container {
+            perspective: 1000px;
+            min-height: 150px;
+        }
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--flashcard-border);
+            background-color: var(--flashcard-bg);
+        }        .flashcard-back {
+            transform: rotateY(180deg);
+            background-color: var(--secondary-bg);
+        }
+
+        /* Quiz Styles */
+        .quiz-option {
+            transition: background-color 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+        .quiz-option:hover:not(.quiz-disabled) {
+            background-color: #f3f4f6;
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #16a34a !important; /* green-600 */
+            color: #166534; /* green-800 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fef2f2; /* red-50 */
+            border-color: #ef4444 !important; /* red-500 */
+            color: #b91c1c; /* red-700 */
+        }
+        .quiz-option.quiz-disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }        .quiz-explanation {
+            display: none;
+        }
+
+        /* Enhanced Results UI Styles */
+        .score-gauge {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+        
+        .gauge-background {
+            fill: none;
+            stroke: #e5e7eb;
+            stroke-width: 20;
+        }
+        
+        .gauge-progress {
+            fill: none;
+            stroke-width: 20;
+            stroke-linecap: round;
+            transition: stroke-dasharray 2s ease-in-out;
+        }
+        
+        .gauge-progress.pass {
+            stroke: #10b981; /* green-500 */
+        }
+        
+        .gauge-progress.fail {
+            stroke: #ef4444; /* red-500 */
+        }
+        
+        .gauge-progress.excellent {
+            stroke: #f59e0b; /* amber-500 */
+        }
+        
+        .score-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .results-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .results-card.pass {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+        }
+        
+        .results-card.fail {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #7c2d12;
+        }
+        
+        .performance-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: #e5e7eb;
+            overflow: hidden;
+        }
+        
+        .performance-fill {
+            height: 100%;
+            transition: width 1.5s ease-in-out;
+            border-radius: 4px;
+        }
+        
+        .performance-fill.excellent {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+        
+        .performance-fill.good {
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        }
+        
+        .performance-fill.average {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+        
+        .performance-fill.poor {
+            background: linear-gradient(90deg, #ef4444, #f87171);
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.8s ease-out;
+        }
+          @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Button Styles */
+        .practice-test-button {
+            opacity: 1 !important;
+            visibility: visible !important;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            transform: scale(1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+        
+        .practice-test-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            background-color: var(--sidebar-hover-bg);
+        }
+        
+        .practice-test-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Header Styles */
+        #app-header {
+            background-color: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+        }
+        #app-header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+        }
+        #search-input {
+            width: 100%;
+            padding: 0.5rem 2rem 0.5rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.375rem;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            transition: border-color 0.2s;
+        }
+        #search-input::placeholder {
+            color: #94a3b8;
+        }        #search-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+        
+        @keyframes searching {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">        <header id="app-header">
+            <h1><a href="#" onclick="goToMainPage()" style="color: inherit; text-decoration: none; cursor: pointer;">TCOLE Study Guide</a></h1>
+            <div class="search-container">
+                <input type="search" id="search-input" placeholder="Search topics...">
+            </div>
+        </header>
+
+        <div class="flex h-screen">
+            <!-- Sidebar -->            <aside id="sidebar" class="w-72 bg-sidebar-bg text-sidebar-text flex-shrink-0 flex flex-col">                <nav class="flex-1 overflow-y-auto custom-scrollbar">
+                    <ul id="topic-list" class="py-4">
+                        <!-- Topics will be inserted here by JavaScript -->
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main id="main-content" class="flex-1 p-6 md:p-10 overflow-y-auto">
+                <div id="welcome-section" class="content-section text-center">
+                     <div class="max-w-3xl mx-auto">
+                        <i class="fas fa-shield-halved text-6xl text-accent-color mb-6"></i>
+                        <h2 class="text-4xl font-bold mb-4">Welcome to Your Enhanced Study Guide</h2>
+                        <p class="text-lg text-text-secondary mb-8">Select a topic from the sidebar to begin your studies. This guide is designed to be interactive and help you master the material for the TCOLE exam.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-accent-color">
+                                <i class="fas fa-list-check text-3xl text-accent-color mb-3"></i>
+                                <h3 class="font-semibold text-lg mb-2">Organized Topics</h3>
+                                <p class="text-sm text-text-secondary">All topics are sorted alphabetically for quick and easy access.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-accent-color">
+                                <i class="fas fa-file-alt text-3xl text-accent-color mb-3"></i>
+                                <h3 class="font-semibold text-lg mb-2">Detailed Content</h3>
+                                <p class="text-sm text-text-secondary">Each section is ready for you to provide detailed notes and summaries.</p>
+                            </div>
+                             <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-accent-color">
+                                <i class="fas fa-question-circle text-3xl text-accent-color mb-3"></i>
+                                <h3 class="font-semibold text-lg mb-2">Practice Test</h3>
+                                <p class="text-sm text-text-secondary">A comprehensive practice test is included to evaluate your knowledge.</p>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+                 <!-- Content sections will be dynamically created here -->
+            </main>
+        </div>
+
+        <button id="back-to-top" class="bg-accent-color text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-sky-600 transition">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>    <script>        // Function to go to main page
+        function goToMainPage() {
+            // Hide all content sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Remove active class from all navigation links
+            const navLinks = document.querySelectorAll('.sidebar-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+              // Show the first topic by default
+            const firstSection = document.querySelector('.content-section');
+            if (firstSection) {
+                firstSection.classList.add('active');
+                // Also activate the first navigation link
+                const firstNavLink = document.querySelector('.sidebar-link');
+                if (firstNavLink) {
+                    firstNavLink.classList.add('active');
+                }
+            }
+        }        document.addEventListener('DOMContentLoaded', function () {            // List of topics in the correct order as specified
+            const topics = [
+                "INTRODUCTION",
+                "SECRET KEY #1 – PLAN BIG, STUDY SMALL",
+                "SECRET KEY #2 – MAKE YOUR STUDYING COUNT",
+                "SECRET KEY #3 – PRACTICE THE RIGHT WAY",
+                "SECRET KEY #4 – PACE YOURSELF",
+                "SECRET KEY #5 – HAVE A PLAN FOR GUESSING",
+                "FITNESS AND WELLNESS AND STRESS MANAGEMENT",
+                "PROFESSIONAL POLICING",
+                "PROFESSIONALISM AND ETHICS",
+                "US AND TEXAS CONSTITUTIONS, BILL OF RIGHTS, AND CRIMINAL JUSTICE SYSTEM",
+                "MULTICULTURALISM AND HUMAN RELATIONS",
+                "CODE OF CRIMINAL PROCEDURE",
+                "ARREST, SEARCH, AND SEIZURE",
+                "PENAL CODE",
+                "TRAFFIC",
+                "INTOXICATED DRIVER AND STANDARDIZED FIELD SOBRIETY TESTING",
+                "CIVIL PROCESS AND LIABILITY",
+                "TEXAS ALCOHOLIC BEVERAGE CODE",
+                "HEALTH AND SAFETY CODE—CONTROLLED SUBSTANCES ACT",
+                "FAMILY CODE AND JUVENILE ISSUES",
+                "WRITTEN AND VERBAL COMMUNICATIONS",
+                "INTRODUCTORY SPANISH",
+                "FORCE OPTIONS",
+                "STRATEGIES OF DEFENSE—MECHANICS OF ARREST",
+                "STRATEGIES OF DEFENSE—FIREARMS",
+                "EMERGENCY MEDICAL ASSISTANCE",
+                "EMERGENCY COMMUNICATIONS",
+                "PROFESSIONAL POLICE DRIVING",
+                "PROBLEM SOLVING AND CRITICAL THINKING",
+                "PATROL/CONSULAR NOTIFICATION",
+                "VICTIMS OF CRIME",
+                "FAMILY VIOLENCE AND RELATED ASSAULTIVE OFFENSES",
+                "CRISIS INTERVENTION TRAINING (CIT)/MENTAL HEALTH CODE",
+                "HAZARDOUS MATERIALS AWARENESS",
+                "CRIMINAL INVESTIGATION"
+            ];            // Mapping of topics to their corresponding HTML files
+            const topicFileMapping = {
+                "INTRODUCTION": "topics/Introduction.html",
+                "SECRET KEY #1 – PLAN BIG, STUDY SMALL": "topics/Secret-Key-1.html",
+                "SECRET KEY #2 – MAKE YOUR STUDYING COUNT": "topics/Secret-Key-2.html",
+                "SECRET KEY #3 – PRACTICE THE RIGHT WAY": "topics/Secret-Key-3.html",
+                "SECRET KEY #4 – PACE YOURSELF": "topics/Secret-Key-4.html",
+                "SECRET KEY #5 – HAVE A PLAN FOR GUESSING": "topics/Secret-Key-5.html",
+                "FITNESS AND WELLNESS AND STRESS MANAGEMENT": "topics/Fitness-and-Wellness.html",
+                "PROFESSIONAL POLICING": "topics/Professional-Policing.html",
+                "PROFESSIONALISM AND ETHICS": "topics/Professionalism-Ethics.html",
+                "US AND TEXAS CONSTITUTIONS, BILL OF RIGHTS, AND CRIMINAL JUSTICE SYSTEM": "topics/US-Texas-Constitutions.html",
+                "MULTICULTURALISM AND HUMAN RELATIONS": "topics/Multiculturalism-Human-Relations.html",
+                "CODE OF CRIMINAL PROCEDURE": "topics/Code-of-Criminal-Proceedure.html",
+                "ARREST, SEARCH, AND SEIZURE": "topics/Arrest-Search-Seizure.html",
+                "PENAL CODE": "topics/Penal-Code.html",
+                "TRAFFIC": "topics/Traffic.html",
+                "INTOXICATED DRIVER AND STANDARDIZED FIELD SOBRIETY TESTING": "topics/Intoxicated-Driver.html",
+                "CIVIL PROCESS AND LIABILITY": "topics/Civil-Process-Liability.html",
+                "TEXAS ALCOHOLIC BEVERAGE CODE": null, // No corresponding file found
+                "HEALTH AND SAFETY CODE—CONTROLLED SUBSTANCES ACT": "topics/Health-Safety-Code.html",
+                "FAMILY CODE AND JUVENILE ISSUES": "topics/Family-Code-Juvenile-Issues.html",
+                "WRITTEN AND VERBAL COMMUNICATIONS": "topics/Written-Verbal-Communications.html",
+                "INTRODUCTORY SPANISH": "topics/Introductory-Spanish.html",
+                "FORCE OPTIONS": "topics/Force-Option.html",
+                "STRATEGIES OF DEFENSE—MECHANICS OF ARREST": "topics/Strategies-of-Defense-Mechanics-of-Arrest.html",
+                "STRATEGIES OF DEFENSE—FIREARMS": "topics/Strategies-of-Defense-Firearms.html",
+                "EMERGENCY MEDICAL ASSISTANCE": "topics/Emergency-Medical-Assistance.html",
+                "EMERGENCY COMMUNICATIONS": "topics/Emergency-Communications.html",
+                "PROFESSIONAL POLICE DRIVING": "topics/Professional-Police-Driving.html",
+                "PROBLEM SOLVING AND CRITICAL THINKING": "topics/Problem-Solving-Critical-Thinking.html",
+                "PATROL/CONSULAR NOTIFICATION": "topics/Patrol.html",
+                "VICTIMS OF CRIME": "topics/Vitctims-of-Crime.html",
+                "FAMILY VIOLENCE AND RELATED ASSAULTIVE OFFENSES": "topics/Family-Violence.html",
+                "CRISIS INTERVENTION TRAINING (CIT)/MENTAL HEALTH CODE": "topics/Crisis-Intervention-Training.html",
+                "HAZARDOUS MATERIALS AWARENESS": "topics/Hazardous-Materials-Awareness.html",
+                "CRIMINAL INVESTIGATION": "topics/Criminal-Investigation.html"
+            };// Add a special item for the Practice Test
+            topics.push("PRACTICE TEST");
+            
+            // Add Practice Test to the mapping (special case)
+            topicFileMapping["PRACTICE TEST"] = "practice-test";
+
+            const topicList = document.getElementById('topic-list');
+            const mainContent = document.getElementById('main-content');
+            const welcomeSection = document.getElementById('welcome-section');
+
+            // --- Generate Sidebar Links and Content Sections ---
+            topics.forEach(topic => {
+                const id = topic.toLowerCase().replace(/[\s—,/]/g, '-').replace(/[()]/g, '');
+                
+                // Create Sidebar Link
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = '#';
+                a.className = 'sidebar-link flex items-center gap-3 px-5 py-3 text-sm';
+                if (topic === "PRACTICE TEST") {
+                    a.classList.add('font-bold', 'text-amber-300');
+                    a.innerHTML = `<i class="fas fa-vial fa-fw"></i> <span>${topic}</span>`;
+                } else {
+                    a.innerHTML = `<i class="fas fa-file-lines fa-fw"></i> <span>${topic}</span>`;
+                }                a.dataset.target = id;
+                a.dataset.topic = topic; // Store the original topic name
+                li.appendChild(a);
+                topicList.appendChild(li);
+
+                // Create Main Content Section
+                const section = document.createElement('div');
+                section.id = id;
+                section.className = 'content-section';
+                section.innerHTML = `<h2 class="text-3xl font-bold mb-6 pb-2 border-b">${topic}</h2><div class="bg-white p-6 rounded-lg shadow-sm"><p class="text-text-secondary">Loading content...</p></div>`;
+                mainContent.appendChild(section);
+            });
+              // --- Function to load HTML content ---            // --- Practice Test Functions ---
+            let allQuizQuestions = [];
+            let currentPracticeTestQuestions = [];
+            let practiceTestResults = {};
+            let currentQuestionIndex = 0;
+
+            // Function to shuffle an array
+            function shuffleArray(array) {
+                const shuffled = [...array];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            }            // Function to load all quiz questions from all topic files
+            async function loadAllQuizQuestions() {
+                allQuizQuestions = [];
+                const topicNames = Object.keys(topicFileMapping);
+                
+                for (const topic of topicNames) {
+                    const filePath = topicFileMapping[topic];
+                    if (!filePath || filePath === "practice-test") continue;
+                    
+                    try {
+                        const response = await fetch(filePath);
+                        if (!response.ok) continue;
+                        
+                        const htmlContent = await response.text();
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(htmlContent, 'text/html');
+                        
+                        // Extract quiz data
+                        const scripts = doc.querySelectorAll('script');
+                        scripts.forEach(script => {
+                            const scriptContent = script.textContent;
+                            const quizDataMatch = scriptContent.match(/const quizData = (\[[\s\S]*?\]);/);
+                            
+                            if (quizDataMatch) {
+                                try {
+                                    const quizDataString = quizDataMatch[1];
+                                    const quizData = eval(`(${quizDataString})`);
+                                    quizData.forEach(question => {
+                                        allQuizQuestions.push({
+                                            ...question,
+                                            topic: topic
+                                        });
+                                    });
+                                } catch (evalError) {
+                                    console.error(`Error parsing quiz data for ${topic}:`, evalError);
+                                }
+                            }
+                        });
+                    } catch (error) {
+                        console.error(`Error loading quiz questions from ${topic}:`, error);
+                    }
+                }
+                
+                // Add scenario-based questions to reach 250+ total
+                const scenarioQuestions = generateScenarioQuestions();
+                allQuizQuestions.push(...scenarioQuestions);
+                
+                console.log(`Loaded ${allQuizQuestions.length} questions from ${topicNames.length} topics plus scenario questions`);
+            }
+
+            // Function to generate scenario-based questions
+            function generateScenarioQuestions() {
+                return [
+                    // Traffic Stop Scenarios
+                    {
+                        q: "During a routine traffic stop, the driver appears nervous and gives conflicting information about where they're going. You notice the smell of marijuana coming from the vehicle. What is your first priority?",
+                        o: ["Immediately search the vehicle", "Ask for consent to search", "Ensure officer safety and call for backup", "Issue a warning and let them go"],
+                        a: "Ensure officer safety and call for backup",
+                        explanation: "Officer safety is always the first priority. The conflicting information and drug odor may indicate criminal activity, requiring backup before proceeding.",
+                        topic: "SCENARIO - TRAFFIC ENFORCEMENT"
+                    },
+                    {
+                        q: "You stop a vehicle for speeding and discover the driver has a suspended license. The passenger claims to have a valid license and offers to drive. What should you do?",
+                        o: ["Allow the passenger to drive after verifying their license", "Impound the vehicle immediately", "Arrest both occupants", "Call a tow truck and have the vehicle impounded"],
+                        a: "Allow the passenger to drive after verifying their license",
+                        explanation: "If the passenger has a valid license and is legally able to drive, this is often the preferred option to avoid unnecessary impoundment costs.",
+                        topic: "SCENARIO - TRAFFIC ENFORCEMENT"
+                    },
+                    {
+                        q: "During a DWI investigation, the suspect agrees to perform field sobriety tests but fails all three standardized tests. However, they refuse to provide a breath sample. What is your next step?",
+                        o: ["Release them since they refused the breath test", "Arrest for DWI based on field sobriety tests", "Force them to provide a breath sample", "Give them another chance to perform the tests"],
+                        a: "Arrest for DWI based on field sobriety tests",
+                        explanation: "Field sobriety tests, combined with other observations, can provide sufficient probable cause for DWI arrest even without a breath test.",
+                        topic: "SCENARIO - TRAFFIC ENFORCEMENT"
+                    },
+
+                    // Domestic Violence Scenarios
+                    {
+                        q: "You respond to a domestic violence call. Upon arrival, the female victim has visible injuries but tells you she fell down the stairs. The male subject corroborates her story. What should you do?",
+                        o: ["Accept their explanation and leave", "Arrest the male subject immediately", "Separate the parties and interview them individually", "Take photos and file a report only"],
+                        a: "Separate the parties and interview them individually",
+                        explanation: "Separating parties allows for truthful statements without intimidation. Victims often change their story when the suspect is present.",
+                        topic: "SCENARIO - DOMESTIC VIOLENCE"
+                    },
+                    {
+                        q: "A victim of domestic violence tells you she wants to press charges, but later calls to say she wants to drop them because 'he promised to change.' What is the correct response?",
+                        o: ["Immediately drop all charges as requested", "Explain that the state can prosecute regardless of her wishes", "Force her to continue with prosecution", "Arrest her for filing a false report"],
+                        a: "Explain that the state can prosecute regardless of her wishes",
+                        explanation: "Once a crime is reported, the decision to prosecute belongs to the state, not the victim. This protects victims from pressure to drop charges.",
+                        topic: "SCENARIO - DOMESTIC VIOLENCE"
+                    },
+                    {
+                        q: "You arrive at a domestic violence scene where both parties have minor injuries and each claims the other was the aggressor. Children are present and appear frightened. What is your priority?",
+                        o: ["Arrest both parties", "Determine the primary aggressor", "Remove the children immediately", "Leave and let them work it out"],
+                        a: "Determine the primary aggressor",
+                        explanation: "Texas law requires determining the primary aggressor in dual arrest situations. Consider injury severity, threats, and who initiated the violence.",
+                        topic: "SCENARIO - DOMESTIC VIOLENCE"
+                    },
+
+                    // Mental Health Crisis Scenarios
+                    {
+                        q: "You encounter a person experiencing a mental health crisis who is holding a knife and threatening self-harm. They are not threatening others. What is your best approach?",
+                        o: ["Immediately use force to disarm them", "Maintain distance and try to establish communication", "Leave the scene", "Rush them to prevent self-harm"],
+                        a: "Maintain distance and try to establish communication",
+                        explanation: "CIT training emphasizes de-escalation and communication. Maintaining distance ensures safety while attempting to build rapport and understanding.",
+                        topic: "SCENARIO - MENTAL HEALTH"
+                    },
+                    {
+                        q: "A family calls for help with their adult son who has schizophrenia and is refusing to take medication. He's not violent but is making concerning statements. What authority do you have?",
+                        o: ["Force him to take medication", "Arrest him for disturbing the peace", "Evaluate for Emergency Detention (mental health warrant)", "Do nothing unless he commits a crime"],
+                        a: "Evaluate for Emergency Detention (mental health warrant)",
+                        explanation: "Emergency detention under Texas Health and Safety Code allows temporary detention for mental health evaluation when someone poses a danger to themselves or others.",
+                        topic: "SCENARIO - MENTAL HEALTH"
+                    },
+
+                    // Search and Seizure Scenarios
+                    {
+                        q: "During a lawful arrest for assault, you search the suspect's jacket and find a small baggie of cocaine in the pocket. The suspect claims you had no right to search. Is the search legal?",
+                        o: ["No, you needed a warrant", "No, cocaine is not related to assault", "Yes, as a search incident to arrest", "Yes, under the automobile exception"],
+                        a: "Yes, as a search incident to arrest",
+                        explanation: "Search incident to arrest allows officers to search the arrestee and their immediate grabbing area for weapons and evidence without a warrant.",
+                        topic: "SCENARIO - SEARCH AND SEIZURE"
+                    },
+                    {
+                        q: "You receive an anonymous tip that a specific house is being used to sell drugs. Based solely on this tip, can you obtain a search warrant?",
+                        o: ["Yes, anonymous tips are sufficient", "No, anonymous tips alone lack reliability", "Yes, if the tip is detailed", "No, you need to witness drug sales personally"],
+                        a: "No, anonymous tips alone lack reliability",
+                        explanation: "Anonymous tips require corroboration through independent police investigation to establish probable cause for a search warrant.",
+                        topic: "SCENARIO - SEARCH AND SEIZURE"
+                    },
+                    {
+                        q: "You stop a vehicle for a broken tail light. The driver consents to a search, but the passenger objects. Can you search the vehicle?",
+                        o: ["No, all occupants must consent", "Yes, the driver's consent is sufficient", "Only the driver's area can be searched", "You need a warrant"],
+                        a: "Yes, the driver's consent is sufficient",
+                        explanation: "The driver, having control of the vehicle, can consent to a search that includes areas accessible to passengers.",
+                        topic: "SCENARIO - SEARCH AND SEIZURE"
+                    },
+
+                    // Use of Force Scenarios
+                    {
+                        q: "A suspect is actively resisting arrest by pulling away and trying to run, but is not fighting or threatening you. What level of force is appropriate?",
+                        o: ["Deadly force", "Intermediate weapons (Taser, baton)", "Control techniques and pressure points", "No force, let them run"],
+                        a: "Control techniques and pressure points",
+                        explanation: "Active resistance warrants control techniques. The force used must be reasonable and proportional to the resistance encountered.",
+                        topic: "SCENARIO - USE OF FORCE"
+                    },
+                    {
+                        q: "An armed suspect points a gun at you and refuses commands to drop the weapon. What is your response?",
+                        o: ["Try to talk them down", "Use intermediate weapons", "Use deadly force if necessary", "Retreat and call for backup"],
+                        a: "Use deadly force if necessary",
+                        explanation: "When facing imminent threat of death or serious bodily injury, deadly force may be justified under Texas Penal Code.",
+                        topic: "SCENARIO - USE OF FORCE"
+                    },
+
+                    // Juvenile Scenarios
+                    {
+                        q: "You arrest a 16-year-old for theft. The juvenile asks to call their parents. What are your obligations?",
+                        o: ["Allow the call immediately", "No obligation to provide phone access", "Only if the parents request it", "Wait until booking is complete"],
+                        a: "Allow the call immediately",
+                        explanation: "Texas Family Code requires that juveniles be allowed to contact their parents or guardians as soon as possible after arrest.",
+                        topic: "SCENARIO - JUVENILE ISSUES"
+                    },
+                    {
+                        q: "A 17-year-old is caught with marijuana at school. School officials want them arrested, but it's their first offense and a small amount. What factors should you consider?",
+                        o: ["Always arrest to teach a lesson", "Automatic citation", "Consider diversion programs or warnings", "Ignore it since it's just marijuana"],
+                        a: "Consider diversion programs or warnings",
+                        explanation: "Juvenile justice emphasizes rehabilitation. Consider the totality of circumstances and available alternatives to formal charges.",
+                        topic: "SCENARIO - JUVENILE ISSUES"
+                    },
+
+                    // Constitutional Rights Scenarios
+                    {
+                        q: "During questioning, a suspect says 'I think I need a lawyer.' How should you respond?",
+                        o: ["Continue questioning since they weren't clear", "Stop questioning immediately", "Ask if they're sure they want a lawyer", "Only stop if they say 'I want a lawyer' exactly"],
+                        a: "Stop questioning immediately",
+                        explanation: "Any indication that a suspect wants to invoke their right to counsel requires immediate cessation of interrogation under Miranda.",
+                        topic: "SCENARIO - CONSTITUTIONAL RIGHTS"
+                    },
+                    {
+                        q: "You arrest someone and begin questioning without reading Miranda rights. They confess to the crime. Is the confession admissible?",
+                        o: ["Yes, they confessed voluntarily", "No, Miranda is always required", "Only if they were not in custody", "Depends on if they knew their rights"],
+                        a: "No, Miranda is always required",
+                        explanation: "Custodial interrogation requires Miranda warnings. Statements obtained without proper warnings are generally inadmissible.",
+                        topic: "SCENARIO - CONSTITUTIONAL RIGHTS"
+                    },
+
+                    // Emergency Response Scenarios
+                    {
+                        q: "You're first on scene at a serious vehicle accident with multiple injuries. What is your immediate priority?",
+                        o: ["Begin taking witness statements", "Start directing traffic", "Secure the scene and call for medical assistance", "Determine fault for the accident"],
+                        a: "Secure the scene and call for medical assistance",
+                        explanation: "Life safety is the top priority. Secure the scene to prevent further accidents and ensure medical help is en route.",
+                        topic: "SCENARIO - EMERGENCY RESPONSE"
+                    },
+                    {
+                        q: "During a building fire, civilians are trying to run back inside to retrieve belongings. What should you do?",
+                        o: ["Let them go if they sign a waiver", "Physically restrain everyone", "Establish a perimeter and prevent re-entry", "Go in with them to help"],
+                        a: "Establish a perimeter and prevent re-entry",
+                        explanation: "Protecting life is paramount. Establish a safe perimeter and prevent civilians from entering dangerous areas.",
+                        topic: "SCENARIO - EMERGENCY RESPONSE"
+                    },
+
+                    // Community Policing Scenarios
+                    {
+                        q: "Business owners in your patrol area complain about homeless individuals camping near their stores. The individuals aren't breaking any laws but customers are complaining. What's your approach?",
+                        o: ["Arrest them for trespassing", "Ignore the complaints", "Work with social services to find solutions", "Move them to another area"],
+                        a: "Work with social services to find solutions",
+                        explanation: "Community policing involves collaborative problem-solving. Connect homeless individuals with appropriate services while addressing business concerns.",
+                        topic: "SCENARIO - COMMUNITY POLICING"
+                    },
+                    {
+                        q: "Residents report ongoing loud parties at a rental house every weekend. The violations are minor but residents are frustrated. What's the best long-term solution?",
+                        o: ["Arrest party-goers every weekend", "Ignore it unless major crimes occur", "Work with landlord, tenants, and neighbors on a solution", "Issue citations only"],
+                        a: "Work with landlord, tenants, and neighbors on a solution",
+                        explanation: "Sustainable solutions require collaboration between all stakeholders to address root causes, not just symptoms.",
+                        topic: "SCENARIO - COMMUNITY POLICING"
+                    },
+
+                    // Ethics and Professionalism Scenarios
+                    {
+                        q: "A fellow officer offers you free coffee and meals from a business owner who wants 'extra patrol attention' for their store. What should you do?",
+                        o: ["Accept the gifts but don't provide extra patrol", "Accept and provide the requested extra attention", "Decline and report the offer", "Accept but pay for the items"],
+                        a: "Decline and report the offer",
+                        explanation: "Accepting gratuities creates the appearance of corruption and may violate department policy. Transparency and integrity are essential.",
+                        topic: "SCENARIO - ETHICS"
+                    },
+                    {
+                        q: "You witness a fellow officer use excessive force during an arrest. The suspect was resisting, but the force was clearly beyond what was necessary. What should you do?",
+                        o: ["Support your fellow officer's actions", "File a report documenting what you witnessed", "Ignore it since the suspect was resisting", "Confront the officer privately only"],
+                        a: "File a report documenting what you witnessed",
+                        explanation: "Officers have a duty to report misconduct. Accountability and integrity are fundamental to maintaining public trust.",
+                        topic: "SCENARIO - ETHICS"
+                    },
+
+                    // Cultural Sensitivity Scenarios
+                    {
+                        q: "You respond to a call involving a family that speaks limited English. The situation is complex and requires detailed communication. What's your best approach?",
+                        o: ["Use hand gestures and simple words", "Have a family member translate", "Request a professional interpreter", "Handle it quickly without detailed communication"],
+                        a: "Request a professional interpreter",
+                        explanation: "Professional interpreters ensure accurate communication and protect the rights of non-English speakers. Family members may have conflicts of interest.",
+                        topic: "SCENARIO - CULTURAL SENSITIVITY"
+                    },
+                    {
+                        q: "During a traffic stop, the driver explains their vehicle registration is expired because of religious reasons - they don't believe in government documentation. How do you respond?",
+                        o: ["Respect their beliefs and give a warning", "Explain that laws apply regardless of religious beliefs", "Arrest them for refusing to comply with laws", "Ignore the violation"],
+                        a: "Explain that laws apply regardless of religious beliefs",
+                        explanation: "While respecting religious beliefs, laws must be applied equally. Religious beliefs don't exempt individuals from generally applicable laws.",
+                        topic: "SCENARIO - CULTURAL SENSITIVITY"
+                    },
+
+                    // Report Writing Scenarios
+                    {
+                        q: "While writing a report about a domestic violence incident, you realize you forgot to document an important detail about the suspect's statements. The report has already been submitted. What should you do?",
+                        o: ["Leave it as is since it's already submitted", "Write a supplemental report with the additional information", "Try to modify the original report", "Hope nobody notices the omission"],
+                        a: "Write a supplemental report with the additional information",
+                        explanation: "Accuracy and completeness are crucial. Supplemental reports are the proper way to add important information discovered after submission.",
+                        topic: "SCENARIO - REPORT WRITING"
+                    },
+                    {
+                        q: "In your incident report, you need to describe a suspect's race for identification purposes, but you're not entirely certain of their exact ethnicity. What should you write?",
+                        o: ["Your best guess based on appearance", "Leave the race field blank", "Describe their appearance without racial assumptions", "Ask other officers what they think"],
+                        a: "Describe their appearance without racial assumptions",
+                        explanation: "Describe observable physical characteristics objectively rather than making assumptions about race or ethnicity that could be inaccurate.",
+                        topic: "SCENARIO - REPORT WRITING"
+                    },
+
+                    // Technology and Evidence Scenarios
+                    {
+                        q: "You seize a cell phone during a drug arrest. The phone is not password protected and is displaying text messages about drug sales. Can you read the messages?",
+                        o: ["Yes, since it's evidence of a crime", "No, you need a warrant for digital evidence", "Yes, but only messages visible on the screen", "No, unless the suspect consents"],
+                        a: "No, you need a warrant for digital evidence",
+                        explanation: "Digital devices require warrants for searches, even when seized lawfully. The 4th Amendment protects digital privacy.",
+                        topic: "SCENARIO - DIGITAL EVIDENCE"
+                    },
+                    {
+                        q: "Body camera footage shows you made an error in your incident report about the sequence of events. What should you do?",
+                        o: ["Ignore the discrepancy", "Modify the original report", "Write a supplemental report correcting the error", "Delete the body camera footage"],
+                        a: "Write a supplemental report correcting the error",
+                        explanation: "Honesty and accuracy are paramount. Correct errors through proper supplemental reports rather than modifying original documents.",
+                        topic: "SCENARIO - TECHNOLOGY"
+                    },
+
+                    // Specialized Unit Scenarios
+                    {
+                        q: "During a school resource officer assignment, a teacher asks you to arrest a disruptive student who keeps talking back in class. The student hasn't broken any laws. What's your response?",
+                        o: ["Arrest the student to support the teacher", "Explain that disrespect isn't a crime", "Remove the student from school", "Threaten the student with arrest"],
+                        a: "Explain that disrespect isn't a crime",
+                        explanation: "SROs must distinguish between disciplinary issues and criminal matters. Normal school discipline should be handled by school administrators.",
+                        topic: "SCENARIO - SCHOOL RESOURCE"
+                    },
+                    {
+                        q: "As a patrol officer, you discover what appears to be a methamphetamine lab in a residence. What is your immediate priority?",
+                        o: ["Enter and secure evidence", "Call for specialized hazmat team", "Arrest anyone present", "Take photos for evidence"],
+                        a: "Call for specialized hazmat team",
+                        explanation: "Meth labs involve hazardous chemicals requiring specialized training and equipment. Officer safety and public safety are the priorities.",
+                        topic: "SCENARIO - HAZMAT"                    },
+
+                    // Additional User-Supplied Practice Questions
+                    {
+                        q: "What is the minimum age requirement to become a licensed peace officer in Texas?",
+                        o: ["18 years old", "19 years old", "21 years old", "25 years old"],
+                        a: "21 years old",
+                        explanation: "Texas requires peace officers to be at least 21 years old, though some exceptions exist for certain positions.",
+                        topic: "PRACTICE - BASIC REQUIREMENTS"
+                    },
+                    {
+                        q: "Under Texas Penal Code, what is the statute of limitations for a Class A misdemeanor?",
+                        o: ["1 year", "2 years", "3 years", "5 years"],
+                        a: "2 years",
+                        explanation: "Class A misdemeanors have a 2-year statute of limitations under Texas Code of Criminal Procedure.",
+                        topic: "PRACTICE - CRIMINAL LAW"
+                    },
+                    {
+                        q: "What is required for a valid consent search?",
+                        o: ["Verbal consent only", "Written consent only", "Voluntary and intelligent consent", "Any type of consent"],
+                        a: "Voluntary and intelligent consent",
+                        explanation: "Consent must be given freely, voluntarily, and with understanding of the right to refuse.",
+                        topic: "PRACTICE - SEARCH AND SEIZURE"
+                    },
+                    {
+                        q: "In Texas, what is the legal blood alcohol concentration limit for drivers 21 and older?",
+                        o: ["0.06%", "0.08%", "0.10%", "0.12%"],
+                        a: "0.08%",
+                        explanation: "The legal limit for drivers 21 and older is 0.08% BAC under Texas Transportation Code.",
+                        topic: "PRACTICE - TRAFFIC ENFORCEMENT"
+                    },
+                    {
+                        q: "What is the primary purpose of Miranda warnings?",
+                        o: ["To scare suspects", "To protect Fifth Amendment rights", "To speed up interrogation", "To protect officers legally"],
+                        a: "To protect Fifth Amendment rights",
+                        explanation: "Miranda warnings protect the constitutional right against self-incrimination during custodial interrogation.",
+                        topic: "PRACTICE - CONSTITUTIONAL RIGHTS"
+                    },
+                    {
+                        q: "Under Texas law, what constitutes 'deadly force'?",
+                        o: ["Any physical contact", "Force likely to cause death or serious bodily injury", "Use of any weapon", "Verbal threats"],
+                        a: "Force likely to cause death or serious bodily injury",
+                        explanation: "Deadly force is defined as force that is intended or known by the actor to cause death or serious bodily injury.",
+                        topic: "PRACTICE - USE OF FORCE"
+                    },
+                    {
+                        q: "What is the maximum detention period for an Emergency Detention Order in Texas?",
+                        o: ["24 hours", "48 hours", "72 hours", "96 hours"],
+                        a: "48 hours",
+                        explanation: "Emergency detention for mental health evaluation cannot exceed 48 hours without further court action.",
+                        topic: "PRACTICE - MENTAL HEALTH"
+                    },
+                    {
+                        q: "In domestic violence cases, who determines whether charges will be filed?",
+                        o: ["The victim", "The police officer", "The prosecutor", "The family court"],
+                        a: "The prosecutor",
+                        explanation: "The decision to file charges rests with the prosecutor's office, not the victim or arresting officer.",
+                        topic: "PRACTICE - DOMESTIC VIOLENCE"
+                    },
+                    {
+                        q: "What is the 'plain view' doctrine?",
+                        o: ["Officers can search anything they see", "Evidence visible without a search is admissible", "All searches must be in plain view", "Suspects have no privacy rights"],
+                        a: "Evidence visible without a search is admissible",
+                        explanation: "The plain view doctrine allows seizure of evidence that is clearly visible without conducting a search.",
+                        topic: "PRACTICE - SEARCH AND SEIZURE"
+                    },
+                    {
+                        q: "Under Texas Penal Code, what is the penalty range for a State Jail Felony?",
+                        o: ["180 days to 2 years", "6 months to 2 years", "1 to 3 years", "2 to 10 years"],
+                        a: "180 days to 2 years",
+                        explanation: "State Jail Felonies carry a punishment range of 180 days to 2 years in state jail.",
+                        topic: "PRACTICE - CRIMINAL LAW"
+                    },
+                    {
+                        q: "What is required to establish probable cause for arrest?",
+                        o: ["Reasonable suspicion only", "Beyond a reasonable doubt", "Facts and circumstances suggesting guilt", "Officer intuition"],
+                        a: "Facts and circumstances suggesting guilt",
+                        explanation: "Probable cause requires facts and circumstances that would lead a reasonable person to believe the suspect committed a crime.",
+                        topic: "PRACTICE - CONSTITUTIONAL RIGHTS"
+                    },
+                    {
+                        q: "In Texas, what is the minimum educational requirement for peace officer licensing?",
+                        o: ["8th grade", "High school diploma or GED", "Some college", "Bachelor's degree"],
+                        a: "High school diploma or GED",
+                        explanation: "Texas requires a high school diploma or equivalent for peace officer licensing.",
+                        topic: "PRACTICE - BASIC REQUIREMENTS"
+                    },
+                    {
+                        q: "What is the difference between 'reasonable suspicion' and 'probable cause'?",
+                        o: ["No difference", "Reasonable suspicion is higher standard", "Probable cause requires more specific facts", "They're the same thing"],
+                        a: "Probable cause requires more specific facts",
+                        explanation: "Probable cause is a higher standard requiring more specific facts and circumstances than reasonable suspicion.",
+                        topic: "PRACTICE - CONSTITUTIONAL RIGHTS"
+                    },
+                    {
+                        q: "Under Texas Family Code, at what age can a juvenile be certified as an adult?",
+                        o: ["14 years old", "15 years old", "16 years old", "17 years old"],
+                        a: "14 years old",
+                        explanation: "Texas allows certification of juveniles as adults starting at age 14 for certain serious offenses.",
+                        topic: "PRACTICE - JUVENILE LAW"
+                    },
+                    {
+                        q: "What is the primary goal of community policing?",
+                        o: ["Make more arrests", "Write more tickets", "Build partnerships with community", "Increase police presence"],
+                        a: "Build partnerships with community",
+                        explanation: "Community policing focuses on building collaborative relationships between police and community members.",
+                        topic: "PRACTICE - COMMUNITY POLICING"
+                    },
+                    {
+                        q: "In report writing, what should you do if you make an error after submitting the report?",
+                        o: ["Change the original report", "Ignore the error", "Write a supplemental report", "Start over completely"],
+                        a: "Write a supplemental report",
+                        explanation: "Errors discovered after submission should be corrected through supplemental reports, not by altering originals.",
+                        topic: "PRACTICE - REPORT WRITING"
+                    },
+                    {
+                        q: "What is the 'exclusionary rule'?",
+                        o: ["Suspects can be excluded from lineups", "Illegally obtained evidence is inadmissible", "Some people are excluded from jury duty", "Officers can exclude certain witnesses"],
+                        a: "Illegally obtained evidence is inadmissible",
+                        explanation: "The exclusionary rule prevents illegally obtained evidence from being used in court proceedings.",
+                        topic: "PRACTICE - CONSTITUTIONAL RIGHTS"
+                    },
+                    {
+                        q: "Under Texas Penal Code, what elements must be proven for theft?",
+                        o: ["Taking only", "Taking with intent to return", "Unlawful appropriation with intent to deprive", "Borrowing without permission"],
+                        a: "Unlawful appropriation with intent to deprive",
+                        explanation: "Theft requires unlawful appropriation of property with intent to deprive the owner of the property.",
+                        topic: "PRACTICE - CRIMINAL LAW"
+                    },
+                    {
+                        q: "What is 'reasonable force' in the context of arrests?",
+                        o: ["Any force necessary", "Minimal force only", "Force proportional to resistance", "No force allowed"],
+                        a: "Force proportional to resistance",
+                        explanation: "Reasonable force means using only the amount of force necessary and proportional to the resistance encountered.",
+                        topic: "PRACTICE - USE OF FORCE"
+                    },
+                    {
+                        q: "In Texas, what is the legal definition of 'intoxication'?",
+                        o: ["Any alcohol consumption", "0.08% BAC only", "Not having normal use of faculties or 0.08% BAC", "Feeling drunk"],
+                        a: "Not having normal use of faculties or 0.08% BAC",
+                        explanation: "Intoxication is defined as not having normal use of mental or physical faculties OR having a BAC of 0.08% or more.",
+                        topic: "PRACTICE - TRAFFIC ENFORCEMENT"
+                    },
+                    {
+                        q: "What is the purpose of the Graham v. Connor standard?",
+                        o: ["Establishes Miranda rights", "Governs use of force decisions", "Defines probable cause", "Sets search warrant requirements"],
+                        a: "Governs use of force decisions",
+                        explanation: "Graham v. Connor established the 'objective reasonableness' standard for evaluating use of force by law enforcement.",
+                        topic: "PRACTICE - USE OF FORCE"
+                    },
+                    {
+                        q: "Under Texas Code of Criminal Procedure, what is a 'Terry stop'?",
+                        o: ["Arrest without warrant", "Brief investigative detention", "Vehicle impoundment", "Property seizure"],
+                        a: "Brief investigative detention",
+                        explanation: "A Terry stop is a brief investigative detention based on reasonable suspicion of criminal activity.",
+                        topic: "PRACTICE - CONSTITUTIONAL RIGHTS"
+                    },
+                    {
+                        q: "What is required for a valid warrantless entry into a home?",
+                        o: ["Probable cause only", "Reasonable suspicion", "Exigent circumstances and probable cause", "Officer discretion"],
+                        a: "Exigent circumstances and probable cause",
+                        explanation: "Warrantless home entries require both probable cause and exigent circumstances (emergency situations).",
+                        topic: "PRACTICE - SEARCH AND SEIZURE"
+                    },
+                    {
+                        q: "In Texas, what is the maximum fine for a Class C misdemeanor?",
+                        o: ["$200", "$500", "$1,000", "$2,000"],
+                        a: "$500",
+                        explanation: "Class C misdemeanors in Texas carry a maximum fine of $500 with no jail time.",
+                        topic: "PRACTICE - CRIMINAL LAW"
+                    },
+                    {
+                        q: "What is the 'fruit of the poisonous tree' doctrine?",
+                        o: ["Evidence found under trees is inadmissible", "Evidence derived from illegal searches is excluded", "Fruit can't be used as evidence", "Search warrants must specify fruit trees"],
+                        a: "Evidence derived from illegal searches is excluded",
+                        explanation: "This doctrine excludes evidence obtained as a result of an initial illegal search or seizure.",
+                        topic: "PRACTICE - CONSTITUTIONAL RIGHTS"
+                    },
+                    {
+                        q: "Under Texas Penal Code, what is required for 'criminal mischief'?",
+                        o: ["Any property damage", "Intentional or knowing damage to property", "Accidental damage", "Touching someone's property"],
+                        a: "Intentional or knowing damage to property",
+                        explanation: "Criminal mischief requires intentional or knowing damage, destruction, or tampering with another's property.",
+                        topic: "PRACTICE - CRIMINAL LAW"
+                    },
+                    {
+                        q: "What is the primary consideration in use of force decisions?",
+                        o: ["Officer safety only", "Public safety only", "Totality of circumstances", "Department policy only"],
+                        a: "Totality of circumstances",
+                        explanation: "Use of force decisions must consider the totality of circumstances from the perspective of a reasonable officer.",
+                        topic: "PRACTICE - USE OF FORCE"
+                    },
+                    {
+                        q: "In domestic violence investigations, what is the 'primary aggressor' determination?",
+                        o: ["Whoever called police", "The larger person", "Who initiated the violence", "The person with more injuries"],
+                        a: "Who initiated the violence",
+                        explanation: "Primary aggressor determination considers who initiated the violence, considering factors like injury severity and threats.",
+                        topic: "PRACTICE - DOMESTIC VIOLENCE"
+                    },
+                    {
+                        q: "What is required for a valid field interview?",
+                        o: ["Probable cause", "Reasonable suspicion", "No justification needed", "Warrant required"],
+                        a: "Reasonable suspicion",
+                        explanation: "Field interviews (Terry stops) require reasonable suspicion of criminal activity based on specific facts.",
+                        topic: "PRACTICE - CONSTITUTIONAL RIGHTS"
+                    },
+                    {
+                        q: "Under Texas Transportation Code, what is 'implied consent'?",
+                        o: ["Consent to search vehicle", "Consent to breath/blood testing", "Consent to arrest", "Consent to field sobriety tests"],
+                        a: "Consent to breath/blood testing",
+                        explanation: "Implied consent means that by driving, one consents to chemical testing if arrested for DWI.",
+                        topic: "PRACTICE - TRAFFIC ENFORCEMENT"
+                    },
+                    {
+                        q: "What is the 'good faith exception' to the exclusionary rule?",
+                        o: ["Officers acting in good faith can do anything", "Evidence obtained with defective warrant may be admissible", "Good officers never make mistakes", "Faith-based searches are allowed"],
+                        a: "Evidence obtained with defective warrant may be admissible",
+                        explanation: "The good faith exception allows evidence obtained with a defective warrant if officers reasonably relied on its validity.",
+                        topic: "PRACTICE - CONSTITUTIONAL RIGHTS"
+                    },
+                    {
+                        q: "In Texas, what is the legal standard for self-defense?",
+                        o: ["Any perceived threat", "Imminent threat of unlawful force", "After being attacked", "When feeling scared"],
+                        a: "Imminent threat of unlawful force",
+                        explanation: "Self-defense requires reasonable belief that force is immediately necessary to protect against imminent unlawful force.",
+                        topic: "PRACTICE - CRIMINAL LAW"
+                    },
+                    {
+                        q: "What is required for a valid citizen's arrest in Texas?",
+                        o: ["Any suspicion of crime", "Felony committed in presence", "Witness to any crime", "Police permission"],
+                        a: "Felony committed in presence",
+                        explanation: "Citizens may arrest for felonies committed in their presence or for breaches of peace committed in their presence.",
+                        topic: "PRACTICE - CRIMINAL LAW"
+                    },
+                    {
+                        q: "Under Texas Penal Code, what is the mental state 'knowingly'?",
+                        o: ["Having complete knowledge", "Aware conduct will cause result", "Guessing the outcome", "Acting with certainty"],
+                        a: "Aware conduct will cause result",
+                        explanation: "'Knowingly' means the person is aware their conduct is reasonably certain to cause the result.",
+                        topic: "PRACTICE - CRIMINAL LAW"
+                    },
+                    {
+                        q: "What is the proper procedure when a suspect invokes their right to remain silent?",
+                        o: ["Continue questioning", "Stop interrogation immediately", "Ask if they're sure", "Wait 30 minutes then continue"],
+                        a: "Stop interrogation immediately",
+                        explanation: "When a suspect invokes the right to remain silent, all interrogation must cease immediately.",
+                        topic: "PRACTICE - CONSTITUTIONAL RIGHTS"
+                    },
+                    {
+                        q: "In report writing, what is the most important principle?",
+                        o: ["Use complex language", "Be brief", "Accuracy and completeness", "Include personal opinions"],
+                        a: "Accuracy and completeness",
+                        explanation: "Reports must be accurate, complete, and factual, avoiding opinions and ensuring all relevant facts are documented.",
+                        topic: "PRACTICE - REPORT WRITING"
+                    },
+                    {
+                        q: "What is 'reasonable articulable suspicion'?",
+                        o: ["A gut feeling", "Specific facts suggesting criminal activity", "General suspicion", "Any unusual behavior"],
+                        a: "Specific facts suggesting criminal activity",
+                        explanation: "Reasonable articulable suspicion requires specific, describable facts that suggest criminal activity is afoot.",
+                        topic: "PRACTICE - CONSTITUTIONAL RIGHTS"
+                    },
+                    {
+                        q: "Under Texas Penal Code, what is required for 'assault'?",
+                        o: ["Physical injury only", "Intentionally causing bodily injury or threatening", "Accidental contact", "Verbal threats only"],
+                        a: "Intentionally causing bodily injury or threatening",
+                        explanation: "Assault includes intentionally causing bodily injury, threatening imminent bodily injury, or causing offensive contact.",
+                        topic: "PRACTICE - CRIMINAL LAW"
+                    },
+                    {
+                        q: "What is the 'automobile exception' to the warrant requirement?",
+                        o: ["Cars never need warrants", "Vehicles can be searched with probable cause", "All car searches are illegal", "Only traffic stops are allowed"],
+                        a: "Vehicles can be searched with probable cause",
+                        explanation: "The automobile exception allows warrantless searches of vehicles when there is probable cause to believe they contain evidence.",
+                        topic: "PRACTICE - SEARCH AND SEIZURE"
+                    },
+                    {
+                        q: "In Texas, what is the maximum jail sentence for a Class A misdemeanor?",
+                        o: ["180 days", "1 year", "2 years", "6 months"],
+                        a: "1 year",
+                        explanation: "Class A misdemeanors carry a maximum jail sentence of 1 year and/or a fine up to $4,000.",
+                        topic: "PRACTICE - CRIMINAL LAW"
+                    },
+                    {
+                        q: "What is the purpose of field sobriety tests?",
+                        o: ["To punish drunk drivers", "To gather evidence of impairment", "To delay the arrest", "To give drivers a chance"],
+                        a: "To gather evidence of impairment",
+                        explanation: "Field sobriety tests are designed to gather evidence of impairment for DWI investigations.",
+                        topic: "PRACTICE - TRAFFIC ENFORCEMENT"
+                    },
+                    {
+                        q: "Under Texas law, what constitutes 'deadly conduct'?",
+                        o: ["Any threatening behavior", "Recklessly engaging in conduct placing others in danger", "Verbal threats only", "Carrying a weapon"],
+                        a: "Recklessly engaging in conduct placing others in danger",
+                        explanation: "Deadly conduct involves recklessly engaging in conduct that places another in imminent danger of serious bodily injury.",
+                        topic: "PRACTICE - CRIMINAL LAW"
+                    },
+                    {
+                        q: "What is the primary purpose of the Fourth Amendment?",
+                        o: ["Protect property rights", "Prevent unreasonable searches and seizures", "Guarantee jury trials", "Protect free speech"],
+                        a: "Prevent unreasonable searches and seizures",
+                        explanation: "The Fourth Amendment protects against unreasonable searches and seizures by government agents.",
+                        topic: "PRACTICE - CONSTITUTIONAL RIGHTS"
+                    },
+                    {
+                        q: "In officer safety, what is the 'reactionary gap'?",
+                        o: ["Time to react to threats", "Distance needed to react safely", "Gap in training", "Equipment malfunction"],
+                        a: "Distance needed to react safely",
+                        explanation: "The reactionary gap is the minimum distance needed to react to a threat, typically 21 feet for edged weapons.",
+                        topic: "PRACTICE - OFFICER SAFETY"
+                    },
+                    {
+                        q: "Under Texas Penal Code, what is the mental state 'intentionally'?",
+                        o: ["By accident", "Conscious objective to cause result", "Not caring about result", "Acting reasonably"],
+                        a: "Conscious objective to cause result",
+                        explanation: "'Intentionally' means the person has a conscious objective or desire to engage in conduct or cause a result.",
+                        topic: "PRACTICE - CRIMINAL LAW"
+                    },
+                    {
+                        q: "What is required for a valid inventory search?",
+                        o: ["Probable cause", "Reasonable suspicion", "Standardized procedures", "Warrant"],
+                        a: "Standardized procedures",
+                        explanation: "Inventory searches must follow standardized departmental procedures and serve legitimate administrative purposes.",
+                        topic: "PRACTICE - SEARCH AND SEIZURE"
+                    },
+                    {
+                        q: "In Texas, what is the legal BAC limit for commercial drivers?",
+                        o: ["0.04%", "0.06%", "0.08%", "0.10%"],
+                        a: "0.04%",
+                        explanation: "Commercial drivers have a lower BAC limit of 0.04% under Texas Transportation Code.",
+                        topic: "PRACTICE - TRAFFIC ENFORCEMENT"
+                    },
+                    {
+                        q: "What is the 'inevitable discovery' exception?",
+                        o: ["Evidence that would have been found legally anyway", "All evidence is eventually discovered", "Discovery of hidden evidence", "Evidence found by accident"],
+                        a: "Evidence that would have been found legally anyway",
+                        explanation: "The inevitable discovery exception allows illegally obtained evidence if it would have been discovered through legal means.",
+                        topic: "PRACTICE - CONSTITUTIONAL RIGHTS"
+                    },
+                    {
+                        q: "Under Texas Family Code, what is the goal of juvenile justice?",
+                        o: ["Punishment", "Rehabilitation and public safety", "Deterrence only", "Incarceration"],
+                        a: "Rehabilitation and public safety",
+                        explanation: "The Texas juvenile justice system emphasizes rehabilitation while protecting public safety.",
+                        topic: "PRACTICE - JUVENILE LAW"
+                    },
+                    {
+                        q: "What is the proper response to a mental health emergency?",
+                        o: ["Immediate arrest", "De-escalation and assessment", "Ignore the situation", "Use force immediately"],
+                        a: "De-escalation and assessment",
+                        explanation: "Mental health emergencies require de-escalation techniques and proper assessment for potential emergency detention.",
+                        topic: "PRACTICE - MENTAL HEALTH"
+                    }
+                ];
+            }
+
+            // Function to load and display the practice test
+            async function loadPracticeTest(targetSection) {
+                // Show loading message
+                targetSection.innerHTML = `
+                    <div class="text-center py-12">
+                        <i class="fas fa-spinner fa-spin text-4xl text-accent-color mb-4"></i>
+                        <p class="text-lg">Loading practice test questions...</p>
+                    </div>
+                `;
+                
+                // Load all quiz questions if not already loaded
+                if (allQuizQuestions.length === 0) {
+                    await loadAllQuizQuestions();
+                }
+                  // Shuffle questions for the practice test
+                currentPracticeTestQuestions = shuffleArray(allQuizQuestions);
+                practiceTestResults = {};
+                currentQuestionIndex = 0;
+                
+                // Generate practice test HTML
+                generatePracticeTest(targetSection);
+            }            // Function to generate the practice test interface
+            function generatePracticeTest(targetSection) {
+                const totalQuestions = currentPracticeTestQuestions.length;
+                
+                targetSection.innerHTML = `
+                    <div class="max-w-4xl mx-auto">
+                        <!-- Header Section -->
+                        <div class="text-center mb-8">
+                            <i class="fas fa-clipboard-check text-5xl text-accent-color mb-4"></i>
+                            <h1 class="text-4xl font-bold mb-4">TCOLE Practice Test</h1>
+                            <p class="text-lg text-text-secondary mb-4">
+                                Complete practice test with ${totalQuestions} questions from all topics
+                            </p>                            <div class="flex justify-center space-x-4 mb-6">
+                                <button id="retake-test" class="practice-test-button bg-accent-color text-white px-6 py-2 rounded-lg hover:bg-sky-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center">
+                                    <i class="fas fa-redo mr-2"></i>Retake Test
+                                </button>
+                                <button id="submit-test" class="practice-test-button bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center">
+                                    <i class="fas fa-check mr-2"></i>Submit Test
+                                </button>
+                                <button id="review-mode" class="practice-test-button bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center">
+                                    <i class="fas fa-eye mr-2"></i>Review Mode
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress Section -->
+                        <div id="practice-test-progress" class="mb-6 bg-white p-6 rounded-lg shadow-sm">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="font-medium">Progress</span>
+                                <span id="progress-text">Question 1 of ${totalQuestions}</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3 mb-3">
+                                <div id="progress-bar-fill" class="bg-accent-color h-3 rounded-full transition-all duration-300" style="width: ${(1/totalQuestions)*100}%"></div>
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-600">
+                                <span id="answered-count">0 answered</span>
+                                <span id="remaining-count">${totalQuestions} remaining</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Question Container -->
+                        <div id="question-container" class="bg-white rounded-lg shadow-lg mb-6">
+                            <!-- Current question will be displayed here -->
+                        </div>
+                        
+                        <!-- Navigation Controls -->
+                        <div id="navigation-controls" class="flex justify-between items-center mb-6">
+                            <button id="prev-question" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition flex items-center disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                                <i class="fas fa-arrow-left mr-2"></i>Previous
+                            </button>
+                            
+                            <div class="flex space-x-2">
+                                <button id="flag-question" class="bg-yellow-500 text-white px-4 py-3 rounded-lg hover:bg-yellow-600 transition flex items-center">
+                                    <i class="fas fa-flag mr-2"></i>Flag
+                                </button>
+                                <button id="clear-answer" class="bg-red-500 text-white px-4 py-3 rounded-lg hover:bg-red-600 transition flex items-center">
+                                    <i class="fas fa-eraser mr-2"></i>Clear
+                                </button>
+                            </div>
+                            
+                            <button id="next-question" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition flex items-center">
+                                Next<i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Question Navigator -->
+                        <div id="question-navigator" class="bg-white p-4 rounded-lg shadow-sm mb-6">
+                            <h3 class="font-semibold mb-3 flex items-center">
+                                <i class="fas fa-th mr-2"></i>Question Navigator
+                            </h3>
+                            <div id="question-grid" class="grid grid-cols-10 gap-2">
+                                <!-- Question number buttons will be generated here -->
+                            </div>
+                            <div class="flex items-center justify-center space-x-6 mt-4 text-sm">
+                                <div class="flex items-center">
+                                    <div class="w-4 h-4 bg-green-500 rounded mr-2"></div>
+                                    <span>Answered</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-4 h-4 bg-yellow-500 rounded mr-2"></div>
+                                    <span>Flagged</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-4 h-4 bg-blue-600 rounded mr-2"></div>
+                                    <span>Current</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-4 h-4 bg-gray-300 rounded mr-2"></div>
+                                    <span>Not Answered</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="test-results" class="hidden mt-8">
+                            <!-- Results will be shown here -->
+                        </div>
+                    </div>
+                `;
+                
+                // Generate question navigator
+                generateQuestionNavigator(targetSection);
+                
+                // Display first question
+                displayCurrentQuestion(targetSection);
+                
+                // Set up event handlers
+                setupPracticeTestEvents(targetSection);
+            }            // Function to generate question navigator
+            function generateQuestionNavigator(targetSection) {
+                const questionGrid = targetSection.querySelector('#question-grid');
+                questionGrid.innerHTML = '';
+                
+                currentPracticeTestQuestions.forEach((_, index) => {
+                    const questionBtn = document.createElement('button');
+                    questionBtn.className = 'w-8 h-8 rounded text-sm font-medium transition-all hover:scale-110';
+                    questionBtn.textContent = index + 1;
+                    questionBtn.onclick = () => goToQuestion(index, targetSection);
+                    
+                    updateQuestionButtonStyle(questionBtn, index);
+                    questionGrid.appendChild(questionBtn);
+                });
+            }
+
+            // Function to update question button styling
+            function updateQuestionButtonStyle(button, index) {
+                const isAnswered = practiceTestResults[index] !== undefined;
+                const isFlagged = practiceTestResults[index]?.flagged;
+                const isCurrent = index === currentQuestionIndex;
+                
+                // Reset classes
+                button.className = 'w-8 h-8 rounded text-sm font-medium transition-all hover:scale-110';
+                
+                if (isCurrent) {
+                    button.classList.add('bg-blue-600', 'text-white');
+                } else if (isFlagged) {
+                    button.classList.add('bg-yellow-500', 'text-white');
+                } else if (isAnswered) {
+                    button.classList.add('bg-green-500', 'text-white');
+                } else {
+                    button.classList.add('bg-gray-300', 'text-gray-700', 'hover:bg-gray-400');
+                }
+            }
+
+            // Function to display current question
+            function displayCurrentQuestion(targetSection) {
+                const question = currentPracticeTestQuestions[currentQuestionIndex];
+                const questionContainer = targetSection.querySelector('#question-container');
+                
+                if (!question) return;
+                
+                questionContainer.innerHTML = `
+                    <div class="p-8">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h2 class="text-2xl font-bold text-gray-800">Question ${currentQuestionIndex + 1}</h2>
+                                    <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">${question.topic.replace('SCENARIO - ', '')}</span>
+                                </div>
+                                <p class="text-lg text-gray-700 leading-relaxed mb-6">${question.q}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3" id="current-question-options">
+                            ${question.o.map((option, optionIndex) => `
+                                <div class="question-option p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-all" 
+                                     data-option="${option}" data-correct="${option === question.a}">
+                                    <label class="cursor-pointer flex items-center w-full">
+                                        <input type="radio" name="current_question" value="${option}" class="mr-4 w-4 h-4">
+                                        <span class="flex-1 text-gray-700">${option}</span>
+                                    </label>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div id="current-explanation" class="mt-6 p-4 bg-blue-50 border border-blue-200 text-blue-800 rounded-lg hidden">
+                            <strong>Explanation:</strong> ${question.explanation}
+                        </div>
+                    </div>
+                `;
+                
+                // Restore previous answer if exists
+                const previousAnswer = practiceTestResults[currentQuestionIndex];
+                if (previousAnswer) {
+                    const radio = questionContainer.querySelector(`input[value="${previousAnswer.selected}"]`);
+                    if (radio) {
+                        radio.checked = true;
+                        radio.closest('.question-option').classList.add('bg-blue-50', 'border-blue-400');
+                    }
+                }
+                
+                // Set up option selection for current question
+                setupCurrentQuestionEvents(targetSection);
+                
+                // Update navigation buttons
+                updateNavigationButtons(targetSection);
+                
+                // Update question navigator
+                updateQuestionNavigator(targetSection);
+            }
+
+            // Function to set up events for current question
+            function setupCurrentQuestionEvents(targetSection) {
+                const options = targetSection.querySelectorAll('.question-option');
+                
+                options.forEach(option => {
+                    option.addEventListener('click', () => {
+                        const radio = option.querySelector('input[type="radio"]');
+                        radio.checked = true;
+                        
+                        // Remove selection styling from other options
+                        options.forEach(opt => {
+                            opt.classList.remove('bg-blue-50', 'border-blue-400');
+                        });
+                        
+                        // Add selection styling to current option
+                        option.classList.add('bg-blue-50', 'border-blue-400');
+                        
+                        // Save answer
+                        practiceTestResults[currentQuestionIndex] = {
+                            selected: option.dataset.option,
+                            correct: option.dataset.correct === 'true',
+                            flagged: practiceTestResults[currentQuestionIndex]?.flagged || false
+                        };
+                        
+                        // Update progress and navigator
+                        updateProgress(targetSection);
+                        updateQuestionNavigator(targetSection);
+                    });
+                });
+            }
+
+            // Function to update navigation buttons
+            function updateNavigationButtons(targetSection) {
+                const prevBtn = targetSection.querySelector('#prev-question');
+                const nextBtn = targetSection.querySelector('#next-question');
+                const totalQuestions = currentPracticeTestQuestions.length;
+                
+                // Update Previous button
+                prevBtn.disabled = currentQuestionIndex === 0;
+                if (prevBtn.disabled) {
+                    prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+                
+                // Update Next button text
+                if (currentQuestionIndex === totalQuestions - 1) {
+                    nextBtn.innerHTML = 'Finish<i class="fas fa-check ml-2"></i>';
+                    nextBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                    nextBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+                } else {
+                    nextBtn.innerHTML = 'Next<i class="fas fa-arrow-right ml-2"></i>';
+                    nextBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+                    nextBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                }
+            }
+
+            // Function to update question navigator
+            function updateQuestionNavigator(targetSection) {
+                const questionGrid = targetSection.querySelector('#question-grid');
+                const buttons = questionGrid.querySelectorAll('button');
+                
+                buttons.forEach((button, index) => {
+                    updateQuestionButtonStyle(button, index);
+                });
+            }
+
+            // Function to go to specific question
+            function goToQuestion(questionIndex, targetSection) {
+                currentQuestionIndex = questionIndex;
+                displayCurrentQuestion(targetSection);
+            }            // Function to set up practice test event handlers
+            function setupPracticeTestEvents(targetSection) {
+                const retakeBtn = targetSection.querySelector('#retake-test');
+                const submitBtn = targetSection.querySelector('#submit-test');
+                const reviewBtn = targetSection.querySelector('#review-mode');
+                const prevBtn = targetSection.querySelector('#prev-question');
+                const nextBtn = targetSection.querySelector('#next-question');
+                const flagBtn = targetSection.querySelector('#flag-question');
+                const clearBtn = targetSection.querySelector('#clear-answer');
+                
+                // Retake test
+                retakeBtn.addEventListener('click', () => {
+                    loadPracticeTest(targetSection);
+                });
+                
+                // Submit test
+                submitBtn.addEventListener('click', () => {
+                    submitPracticeTest(targetSection);
+                });
+                
+                // Review mode (show all questions with answers)
+                reviewBtn.addEventListener('click', () => {
+                    showReviewMode(targetSection);
+                });
+                
+                // Previous question
+                prevBtn.addEventListener('click', () => {
+                    if (currentQuestionIndex > 0) {
+                        currentQuestionIndex--;
+                        displayCurrentQuestion(targetSection);
+                    }
+                });
+                
+                // Next question
+                nextBtn.addEventListener('click', () => {
+                    if (currentQuestionIndex < currentPracticeTestQuestions.length - 1) {
+                        currentQuestionIndex++;
+                        displayCurrentQuestion(targetSection);
+                    } else {
+                        // Last question - show confirmation to submit
+                        if (confirm('You have reached the end of the test. Would you like to submit your answers?')) {
+                            submitPracticeTest(targetSection);
+                        }
+                    }
+                });
+                
+                // Flag question
+                flagBtn.addEventListener('click', () => {
+                    if (!practiceTestResults[currentQuestionIndex]) {
+                        practiceTestResults[currentQuestionIndex] = { flagged: true };
+                    } else {
+                        practiceTestResults[currentQuestionIndex].flagged = !practiceTestResults[currentQuestionIndex].flagged;
+                    }
+                    
+                    // Update button appearance
+                    if (practiceTestResults[currentQuestionIndex].flagged) {
+                        flagBtn.classList.remove('bg-yellow-500', 'hover:bg-yellow-600');
+                        flagBtn.classList.add('bg-yellow-600', 'hover:bg-yellow-700');
+                        flagBtn.innerHTML = '<i class="fas fa-flag mr-2"></i>Flagged';
+                    } else {
+                        flagBtn.classList.remove('bg-yellow-600', 'hover:bg-yellow-700');
+                        flagBtn.classList.add('bg-yellow-500', 'hover:bg-yellow-600');
+                        flagBtn.innerHTML = '<i class="fas fa-flag mr-2"></i>Flag';
+                    }
+                    
+                    updateQuestionNavigator(targetSection);
+                });
+                
+                // Clear answer
+                clearBtn.addEventListener('click', () => {
+                    // Clear radio selection
+                    const radios = targetSection.querySelectorAll('#current-question-options input[type="radio"]');
+                    radios.forEach(radio => {
+                        radio.checked = false;
+                        radio.closest('.question-option').classList.remove('bg-blue-50', 'border-blue-400');
+                    });
+                    
+                    // Clear from results but keep flag status
+                    if (practiceTestResults[currentQuestionIndex]) {
+                        const wasFlagged = practiceTestResults[currentQuestionIndex].flagged;
+                        if (wasFlagged) {
+                            practiceTestResults[currentQuestionIndex] = { flagged: true };
+                        } else {
+                            delete practiceTestResults[currentQuestionIndex];
+                        }
+                    }
+                    
+                    updateProgress(targetSection);
+                    updateQuestionNavigator(targetSection);
+                });
+            }            // Function to update progress
+            function updateProgress(targetSection) {
+                const totalQuestions = currentPracticeTestQuestions.length;
+                const answeredCount = Object.keys(practiceTestResults).filter(key => 
+                    practiceTestResults[key].selected !== undefined
+                ).length;
+                const percentage = (answeredCount / totalQuestions) * 100;
+                const currentProgress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+                
+                const progressText = targetSection.querySelector('#progress-text');
+                const progressBar = targetSection.querySelector('#progress-bar-fill');
+                const answeredCountEl = targetSection.querySelector('#answered-count');
+                const remainingCountEl = targetSection.querySelector('#remaining-count');
+                
+                if (progressText) progressText.textContent = `Question ${currentQuestionIndex + 1} of ${totalQuestions}`;
+                if (progressBar) progressBar.style.width = `${currentProgress}%`;
+                if (answeredCountEl) answeredCountEl.textContent = `${answeredCount} answered`;
+                if (remainingCountEl) remainingCountEl.textContent = `${totalQuestions - answeredCount} remaining`;
+            }
+
+            // Function to show review mode
+            function showReviewMode(targetSection) {
+                const questionContainer = targetSection.querySelector('#question-container');
+                const navigationControls = targetSection.querySelector('#navigation-controls');
+                const questionNavigator = targetSection.querySelector('#question-navigator');
+                
+                // Hide navigation controls
+                navigationControls.style.display = 'none';
+                questionNavigator.style.display = 'none';
+                
+                // Show all questions in review mode
+                questionContainer.innerHTML = `
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold">Review Mode - All Questions</h2>
+                            <button onclick="window.exitReviewMode()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                                <i class="fas fa-times mr-2"></i>Exit Review
+                            </button>
+                        </div>
+                        <div class="space-y-6 max-h-96 overflow-y-auto">
+                            ${currentPracticeTestQuestions.map((question, index) => {
+                                const userAnswer = practiceTestResults[index];
+                                const isAnswered = userAnswer && userAnswer.selected;
+                                const isCorrect = userAnswer && userAnswer.correct;
+                                const isFlagged = userAnswer && userAnswer.flagged;
+                                
+                                return `
+                                    <div class="border rounded-lg p-4 ${isFlagged ? 'border-yellow-400 bg-yellow-50' : 'border-gray-200'}">
+                                        <div class="flex justify-between items-start mb-3">
+                                            <h3 class="font-semibold">Question ${index + 1}</h3>
+                                            <div class="flex space-x-2">
+                                                ${isFlagged ? '<span class="bg-yellow-500 text-white px-2 py-1 rounded text-xs">Flagged</span>' : ''}
+                                                ${isAnswered ? `<span class="bg-${isCorrect ? 'green' : 'red'}-500 text-white px-2 py-1 rounded text-xs">${isCorrect ? 'Correct' : 'Incorrect'}</span>` : '<span class="bg-gray-400 text-white px-2 py-1 rounded text-xs">Not Answered</span>'}
+                                                <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">${question.topic.replace('SCENARIO - ', '')}</span>
+                                            </div>
+                                        </div>
+                                        <p class="mb-3 text-gray-700">${question.q}</p>
+                                        <div class="space-y-2">
+                                            ${question.o.map(option => {
+                                                const isSelected = userAnswer && userAnswer.selected === option;
+                                                const isCorrectOption = option === question.a;
+                                                let className = 'p-2 border rounded text-sm ';
+                                                
+                                                if (isCorrectOption) {
+                                                    className += 'border-green-400 bg-green-50 text-green-800';
+                                                } else if (isSelected && !isCorrectOption) {
+                                                    className += 'border-red-400 bg-red-50 text-red-800';
+                                                } else {
+                                                    className += 'border-gray-200 bg-gray-50';
+                                                }
+                                                
+                                                return `
+                                                    <div class="${className}">
+                                                        ${isSelected ? '→ ' : ''}${option}
+                                                        ${isCorrectOption ? ' ✓' : ''}
+                                                    </div>
+                                                `;
+                                            }).join('')}
+                                        </div>
+                                        <div class="mt-3 p-3 bg-blue-50 border border-blue-200 rounded text-sm text-blue-800">
+                                            <strong>Explanation:</strong> ${question.explanation}
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Global function to exit review mode
+            window.exitReviewMode = function() {
+                const targetSection = document.querySelector('.content-section.active');
+                const navigationControls = targetSection.querySelector('#navigation-controls');
+                const questionNavigator = targetSection.querySelector('#question-navigator');
+                
+                // Show navigation controls
+                navigationControls.style.display = 'flex';
+                questionNavigator.style.display = 'block';
+                
+                // Return to current question
+                displayCurrentQuestion(targetSection);
+            };            // Function to submit and grade the practice test
+            function submitPracticeTest(targetSection) {
+                const totalQuestions = currentPracticeTestQuestions.length;
+                const answeredQuestions = Object.keys(practiceTestResults).filter(key => 
+                    practiceTestResults[key].selected !== undefined
+                );
+                const answeredCount = answeredQuestions.length;
+                
+                if (answeredCount < totalQuestions) {
+                    const unansweredCount = totalQuestions - answeredCount;
+                    if (!confirm(`You have ${unansweredCount} unanswered questions. These will be marked as incorrect. Do you want to submit anyway?`)) {
+                        return;
+                    }
+                }
+                
+                // Calculate score
+                let correctCount = 0;
+                answeredQuestions.forEach(index => {
+                    if (practiceTestResults[index].correct) {
+                        correctCount++;
+                    }
+                });
+                
+                const score = ((correctCount / totalQuestions) * 100).toFixed(1);
+                const passed = score >= 70;
+                
+                // Hide question interface
+                const questionContainer = targetSection.querySelector('#question-container');
+                const navigationControls = targetSection.querySelector('#navigation-controls');
+                const questionNavigator = targetSection.querySelector('#question-navigator');
+                const progressSection = targetSection.querySelector('#practice-test-progress');
+                
+                questionContainer.style.display = 'none';
+                navigationControls.style.display = 'none';
+                questionNavigator.style.display = 'none';
+                progressSection.style.display = 'none';
+                
+                // Show results
+                showPracticeTestResults(targetSection, correctCount, totalQuestions, score, passed);
+            }// Function to show practice test results
+            function showPracticeTestResults(targetSection, correctCount, totalQuestions, score, passed) {
+                const resultsDiv = targetSection.querySelector('#test-results');
+                
+                // Calculate topic performance
+                const topicPerformance = {};
+                currentPracticeTestQuestions.forEach((question, index) => {
+                    const topic = question.topic;
+                    if (!topicPerformance[topic]) {
+                        topicPerformance[topic] = { correct: 0, total: 0 };
+                    }
+                    topicPerformance[topic].total++;
+                    if (practiceTestResults[index] && practiceTestResults[index].correct) {
+                        topicPerformance[topic].correct++;
+                    }
+                });
+                
+                // Calculate score level for styling
+                const scoreLevel = score >= 90 ? 'excellent' : score >= 80 ? 'good' : score >= 70 ? 'pass' : 'fail';
+                const passStatus = score >= 70;
+                
+                // Generate topic breakdown with performance bars
+                const topicBreakdown = Object.entries(topicPerformance)
+                    .sort(([,a], [,b]) => (b.correct/b.total) - (a.correct/a.total))
+                    .map(([topic, stats]) => {
+                        const percentage = ((stats.correct / stats.total) * 100);
+                        const barLevel = percentage >= 90 ? 'excellent' : percentage >= 80 ? 'good' : percentage >= 70 ? 'average' : 'poor';
+                        const statusIcon = percentage >= 70 ? 'fa-check-circle text-green-500' : 'fa-times-circle text-red-500';
+                        return `
+                            <div class="bg-white p-4 rounded-lg shadow-sm border slide-in" style="animation-delay: ${Math.random() * 0.5}s">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium text-gray-700">${topic.replace('SCENARIO - ', '')}</span>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas ${statusIcon} text-sm"></i>
+                                        <span class="font-bold text-gray-800">${stats.correct}/${stats.total}</span>
+                                    </div>
+                                </div>
+                                <div class="performance-bar mb-2">
+                                    <div class="performance-fill ${barLevel}" style="width: ${percentage}%"></div>
+                                </div>
+                                <div class="text-xs text-gray-600">${percentage.toFixed(1)}% accuracy</div>
+                            </div>
+                        `;
+                    }).join('');
+                
+                // Calculate additional stats
+                const answeredCount = Object.keys(practiceTestResults).length;
+                const accuracy = answeredCount > 0 ? ((correctCount / answeredCount) * 100).toFixed(1) : 0;
+                const completionRate = ((answeredCount / totalQuestions) * 100).toFixed(1);
+                
+                resultsDiv.className = 'mt-8 space-y-6 slide-in';
+                resultsDiv.innerHTML = `
+                    <!-- Hero Results Card -->
+                    <div class="results-card ${passStatus ? 'pass' : 'fail'} p-8 rounded-xl shadow-2xl text-center">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                            <div>
+                                <div class="score-gauge mb-4">
+                                    <svg width="200" height="200" viewBox="0 0 200 200">
+                                        <circle cx="100" cy="100" r="90" class="gauge-background"></circle>
+                                        <circle cx="100" cy="100" r="90" class="gauge-progress ${scoreLevel}" 
+                                                stroke-dasharray="${(score / 100) * 565.48} 565.48" 
+                                                stroke-dashoffset="0" 
+                                                transform="rotate(-90 100 100)"></circle>
+                                    </svg>
+                                    <div class="score-text">
+                                        <div class="text-4xl font-bold">${score}%</div>
+                                        <div class="text-sm opacity-80">Overall Score</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-2xl font-bold mb-2">
+                                    ${passStatus ? '🎉 Congratulations!' : '📚 Keep Studying!'}
+                                </div>
+                                <div class="text-lg opacity-90">
+                                    ${passStatus ? 'You\'re ready for the TCOLE exam!' : 'You need 70% to pass'}
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 gap-4">
+                                <div class="stat-card p-4 rounded-lg text-center">
+                                    <div class="text-3xl font-bold">${correctCount}/${totalQuestions}</div>
+                                    <div class="text-sm opacity-80">Correct Answers</div>
+                                </div>
+                                <div class="stat-card p-4 rounded-lg text-center">
+                                    <div class="text-3xl font-bold">${accuracy}%</div>
+                                    <div class="text-sm opacity-80">Accuracy Rate</div>
+                                </div>
+                                <div class="stat-card p-4 rounded-lg text-center">
+                                    <div class="text-3xl font-bold">${completionRate}%</div>
+                                    <div class="text-sm opacity-80">Completion Rate</div>
+                                </div>
+                                <div class="stat-card p-4 rounded-lg text-center">
+                                    <div class="text-3xl font-bold ${passStatus ? '🟢' : '🔴'}">${passStatus ? 'PASS' : 'FAIL'}</div>
+                                    <div class="text-sm opacity-80">Final Result</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Performance Breakdown -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg slide-in">
+                        <h3 class="text-2xl font-bold mb-6 flex items-center">
+                            <i class="fas fa-chart-line mr-3 text-blue-500"></i>
+                            Detailed Performance Analysis
+                        </h3>
+                        
+                        <!-- Overall Performance Indicator -->
+                        <div class="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-semibold text-gray-700">Overall Performance</span>
+                                <span class="text-lg font-bold ${passStatus ? 'text-green-600' : 'text-red-600'}">${score}%</span>
+                            </div>
+                            <div class="performance-bar">
+                                <div class="performance-fill ${scoreLevel}" style="width: ${score}%"></div>
+                            </div>
+                            <div class="mt-2 text-sm text-gray-600">
+                                ${score >= 90 ? 'Excellent! Outstanding performance.' : 
+                                  score >= 80 ? 'Good! Above average performance.' :
+                                  score >= 70 ? 'Satisfactory. You passed!' :
+                                  'Needs improvement. Focus on weak areas.'}
+                            </div>
+                        </div>
+                        
+                        <!-- Topic-wise Performance -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            ${topicBreakdown}
+                        </div>
+                    </div>
+                    
+                    <!-- Action Center -->
+                    <div class="bg-gradient-to-r from-gray-50 to-blue-50 p-6 rounded-xl shadow-lg slide-in">
+                        <h3 class="text-xl font-bold mb-4 text-center flex items-center justify-center">
+                            <i class="fas fa-rocket mr-2 text-purple-500"></i>
+                            What's Next?
+                        </h3>                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <button onclick="window.loadPracticeTest()" 
+                                    class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center">
+                                <i class="fas fa-redo mr-2"></i>New Test
+                            </button>
+                            <button onclick="window.scrollToQuestionReview()" 
+                                    class="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center">
+                                <i class="fas fa-search mr-2"></i>Review
+                            </button>
+                            <button onclick="window.printResults()" 
+                                    class="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-6 py-3 rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center">
+                                <i class="fas fa-print mr-2"></i>Print
+                            </button>
+                            <button onclick="window.shareResults()" 
+                                    class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center">
+                                <i class="fas fa-share mr-2"></i>Share
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Study Recommendations (if failed) -->
+                    ${!passStatus ? `
+                    <div class="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 p-6 rounded-xl shadow-lg slide-in">
+                        <h3 class="text-lg font-bold text-orange-800 mb-4 flex items-center">
+                            <i class="fas fa-lightbulb mr-2 text-yellow-500 pulse-animation"></i>
+                            Personalized Study Recommendations
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <h4 class="font-semibold text-orange-700">Focus Areas:</h4>
+                                ${Object.entries(topicPerformance)
+                                    .filter(([topic, stats]) => (stats.correct / stats.total) < 0.7)
+                                    .slice(0, 5)
+                                    .map(([topic, stats]) => `
+                                        <div class="flex items-center text-orange-600">
+                                            <i class="fas fa-arrow-right mr-2 text-sm"></i>
+                                            <span class="text-sm">${topic.replace('SCENARIO - ', '')} (${((stats.correct/stats.total)*100).toFixed(0)}%)</span>
+                                        </div>
+                                    `).join('')}
+                            </div>
+                            <div class="bg-white p-4 rounded-lg border border-orange-200">
+                                <h4 class="font-semibold text-orange-700 mb-2">Recommended Actions:</h4>
+                                <ul class="text-sm text-orange-600 space-y-1">
+                                    <li>• Review weak topic areas thoroughly</li>
+                                    <li>• Take additional practice tests</li>
+                                    <li>• Focus on scenario-based questions</li>
+                                    <li>• Study explanations carefully</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    ` : `
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 p-6 rounded-xl shadow-lg slide-in">
+                        <h3 class="text-lg font-bold text-green-800 mb-4 flex items-center">
+                            <i class="fas fa-trophy mr-2 text-yellow-500"></i>
+                            Exam Readiness Tips
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-green-700">
+                            <div>
+                                <h4 class="font-semibold mb-2">Maintain Your Edge:</h4>
+                                <ul class="text-sm space-y-1">
+                                    <li>• Continue practicing regularly</li>
+                                    <li>• Review any missed questions</li>
+                                    <li>• Stay updated on law changes</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-2">Exam Day Success:</h4>
+                                <ul class="text-sm space-y-1">
+                                    <li>• Get adequate rest before the exam</li>
+                                    <li>• Read each question carefully</li>
+                                    <li>• Trust your preparation</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    `}
+                `;
+                
+                // Animate the gauge
+                setTimeout(() => {
+                    const gauge = resultsDiv.querySelector('.gauge-progress');
+                    if (gauge) {
+                        gauge.style.strokeDasharray = `${(score / 100) * 565.48} 565.48`;
+                    }
+                }, 100);
+                
+                // Scroll to results
+                resultsDiv.scrollIntoView({ behavior: 'smooth' });
+            }// Function to highlight correct/incorrect answers
+            function highlightPracticeTestAnswers(targetSection) {
+                currentPracticeTestQuestions.forEach((question, index) => {
+                    const optionsContainer = targetSection.querySelector(`[data-question-index="${index}"]`);
+                    const explanationDiv = optionsContainer.parentNode.querySelector('.practice-explanation');
+                    
+                    optionsContainer.querySelectorAll('.practice-option').forEach(option => {
+                        const isCorrect = option.dataset.correct === 'true';
+                        const isSelected = practiceTestResults[index] && practiceTestResults[index].selected === option.dataset.option;
+                        
+                        if (isCorrect) {
+                            option.classList.add('bg-green-100', 'border-green-500', 'text-green-800');
+                        } else if (isSelected) {
+                            option.classList.add('bg-red-100', 'border-red-500', 'text-red-800');
+                        }
+                        
+                        // Disable further clicking
+                        option.style.cursor = 'not-allowed';
+                        option.onclick = null;
+                    });
+                    
+                    // Show explanation
+                    if (explanationDiv) {
+                        explanationDiv.classList.remove('hidden');
+                    }
+                });
+            }            // Helper functions for result page (made global)
+            window.scrollToQuestionReview = function() {
+                const firstQuestion = document.querySelector('#practice-test-container');
+                if (firstQuestion) {
+                    firstQuestion.scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+
+            window.printResults = function() {
+                window.print();
+            };
+
+            window.shareResults = function() {
+                const score = Object.values(practiceTestResults).filter(r => r && r.correct).length;
+                const total = currentPracticeTestQuestions.length;
+                const percentage = ((score / total) * 100).toFixed(1);
+                const passed = percentage >= 70;
+                
+                const shareText = `I just completed a TCOLE Practice Test!\n\nScore: ${percentage}% (${score}/${total})\nResult: ${passed ? 'PASSED' : 'FAILED'}\n\n${passed ? '🎉 Ready for the exam!' : '📚 Time to study more!'}`;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'TCOLE Practice Test Results',
+                        text: shareText
+                    });
+                } else {
+                    // Fallback: copy to clipboard
+                    navigator.clipboard.writeText(shareText).then(() => {
+                        alert('Results copied to clipboard!');
+                    }).catch(() => {
+                        alert('Share text:\n\n' + shareText);
+                    });
+                }
+            };
+
+            window.loadPracticeTest = function(targetSection) {
+                if (!targetSection) {
+                    targetSection = document.querySelector('.content-section.active');
+                }
+                if (targetSection) {
+                    loadPracticeTest(targetSection);
+                }
+            };
+
+            // --- Quiz Generation Function ---
+            function generateQuizContent(container, quizData) {
+                const quizContainer = container.querySelector('#mini-quiz-container');
+                if (!quizContainer || !quizData) return;
+                
+                // Clear existing content
+                quizContainer.innerHTML = '';
+                
+                quizData.forEach((item, index) => {
+                    const qDiv = document.createElement('div');
+                    qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+                    qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+                    
+                    const optsDiv = document.createElement('div');
+                    optsDiv.className = 'space-y-2';
+                    
+                    const explanationDiv = document.createElement('div');
+                    explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+                    explanationDiv.style.display = 'none';
+                    explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+                    
+                    item.o.forEach(optText => {
+                        const opt = document.createElement('div');
+                        opt.textContent = optText;
+                        opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                        
+                        opt.addEventListener('click', () => {
+                            // Check if this question has already been answered
+                            if (optsDiv.dataset.answered === 'true') {
+                                return; // Prevent changing answer
+                            }
+                            
+                            // Mark this question as answered
+                            optsDiv.dataset.answered = 'true';
+                            
+                            // Disable all options in this question
+                            optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                                el.classList.add('quiz-disabled');
+                                el.classList.remove('hover:bg-gray-100');
+                                el.style.cursor = 'not-allowed';
+                            });
+                            
+                            // Find the correct answer option
+                            const correctOption = Array.from(optsDiv.children).find(child => 
+                                child.textContent === item.a
+                            );
+                            
+                            // Apply correct styling to the correct answer
+                            if (correctOption) {
+                                correctOption.classList.add('correct');
+                            }
+                            
+                            // If the clicked option is wrong, mark it as incorrect
+                            if (optText !== item.a) {
+                                opt.classList.add('incorrect');
+                            }
+                            
+                            // Show explanation
+                            explanationDiv.style.display = 'block';
+                        });
+                        
+                        optsDiv.appendChild(opt);
+                    });
+                    
+                    qDiv.appendChild(optsDiv);
+                    qDiv.appendChild(explanationDiv);
+                    quizContainer.appendChild(qDiv);
+                });
+            }            async function loadTopicContent(topic, targetSection) {
+                // Special handling for Practice Test
+                if (topic === "PRACTICE TEST") {
+                    await loadPracticeTest(targetSection);
+                    return;
+                }
+                  const filePath = topicFileMapping[topic];
+                if (!filePath) {
+                    // Provide helpful placeholder content for missing navigation items
+                    let placeholderContent = '';
+                    
+                    if (topic === "INTRODUCTION") {
+                        placeholderContent = `
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <h3 class="text-xl font-semibold mb-4">Welcome to TCOLE Test Preparation</h3>
+                                <p class="text-text-secondary mb-4">This comprehensive study guide will help you prepare for the Texas Commission on Law Enforcement (TCOLE) examination.</p>
+                                <p class="text-text-secondary">Navigate through the topics using the sidebar menu to access study materials, and use the Practice Test to assess your knowledge.</p>
+                            </div>
+                        `;
+                    } else if (topic.startsWith("SECRET KEY")) {                        placeholderContent = `
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <h3 class="text-xl font-semibold mb-4">Study Strategy</h3>                                <p class="text-text-secondary mb-4">This section will contain strategic study tips and techniques for effective TCOLE test preparation.</p>
+                                <p class="text-text-secondary">Content coming soon...</p>
+                            </div>
+                        `;
+                    } else {
+                        placeholderContent = `
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <p class="text-text-secondary">Content file not found for this topic. This section is under development.</p>
+                            </div>
+                        `;
+                    }
+                    
+                    targetSection.innerHTML = `<h2 class="text-3xl font-bold mb-6 pb-2 border-b">${topic}</h2>${placeholderContent}`;
+                    return;
+                }
+
+                try {
+                    const response = await fetch(filePath);
+                    if (!response.ok) {
+                        throw new Error('Failed to load content');
+                    }
+                    const htmlContent = await response.text();
+                    
+                    // Parse the HTML content
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlContent, 'text/html');
+                    
+                    // Extract content from the body tag
+                    const bodyContent = doc.body ? doc.body.innerHTML : htmlContent;
+                    
+                    // Extract and combine CSS from the head
+                    const styles = doc.querySelectorAll('style');
+                    let combinedStyles = '';
+                    styles.forEach(style => {
+                        combinedStyles += style.textContent;
+                    });
+                    
+                    // Add the styles to the page if not already present
+                    if (combinedStyles && !document.querySelector(`style[data-topic="${topic}"]`)) {
+                        const styleElement = document.createElement('style');
+                        styleElement.textContent = combinedStyles;
+                        styleElement.setAttribute('data-topic', topic);
+                        document.head.appendChild(styleElement);
+                    }
+                    
+                    // Set the content
+                    targetSection.innerHTML = bodyContent;                    // Extract and execute JavaScript
+                    const scripts = doc.querySelectorAll('script');
+                    scripts.forEach(script => {
+                        if (script.textContent.trim()) {
+                            try {
+                                const scriptContent = script.textContent;
+                                
+                                // Extract quiz data from the script if it exists
+                                const quizDataMatch = scriptContent.match(/const quizData = (\[[\s\S]*?\]);/);
+                                
+                                if (quizDataMatch) {
+                                    // Extract and generate quiz content
+                                    const quizDataString = quizDataMatch[1];
+                                    try {
+                                        const quizData = eval(`(${quizDataString})`);
+                                        generateQuizContent(targetSection, quizData);
+                                    } catch (evalError) {
+                                        console.error('Error parsing quiz data:', evalError);
+                                    }
+                                }
+                                
+                                // Execute other parts of the script (like progress bar, collapsibles, flashcards)
+                                // but skip the DOMContentLoaded wrapper and quiz generation
+                                let modifiedScript = scriptContent;
+                                  // Remove DOMContentLoaded wrapper
+                                modifiedScript = modifiedScript.replace(/document\.addEventListener\('DOMContentLoaded',\s*function\(\)\s*\{/, '');
+                                // Remove the closing of the DOMContentLoaded function
+                                modifiedScript = modifiedScript.replace(/\}\);\s*$/, '');
+                                
+                                // Remove quiz-related code since we handle it separately
+                                modifiedScript = modifiedScript.replace(/const quizData = \[[\s\S]*?\];\s*/, '');
+                                modifiedScript = modifiedScript.replace(/const quizContainer[\s\S]*?quizContainer\.appendChild\(qDiv\);\s*\}\);\s*/, '');
+                                
+                                // Remove problematic variable declarations that might conflict
+                                modifiedScript = modifiedScript.replace(/const progressBar[\s\S]*?;/g, '');
+                                modifiedScript = modifiedScript.replace(/window\.addEventListener\('scroll'[\s\S]*?\}\);\s*/g, '');
+                                
+                                // Convert remaining const declarations to let to avoid redeclaration errors
+                                modifiedScript = modifiedScript.replace(/const\s+(\w+)\s*=/g, 'let $1 =');
+                                
+                                // Execute remaining script if there's anything meaningful left
+                                if (modifiedScript.trim() && modifiedScript.length > 50) {
+                                    try {
+                                        // Wrap in an immediately invoked function expression to avoid variable conflicts
+                                        const wrappedScript = `(function() { 
+                                            try { 
+                                                ${modifiedScript} 
+                                            } catch(e) { 
+                                                console.warn('Script execution warning:', e); 
+                                            } 
+                                        })();`;
+                                        const newScript = document.createElement('script');
+                                        newScript.textContent = wrappedScript;
+                                        document.body.appendChild(newScript);
+                                        document.body.removeChild(newScript);
+                                    } catch (execError) {
+                                        console.error('Error executing wrapped script:', execError);
+                                    }
+                                }
+                                
+                            } catch (scriptError) {
+                                console.error('Error executing script:', scriptError);
+                            }
+                        }
+                    });
+                      // Set up interactive elements after content and scripts are loaded
+                    setupCollapsibles(targetSection);
+                    setupFlashcards(targetSection);
+                    // Note: Quiz elements are handled in generateQuizContent, no need to call setupQuizElements
+                    
+                } catch (error) {
+                    console.error('Error loading topic content:', error);
+                    targetSection.innerHTML = `<h2 class="text-3xl font-bold mb-6 pb-2 border-b">${topic}</h2><div class="bg-white p-6 rounded-lg shadow-sm"><p class="text-text-secondary">Error loading content. Please try again.</p></div>`;
+                }
+            }
+            
+            // --- Navigation Logic ---
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            
+            function showSection(targetId) {
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                const targetSection = document.getElementById(targetId);
+                const targetLink = document.querySelector('[data-target="' + targetId + '"]');
+                
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    
+                    // Load content from HTML file if available
+                    const topic = targetLink ? targetLink.dataset.topic : null;
+                    if (topic && topicFileMapping[topic]) {
+                        loadTopicContent(topic, targetSection);
+                    }
+                }
+                
+                if (targetLink) {
+                    targetLink.classList.add('active');
+                }
+            }            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.dataset.target;
+                    showSection(targetId);
+                });
+            });            // --- Setup Search Functionality ---
+            const searchInput = document.getElementById('search-input');
+            let searchCache = {}; // Cache loaded content for faster searching
+            
+            async function loadContentForSearch(topicName) {
+                if (searchCache[topicName]) {
+                    return searchCache[topicName];
+                }
+                
+                const filePath = topicFileMapping[topicName];
+                if (!filePath) {
+                    searchCache[topicName] = '';
+                    return '';
+                }
+                
+                try {
+                    const response = await fetch(filePath);
+                    if (!response.ok) {
+                        searchCache[topicName] = '';
+                        return '';
+                    }
+                    const htmlContent = await response.text();
+                    
+                    // Parse the HTML content and extract text
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlContent, 'text/html');
+                    
+                    // Remove script and style content
+                    doc.querySelectorAll('script, style').forEach(el => el.remove());
+                    
+                    // Get the text content
+                    const textContent = doc.body ? doc.body.textContent || doc.body.innerText || '' : '';
+                    searchCache[topicName] = textContent.toLowerCase();
+                    return searchCache[topicName];
+                } catch (error) {
+                    console.error(`Error loading content for search: ${topicName}`, error);
+                    searchCache[topicName] = '';
+                    return '';
+                }
+            }
+            
+            async function filterTopics(searchTerm) {
+                const normalizedSearch = searchTerm.toLowerCase().trim();
+                const sidebarLinks = document.querySelectorAll('.sidebar-link');
+                
+                if (normalizedSearch === '') {
+                    // Show all topics and remove highlighting
+                    sidebarLinks.forEach(link => {
+                        const listItem = link.parentElement;
+                        listItem.style.display = 'block';
+                        const span = link.querySelector('span');
+                        if (span) {
+                            span.innerHTML = link.dataset.topic;
+                        }
+                    });
+                    return;
+                }
+                
+                // Show loading indicator
+                searchInput.style.background = 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'%3e%3cpath d=\'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z\'/%3e%3c/svg%3e") no-repeat right 12px center, linear-gradient(45deg, #f0f0f0 25%, transparent 25%), linear-gradient(-45deg, #f0f0f0 25%, transparent 25%)';
+                searchInput.style.backgroundSize = '20px 20px, 10px 10px, 10px 10px';
+                searchInput.style.animation = 'searching 1s linear infinite';
+                
+                const matchingTopics = [];
+                
+                for (const link of sidebarLinks) {
+                    const topicName = link.dataset.topic;
+                    const linkText = link.textContent.toLowerCase();
+                    const listItem = link.parentElement;
+                    
+                    let isMatch = false;
+                    let matchType = '';
+                    
+                    // First check topic title
+                    if (linkText.includes(normalizedSearch)) {
+                        isMatch = true;
+                        matchType = 'title';
+                    } else {
+                        // Then check content
+                        const contentText = await loadContentForSearch(topicName);
+                        if (contentText.includes(normalizedSearch)) {
+                            isMatch = true;
+                            matchType = 'content';
+                        }
+                    }
+                    
+                    if (isMatch) {
+                        listItem.style.display = 'block';
+                        matchingTopics.push({ link, matchType });
+                        
+                        // Highlight matching text in title
+                        const span = link.querySelector('span');
+                        if (span) {
+                            const originalText = topicName;
+                            if (matchType === 'title') {
+                                const regex = new RegExp(`(${normalizedSearch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                                span.innerHTML = originalText.replace(regex, '<mark style="background-color: #fef3cd; color: #856404;">$1</mark>');
+                            } else {
+                                // Add content match indicator
+                                span.innerHTML = originalText + ' <small style="color: #6c757d; font-size: 0.8em;">(content match)</small>';
+                            }
+                        }
+                    } else {
+                        listItem.style.display = 'none';
+                    }
+                }
+                
+                // Remove loading indicator
+                searchInput.style.background = '';
+                searchInput.style.animation = '';
+                
+                // Show search results summary
+                if (matchingTopics.length === 0) {
+                    // Add a temporary "no results" indicator
+                    const noResultsIndicator = document.createElement('div');
+                    noResultsIndicator.id = 'no-results-indicator';
+                    noResultsIndicator.style.cssText = 'padding: 10px; text-align: center; color: #6c757d; font-style: italic; border-bottom: 1px solid #e0e0e0;';
+                    noResultsIndicator.textContent = `No results found for "${searchTerm}"`;
+                    
+                    // Remove any existing indicator
+                    const existing = document.getElementById('no-results-indicator');
+                    if (existing) existing.remove();
+                    
+                    // Add to top of topic list
+                    const topicList = document.getElementById('topic-list');
+                    topicList.insertBefore(noResultsIndicator, topicList.firstChild);
+                    
+                    // Remove after 3 seconds
+                    setTimeout(() => {
+                        if (noResultsIndicator.parentNode) {
+                            noResultsIndicator.remove();
+                        }
+                    }, 3000);
+                } else {
+                    // Remove any existing no results indicator
+                    const existing = document.getElementById('no-results-indicator');
+                    if (existing) existing.remove();
+                }
+            }            
+            let searchTimeout;
+            searchInput.addEventListener('input', function(e) {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    filterTopics(e.target.value);
+                }, 300); // Wait 300ms after user stops typing
+            });
+            
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    // Find first visible topic and navigate to it
+                    const visibleLink = document.querySelector('.sidebar-link[style*="block"], .sidebar-link:not([style*="none"])');
+                    if (visibleLink && visibleLink.parentElement.style.display !== 'none') {
+                        const targetId = visibleLink.dataset.target;
+                        showSection(targetId);
+                        searchInput.blur(); // Remove focus from search input
+                    }
+                }
+            });
+            
+            // Clear search when clicking outside or escaping
+            document.addEventListener('click', function(e) {
+                if (!searchInput.contains(e.target) && !e.target.closest('#sidebar')) {
+                    if (searchInput.value.trim() === '') {
+                        filterTopics(''); // Clear any highlighting
+                    }
+                }
+            });
+            
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    searchInput.value = '';
+                    filterTopics('');
+                    searchInput.blur();
+                }
+            });function setupCollapsibles(container) {
+                if (!container) return;
+                
+                // Remove any existing event listeners to prevent duplicates
+                container.querySelectorAll('.collapsible-header').forEach(header => {
+                    // Clone the element to remove all event listeners
+                    const newHeader = header.cloneNode(true);
+                    header.parentNode.replaceChild(newHeader, header);
+                });
+                
+                // Set up fresh event listeners
+                container.querySelectorAll('.collapsible-header').forEach(header => {
+                    header.addEventListener('click', function () {
+                        const content = this.nextElementSibling;
+                        const icon = this.querySelector('i');
+                        
+                        if (!content || !icon) return;
+                        
+                        const isOpening = content.style.display !== "block";
+
+                        // Close other collapsibles in the same container (accordion behavior)
+                        const allHeaders = container.querySelectorAll('.collapsible-header');
+                        allHeaders.forEach(otherHeader => {
+                            if (otherHeader !== this) {
+                                const otherContent = otherHeader.nextElementSibling;
+                                const otherIcon = otherHeader.querySelector('i');
+                                if (otherContent) {
+                                    otherContent.style.display = "none";
+                                }
+                                if (otherIcon) {
+                                    otherIcon.classList.remove('fa-chevron-up');
+                                    otherIcon.classList.add('fa-chevron-down');
+                                }
+                            }
+                        });
+
+                        // Toggle the clicked item
+                        if (isOpening) {
+                            content.style.display = "block";
+                            icon.classList.remove('fa-chevron-down');
+                            icon.classList.add('fa-chevron-up');
+                        } else {
+                            content.style.display = "none";
+                            icon.classList.remove('fa-chevron-up');
+                            icon.classList.add('fa-chevron-down');
+                        }
+                    });
+                });
+            }
+
+            function setupFlashcards(container) {
+                if (!container) return;
+                
+                // Remove existing event listeners
+                container.querySelectorAll('.flashcard').forEach(card => {
+                    const newCard = card.cloneNode(true);
+                    card.parentNode.replaceChild(newCard, card);
+                });
+                
+                // Set up fresh event listeners
+                container.querySelectorAll('.flashcard').forEach(card => {
+                    card.addEventListener('click', () => {
+                        card.classList.toggle('is-flipped');
+                    });
+                });
+            }
+
+            function setupQuizElements(container) {
+                if (!container) return;
+                
+                // Set up quiz option click handlers
+                container.querySelectorAll('.quiz-option').forEach(option => {
+                    // Remove existing event listeners
+                    const newOption = option.cloneNode(true);
+                    option.parentNode.replaceChild(newOption, option);
+                });
+                
+                // Set up fresh event listeners for quiz options
+                container.querySelectorAll('.quiz-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        // Find the parent question container
+                        const questionContainer = this.closest('.quiz-question, .space-y-4, .mb-6');
+                        if (!questionContainer) return;
+                        
+                        // Remove active states from other options in this question
+                        questionContainer.querySelectorAll('.quiz-option').forEach(opt => {
+                            opt.classList.remove('correct', 'incorrect');
+                        });
+                        
+                        // Add appropriate class based on correctness
+                        if (this.dataset.correct === 'true') {
+                            this.classList.add('correct');
+                        } else {
+                            this.classList.add('incorrect');
+                        }
+                        
+                        // Show explanation if it exists
+                        const explanation = questionContainer.querySelector('.quiz-explanation');
+                        if (explanation) {
+                            explanation.style.display = 'block';
+                        }
+                    });
+                });
+            }
+
+            // --- Back to Top Button ---
+            const backToTopButton = document.getElementById('back-to-top');
+            if (backToTopButton && mainContent) {
+                mainContent.addEventListener('scroll', () => {
+                    if (mainContent.scrollTop > 200) {
+                        backToTopButton.style.display = 'flex';
+                    } else {
+                        backToTopButton.style.display = 'none';
+                    }
+                });
+                backToTopButton.addEventListener('click', () => {
+                    mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+            // Show Welcome Section by default
+            if (welcomeSection) {
+                welcomeSection.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

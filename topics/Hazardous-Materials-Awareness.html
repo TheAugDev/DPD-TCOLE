@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hazardous Materials Awareness - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #fefce8; /* yellow-50 */
+            --bg-card: #ffffff;
+            --text-heading: #422006; /* yellow-900 */
+            --text-body: #78350f; /* yellow-800 */
+            --text-muted: #6b7280; /* gray-500 */
+            --accent-primary: #f59e0b; /* amber-500 */
+            --accent-primary-light: #fef3c7; /* amber-100 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #fde68a; /* amber-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-biohazard text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Hazardous Materials Awareness</h1>
+            <p class="text-xl text-text-muted mt-2">First Responder Safety and Scene Management</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. Identifying Hazardous Materials (HAZMAT)</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">What is HAZMAT?</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>The U.S. Department of Transportation (DOT) defines hazardous materials as any substance that could endanger health, safety, or property during transportation. There are nine official hazard classes.</p>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Main Types of Hazardous Materials</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700 grid md:grid-cols-3 gap-4">
+                    <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                        <h4 class="font-bold text-lg text-amber-800 mb-2"><i class="fas fa-virus-covid mr-2"></i>Infectious Materials</h4>
+                        <p class="text-sm">Human, animal, and plant pathogens (disease-causing agents) like bacteria (anthrax) and viruses (smallpox).</p>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                        <h4 class="font-bold text-lg text-amber-800 mb-2"><i class="fas fa-radiation mr-2"></i>Ionizing Radiation</h4>
+                        <p class="text-sm">Energy emanating from unstable substances, including alpha, beta, gamma, X-rays, and neutron radiation.</p>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                        <h4 class="font-bold text-lg text-amber-800 mb-2"><i class="fas fa-skull-crossbones mr-2"></i>Toxic Materials</h4>
+                        <p class="text-sm">Includes biological toxins, chemical warfare agents, agricultural chemicals, and toxic industrial materials.</p>
+                    </div>
+                </div></div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Exposure and Officer Response</h2>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Routes of Exposure</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p class="mb-3">Exposure to hazardous materials can occur through four main pathways:</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Injection:</strong> Entry through a puncture wound or insect bite.</li>
+                        <li><strong>Ingestion:</strong> Swallowing the material, either directly or via a contaminated object.</li>
+                        <li><strong>Absorption:</strong> Entry through the skin, eyes, or mucous membranes.</li>
+                        <li><strong>Inhalation:</strong> Breathing in airborne particles, fumes, or vapors.</li>
+                    </ul>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">First Responder Protocol</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p class="mb-4">An officer's initial actions at a HAZMAT scene are critical for safety and containment.</p>
+                    <div class="relative pl-6 border-l-2 border-accent-primary space-y-6">
+                        <div><span class="absolute -left-4 flex items-center justify-center w-8 h-8 bg-white border-2 border-accent-primary rounded-full">1</span><h4 class="font-bold text-lg">Assess & Equip</h4><p class="text-text-muted">Quickly determine the appropriate level of Personal Protective Equipment (PPE).</p></div>
+                        <div><span class="absolute -left-4 flex items-center justify-center w-8 h-8 bg-white border-2 border-accent-primary rounded-full">2</span><h4 class="font-bold text-lg">Isolate & Deny Entry</h4><p class="text-text-muted">Stay away and upwind from the source. Limit contamination and escort exposed individuals away from the scene.</p></div>
+                        <div><span class="absolute -left-4 flex items-center justify-center w-8 h-8 bg-white border-2 border-accent-primary rounded-full">3</span><h4 class="font-bold text-lg">Request Resources</h4><p class="text-text-muted">Based on the assessment, request assistance from specialized units (e.g., fire department, bomb squad, HAZMAT team).</p></div>
+                        <div><span class="absolute -left-4 flex items-center justify-center w-8 h-8 bg-white border-2 border-accent-primary rounded-full">4</span><h4 class="font-bold text-lg">Consult Experts</h4><p class="text-text-muted">Officers should not make bold decisions regarding HAZMAT without first consulting with trained experts.</p></div>
+                    </div>
+                </div></div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">HAZMAT</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">An abbreviation for "Hazardous Materials," defined by the DOT as substances that can endanger health, safety, or property during transport.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">PPE Level D</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The lowest level of protection, consisting of a basic uniform, gloves, and mask.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">PPE Level C</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Includes chemical-resistant clothing, double-layered gloves, and an air-purifying respirator (APR).</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">PPE Level B</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Combines Level C chemical-resistant clothing with a higher level of respiratory protection: a Self-Contained Breathing Apparatus (SCBA).</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">PPE Level A</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The highest level of protection, requiring a fully encapsulated, vapor-tight suit with an SCBA.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Exposure Routes</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The four ways hazardous materials enter the body: Inhalation, Absorption, Ingestion, and Injection.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'Which PPE level provides the highest degree of protection against hazardous materials?', o: ['Level A', 'Level B', 'Level C', 'Level D'], a: 'Level A', explanation: 'Level A protection requires a fully encapsulated suit and is used for the most hazardous environments.' },
+            { q: 'A chemical spill has occurred. The safest direction for an officer to approach the scene from is:', o: ['Downwind', 'Directly towards the spill', 'Upwind', 'From the lowest elevation'], a: 'Upwind', explanation: 'Approaching from upwind helps prevent an officer from inhaling airborne contaminants being carried by the wind.'},
+            { q: 'Which of the following is NOT one of the four main routes of exposure to hazardous materials?', o: ['Inhalation', 'Ingestion', 'Observation', 'Absorption'], a: 'Observation', explanation: 'The four main routes of exposure are Inhalation, Ingestion, Absorption, and Injection. Simply observing a material from a safe distance is not a route of exposure.' },
+            { q: 'Which of these is classified as an "Infectious Material"?', o: ['Chemical warfare agents', 'Alpha radiation', 'Anthrax bacteria', 'Toxic industrial chemicals'], a: 'Anthrax bacteria', explanation: 'Infectious materials are pathogens, which include bacteria like anthrax and viruses like smallpox.'},
+            { q: 'An officer responding to a HAZMAT scene should immediately try to neutralize the substance.', o: ['True', 'False'], a: 'False', explanation: 'Law enforcement officers are generally discouraged from making bold decisions regarding HAZMAT. Their primary role is to secure the scene, ensure safety, and wait for trained experts.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

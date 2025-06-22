@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem Solving & Critical Thinking - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f0f9ff; /* sky-50 */
+            --bg-card: #ffffff;
+            --text-heading: #0c4a6e; /* sky-900 */
+            --text-body: #075985; /* sky-800 */
+            --text-muted: #64748b; /* slate-500 */
+            --accent-primary: #0369a1; /* sky-700 */
+            --accent-primary-light: #e0f2fe; /* sky-100 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #bae6fd; /* sky-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-brain text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Problem Solving & Critical Thinking</h1>
+            <p class="text-xl text-text-muted mt-2">Essential Skills for Modern Policing</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. Effective Communication Strategies</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Creating a Climate for Communication</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Effective communication goes beyond words. An officer's physical presence and awareness of the environment are crucial.</p>
+                    <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Setting:</strong> Make the environment as comfortable and peaceful as possible.</li>
+                        <li><strong>Personal Space (Proxemics):</strong> Be mindful of distance. Stand close enough to hear easily but far enough to respect personal boundaries and ensure safety.</li>
+                        <li><strong>Eye Contact:</strong> Maintain consistent, but not continuous, eye contact to show sincere interest without being intimidating.</li>
+                        <li><strong>Posture:</strong> Good posture conveys confidence and authority. Leaning forward slightly can signify particular interest.</li>
+                    </ul>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Reading Nonverbal Cues (Kinesics)</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700 space-y-4">
+                     <p>Facial expressions and body language provide a wealth of information, often revealing more than words.</p>
+                     <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-sky-50 p-4 rounded-lg border border-sky-200">
+                             <h4 class="font-bold text-lg text-sky-800 mb-2">Facial Expressions:</h4>
+                             <ul class="list-disc list-inside text-sm space-y-1">
+                                <li><strong>Flared Nostrils:</strong> Arousal (emotional or sexual).</li>
+                                <li><strong>Pursed Lips:</strong> Disagreement or frustration.</li>
+                                <li><strong>Raised Upper Lip (Snarl):</strong> Contempt or repulsion.</li>
+                                <li><strong>Dilated Pupils:</strong> High emotion or perception of a threat.</li>
+                                <li><strong>Looking Down:</strong> Shame or sheepishness.</li>
+                             </ul>
+                        </div>
+                         <div class="bg-sky-50 p-4 rounded-lg border border-sky-200">
+                             <h4 class="font-bold text-lg text-sky-800 mb-2">Body Language:</h4>
+                             <ul class="list-disc list-inside text-sm space-y-1">
+                                <li><strong>Pointing:</strong> Often perceived as a threat or challenge.</li>
+                                <li><strong>Palms Up Gestures:</strong> Appears friendly and welcoming.</li>
+                                <li><strong>Crossed Arms:</strong> Can indicate defensiveness (tightly held) or relaxation (loosely held).</li>
+                                <li><strong>Feet Pointing Out:</strong> Suggests dominance.</li>
+                                <li><strong>Feet Pointing In:</strong> Suggests submission.</li>
+                             </ul>
+                        </div>
+                     </div>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Listening Skills & Vocal Cues</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p class="mb-3"><strong>Active Listening:</strong> This is a crucial skill. It involves not just hearing, but confirming understanding by paraphrasing, asking clarifying questions, and paying attention to the speaker's emotional state. Repeating what the speaker says can be a simple but powerful tool.</p>
+                    <p><strong>Paralinguistics:</strong> These are aspects of vocal production other than words, such as volume, tone, and rhythm. A person's tone of voice is a strong indicator of their emotional state.</p>
+                    <p class="mt-2"><strong>Haptics:</strong> This refers to communication through touch. A light touch on an extremity can convey affection, while a forceful touch may indicate aggression or dominance. Officers must be aware of when physical contact is and is not appropriate.</p>
+                </div></div>
+            </section>
+            
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                 <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Critical Thinking & Problem Solving Frameworks</h2>
+                  <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Critical Thinking Process</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Critical thinking is the analysis, evaluation, and interpretation of information. It requires an officer to:</p>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><strong>Maintain Skepticism:</strong> Do not accept claims without supporting evidence.</li>
+                        <li><strong>Evaluate Arguments:</strong> Look for holes in logic, even in arguments you agree with.</li>
+                        <li><strong>Recognize Bias:</strong> Evaluate your own prejudices and the assumptions of others.</li>
+                        <li><strong>Empathize:</strong> Try to see the world from other perspectives to fully understand the situation.</li>
+                    </ul>
+                </div></div>
+
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Problem-Solving Models</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Structured models help officers move from identifying a problem to implementing an effective solution.</p>
+                     <div class="mt-4 p-4 bg-sky-50 border-l-4 border-sky-400">
+                        <h4 class="font-bold text-lg text-sky-800 mb-2">The SARA Model</h4>
+                        <ol class="list-decimal list-inside text-sm space-y-1">
+                           <li><strong>Scanning:</strong> Identify and prioritize recurring problems.</li>
+                           <li><strong>Analysis:</strong> Gather information from multiple sources to understand the underlying causes of the problem.</li>
+                           <li><strong>Response:</strong> Develop and implement a plan of action designed to solve the problem.</li>
+                           <li><strong>Assessment:</strong> Evaluate the impact of the response to determine its effectiveness and make adjustments.</li>
+                        </ol>
+                     </div>
+                      <div class="mt-4 p-4 bg-sky-50 border-l-4 border-sky-400">
+                        <h4 class="font-bold text-lg text-sky-800 mb-2">The Crime Triangle</h4>
+                        <p class="text-sm">This model helps analyze problems by focusing on the three elements required for a crime to occur: an <strong>Offender</strong>, a <strong>Victim</strong>, and a <strong>Location</strong>. Removing any one of these elements can prevent the crime.</p>
+                     </div>
+                </div></div>
+            </section>
+
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Proxemics</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The study of the nature, degree, and effect of the spatial separation individuals naturally maintain.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Kinesics</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The study of body motion as a mode of communication, including gestures, posture, and facial expressions.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Paralinguistics</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The non-verbal elements of communication used to modify meaning and convey emotion, such as pitch, volume, and intonation.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">SARA Model</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A four-stage problem-solving model used in community policing: Scanning, Analysis, Response, and Assessment.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'The study of body movement as a form of non-verbal communication is known as:', o: ['Proxemics', 'Haptics', 'Kinesics', 'Paralinguistics'], a: 'Kinesics', explanation: 'Kinesics is specifically the study of body language, including posture, gestures, and facial expressions.' },
+            { q: 'In the SARA model of problem solving, what does the "A" in the middle stand for?', o: ['Action', 'Argument', 'Assessment', 'Analysis'], a: 'Analysis', explanation: 'The SARA model stands for Scanning, Analysis, Response, and Assessment. Analysis is the crucial step of gathering data to understand the root causes of a problem.'},
+            { q: 'Which of the following is NOT a core component of critical thinking for a peace officer?', o: ['Maintaining skepticism', 'Accepting all claims at face value', 'Evaluating one\'s own biases', 'Empathizing with other perspectives'], a: 'Accepting all claims at face value', explanation: 'Critical thinking requires questioning and verifying information, not accepting it without evidence. Skepticism is a key component.' },
+            { q: 'Pursed lips are a non-verbal cue that most commonly suggests:', o: ['Interest or surprise', 'Disagreement or frustration', 'Shame or sheepishness', 'Dominance'], a: 'Disagreement or frustration', explanation: 'Pursed lips are a common unconscious signal of frustration, disagreement, or withholding information.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

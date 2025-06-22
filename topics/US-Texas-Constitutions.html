@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U.S. & Texas Constitutions and CJS - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f3f4f6; /* gray-100 */
+            --bg-card: #ffffff;
+            --text-heading: #111827; /* gray-900 */
+            --text-body: #374151; /* gray-700 */
+            --text-muted: #6b7280; /* gray-500 */
+            --accent-primary: #3b82f6; /* blue-500 */
+            --accent-primary-light: #eff6ff; /* blue-50 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #dbeafe; /* blue-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-landmark text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">U.S. & Texas Constitutions, Bill of Rights, and CJS</h1>
+            <p class="text-xl text-text-muted mt-2">Foundations of American and Texas Law</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. The U.S. Constitution & Bill of Rights</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Structure and Key Principles</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Writ of Habeas Corpus:</strong> A foundational right requiring a person under arrest to be brought before a judge or into court, to prevent unlawful detention.</li>
+                        <li><strong>Article 2:</strong> Outlines the procedure for electing the President and Vice President, including eligibility and the Electoral College.</li>
+                        <li><strong>Article 3:</strong> Establishes the Supreme Court and defines its original and appellate jurisdiction. It also defines treason, the only crime listed in the Constitution.</li>
+                    </ul>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Key Constitutional Amendments</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p class="font-bold mb-2">The Bill of Rights and other key amendments guarantee fundamental freedoms and legal protections:</p>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                             <ul class="list-disc list-inside text-sm space-y-1">
+                                <li><strong>1st Amendment:</strong> Freedom of speech, religion, press, assembly, and petition.</li>
+                                <li><strong>4th Amendment:</strong> Protection against unreasonable searches and seizures; requires probable cause for warrants.</li>
+                                <li><strong>5th Amendment:</strong> Protection against double jeopardy and self-incrimination; guarantees due process.</li>
+                                <li><strong>6th Amendment:</strong> Right to a speedy trial, legal counsel, and to confront one's accusers.</li>
+                             </ul>
+                        </div>
+                        <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                             <ul class="list-disc list-inside text-sm space-y-1">
+                                <li><strong>8th Amendment:</strong> Prohibits excessive bail, excessive fines, and cruel and unusual punishment.</li>
+                                <li><strong>9th Amendment:</strong> Establishes that individuals have rights beyond those explicitly listed in the Constitution.</li>
+                                <li><strong>10th Amendment:</strong> Establishes the rights of states.</li>
+                                <li><strong>14th Amendment:</strong> Contains the Supremacy Clause, making federal law supreme over state law, and guarantees equal protection.</li>
+                             </ul>
+                        </div>
+                    </div>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Constitutional Role of Police</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>The Constitution and Bill of Rights envision peace officers not as tools to take away rights, but as guardians who ensure fairness and protect the inalienable rights of all citizens. This requires officers to:</p>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                       <li>Create conditions of fairness and equality.</li>
+                       <li>Recognize and work to eliminate prejudice.</li>
+                       <li>Learn and actively protect the rights of citizens.</li>
+                       <li>Stay informed about new legislation and evolving legal interpretations.</li>
+                    </ul>
+                </div></div>
+            </section>
+            
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                 <h2 class="text-3xl font-bold mb-4 text-text-heading">II. The Texas Constitution</h2>
+                  <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Article 1: The Texas Bill of Rights</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Similar to the U.S. Bill of Rights, Article 1 of the Texas Constitution outlines fundamental individual rights:</p>
+                     <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Sec. 2:</strong> All political power resides in the people.</li>
+                        <li><strong>Sec. 3 & 4:</strong> All citizens have equal rights and are entitled to equal treatment under the law.</li>
+                        <li><strong>Sec. 6 & 8:</strong> Guarantees freedom of worship, speech, and the press.</li>
+                        <li><strong>Sec. 9 & 10:</strong> Protects against unlawful searches and seizures and enumerates the rights of the accused (right to counsel, habeas corpus, etc.).</li>
+                        <li><strong>Sec. 23:</strong> The right to keep and bear arms.</li>
+                        <li><strong>Sec. 30:</strong> Outlines the rights of crime victims.</li>
+                    </ul>
+                </div></div>
+
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Article 17: Amending the Constitution</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>The process for amending the Texas Constitution is distinct from the federal process:</p>
+                     <ol class="list-decimal list-inside space-y-2 mt-2">
+                        <li>An amendment is proposed by the legislature, requiring a two-thirds majority vote.</li>
+                        <li>The proposed amendment is published in newspapers across the state.</li>
+                        <li>It is then voted on by the public in the next general election.</li>
+                        <li>The amendment passes with a simple majority vote from the electorate.</li>
+                        <li>The governor ratifies the approved amendment.</li>
+                    </ol>
+                </div></div>
+            </section>
+             <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">III. The Criminal Justice System & Texas Courts</h2>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Three Components of the CJS</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>The criminal justice system is made up of three interrelated parts. Actions in one component directly impact the others.</p>
+                    <ol class="list-decimal list-inside space-y-2 mt-2">
+                        <li><strong>Police:</strong> City, county, state, and federal law enforcement agencies.</li>
+                        <li><strong>Courts:</strong> Municipal, county, state, and federal court systems.</li>
+                        <li><strong>Corrections:</strong> Jails, prisons, probation, parole, and fines.</li>
+                    </ol>
+                </div></div>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Texas Court Jurisdictions</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Municipal Courts:</strong> Exclusive jurisdiction over violations of city ordinances; concurrent jurisdiction with Justice Courts over cases punishable by fine only.</li>
+                        <li><strong>Justice Courts:</strong> Original jurisdiction in criminal cases punishable by fine only.</li>
+                        <li><strong>County Courts:</strong> Original jurisdiction for misdemeanors where the fine exceeds $500.</li>
+                        <li><strong>District Courts:</strong> Original jurisdiction for all felonies and misdemeanors involving official misconduct.</li>
+                        <li><strong>Courts of Appeals:</strong> Appellate jurisdiction in their districts for all cases except those involving the death penalty.</li>
+                        <li><strong>Court of Criminal Appeals:</strong> The highest criminal court in Texas, with final appellate jurisdiction in all criminal cases.</li>
+                    </ul>
+                </div></div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Writ of Habeas Corpus</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A court order requiring authorities to bring a detained person before a judge to determine if their detention is lawful. It protects against illegal imprisonment.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Double Jeopardy</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The Fifth Amendment protection that prevents an individual from being tried twice for the same crime after a legitimate acquittal or conviction.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Appellate Jurisdiction</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The power of a higher court to review and change decisions of lower courts.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Treason</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The only crime defined in the U.S. Constitution, involving levying war against the United States or giving aid and comfort to its enemies.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'Which court in Texas has final appellate jurisdiction in all criminal cases, including those involving the death penalty?', o: ['District Court', 'Supreme Court of Texas', 'Court of Appeals', 'Court of Criminal Appeals'], a: 'Court of Criminal Appeals', explanation: 'The Court of Criminal Appeals is the highest criminal court in Texas and has the final say on all criminal appeals.' },
+            { q: 'The protection against being tried twice for the same crime is guaranteed by which U.S. Constitutional Amendment?', o: ['Fourth Amendment', 'Fifth Amendment', 'Sixth Amendment', 'Eighth Amendment'], a: 'Fifth Amendment', explanation: 'The Fifth Amendment contains the Double Jeopardy Clause, which prevents an individual from being prosecuted again for the same crime after an acquittal or conviction.'},
+            { q: 'What is the primary difference between criminal law and civil law?', o: ['Criminal law involves the government, while civil law does not.', 'Criminal law can result in imprisonment, while civil law typically results in financial damages.', 'Civil law is more serious than criminal law.', 'There is no difference.'], a: 'Criminal law can result in imprisonment, while civil law typically results in financial damages.', explanation: 'The key distinction is the punishment. Criminal law addresses wrongs against society and can result in loss of liberty (jail/prison), while civil law addresses private wrongs (torts) and results in monetary judgments.' },
+            { q: 'Which of the following is NOT one of the three core components of the criminal justice system?', o: ['Police', 'Courts', 'Legislature', 'Corrections'], a: 'Legislature', explanation: 'The three interconnected components of the criminal justice system are Police (enforcement), Courts (adjudication), and Corrections (punishment/rehabilitation). The Legislature creates the laws but is separate from the system that enforces them.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

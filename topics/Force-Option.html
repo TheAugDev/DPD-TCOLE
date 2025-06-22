@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Force Options - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f1f5f9; /* slate-100 */
+            --bg-card: #ffffff;
+            --text-heading: #1e293b; /* slate-800 */
+            --text-body: #334155; /* slate-700 */
+            --text-muted: #64748b; /* slate-500 */
+            --accent-primary: #4f46e5; /* indigo-600 */
+            --accent-primary-light: #eef2ff; /* indigo-50 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #e2e8f0; /* slate-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-shield-alt text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Force Options & Justification</h1>
+            <p class="text-xl text-text-muted mt-2">A Comprehensive Guide to Penal Code Chapter 9</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. General Provisions for Justification</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Foundational Rules for Using Force</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-3">
+                        <li><strong>Sec. 9.02 (Justification as a Defense):</strong> Conduct is justified if it falls under the provisions of Chapter 9. This serves as a defense to prosecution.</li>
+                        <li><strong>Sec. 9.03 (Confinement):</strong> Justified if the use of force is justified, but the actor must terminate confinement as soon as it is safe to do so.</li>
+                        <li><strong>Sec. 9.04 (Threats as Force):</strong> The threat of force is justified whenever the use of force itself is justified.</li>
+                        <li><strong>Sec. 9.05 (Reckless Injury of Third Person):</strong> Justification is NOT a defense if an innocent third party is recklessly injured or killed.</li>
+                        <li><strong>Sec. 9.06 (Civil Remedies):</strong> Justification under the Penal Code does not protect an actor from a potential civil lawsuit.</li>
+                    </ul>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Justification of Public Duty & Necessity</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-3">
+                         <li><strong>Sec. 9.21 (Public Duty):</strong> Conduct is justified if an actor reasonably believes it is required or authorized by law, a court judgment, or legal process.</li>
+                         <li><strong>Sec. 9.22 (Necessity):</strong> Conduct is justified if the actor reasonably believes it is immediately necessary to avoid imminent harm, and the desirability of avoiding that harm outweighs the harm caused by the conduct.</li>
+                    </ul>
+                </div></div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Defense of Persons & Property</h2>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Self-Defense & Defense of Others</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-3">
+                        <li><strong>Sec. 9.31 (Self-Defense):</strong> A person is justified in using force when and to the degree they reasonably believe it is immediately necessary to protect against another's use or attempted use of unlawful force. It is NOT justified in response to verbal provocation alone.</li>
+                        <li><strong>Sec. 9.32 (Deadly Force in Defense of Person):</strong> Justified to protect against another's use of unlawful deadly force, or to prevent the imminent commission of aggravated kidnapping, murder, sexual assault, or robbery.</li>
+                        <li><strong>Sec. 9.33 (Defense of Third Person):</strong> A person can use force or deadly force to protect a third person if they reasonably believe that person would be justified in using it themselves.</li>
+                    </ul>
+                </div></div>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Protection of Property</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-3">
+                        <li><strong>Sec. 9.41 (Protection of One's Own Property):</strong> A person may use reasonable force to prevent or terminate a trespass or unlawful interference with their land or tangible property.</li>
+                        <li><strong>Sec. 9.42 (Deadly Force to Protect Property):</strong> Deadly force is justified ONLY to prevent the imminent commission of arson, burglary, robbery, aggravated robbery, or theft/criminal mischief at night, AND when the actor reasonably believes the property cannot be protected by other means or that using lesser force would expose them to risk of death or serious bodily injury.</li>
+                    </ul>
+                </div></div>
+            </section>
+            
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">III. Special Relationships & Law Enforcement</h2>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Law Enforcement Use of Force</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-3">
+                        <li><strong>Sec. 9.51 (Arrest and Search):</strong> An officer is justified in using force they reasonably believe is necessary to make an arrest or search. Deadly force is justified only when necessary to make an arrest for an offense involving deadly force, or to prevent escape where the officer believes the suspect poses a threat of serious bodily injury to others.</li>
+                         <li><strong>Sec. 9.52 (Preventing Escape from Custody):</strong> Use of force is justified to prevent escape, up to and including deadly force for guards at correctional facilities.</li>
+                    </ul>
+                </div></div>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Force in Special Relationships</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Force, but not deadly force, is justified under these specific circumstances:</p>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><strong>Sec. 9.61 (Parent-Child):</strong> A parent may use force against a child under 18 when reasonably necessary to discipline the child or safeguard their welfare.</li>
+                        <li><strong>Sec. 9.62 (Educator-Student):</strong> An educator may use force to the extent necessary to maintain discipline in a group.</li>
+                        <li><strong>Sec. 9.63 (Guardian-Incompetent):</strong> A guardian may use force against a mentally incompetent person to maintain discipline or promote their welfare.</li>
+                    </ul>
+                </div></div>
+            </section>
+
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Justification</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A defense to prosecution under Penal Code Ch. 9, asserting that the defendant's conduct was lawful under the circumstances.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Force</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Any physical action or threat of action intended to compel another person's movement or to cause physical pain or injury.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Deadly Force</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Force that is intended or known by the actor to cause, or in the manner of its use or intended use is capable of causing, death or serious bodily injury.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Necessity</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A justification defense (Sec. 9.22) where conduct is deemed necessary to avoid a greater, imminent harm.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'A person can use deadly force to protect their property against which of the following crimes committed at night?', o: ['Assault', 'Theft', 'Trespassing', 'Vandalism'], a: 'Theft', explanation: 'Sec. 9.42 specifically justifies deadly force to prevent theft or criminal mischief at nighttime, under specific conditions.' },
+            { q: 'Under Sec. 9.31, using force is NOT justified in response to:', o: ['Unlawful entry into your home', 'An attempt to steal your car', 'Verbal provocation alone', 'An attempted robbery'], a: 'Verbal provocation alone', explanation: 'The code is clear that mere words, no matter how offensive, do not justify the use of physical force in self-defense.'},
+            { q: 'An officer is justified in using force to make an arrest only if they reasonably believe the arrest is lawful.', o: ['True', 'False'], a: 'True', explanation: 'According to Sec. 9.51, the officer must have a reasonable belief that the arrest or search is lawful, or that the warrant is valid, for the use of force to be justified.' },
+            { q: 'An actor uses justified deadly force but recklessly injures an innocent bystander. Is their conduct still justified under Chapter 9?', o: ['Yes, because the initial use of force was justified.', 'No, justification is not a defense for recklessly injuring an innocent third party.', 'Only if the bystander was related to the suspect.', 'It depends on the severity of the injury.'], a: 'No, justification is not a defense for recklessly injuring an innocent third party.', explanation: 'Sec. 9.05 explicitly states that even when force is justified, the actor can still be prosecuted for recklessly injuring or killing an innocent third person.'},
+            { q: 'Under which special relationship is the use of deadly force NEVER justified for discipline or welfare?', o: ['Peace Officer-Suspect', 'Corrections Officer-Inmate', 'Parent-Child', 'All of the above'], a: 'Parent-Child', explanation: 'Sections 9.61 (Parent-Child), 9.62 (Educator-Student), and 9.63 (Guardian-Incompetent) all explicitly state that force is justified, but NOT deadly force.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

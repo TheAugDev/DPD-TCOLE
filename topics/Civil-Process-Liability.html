@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civil Process and Liability - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f3f4f6; /* gray-100 */
+            --bg-card: #ffffff;
+            --text-heading: #111827; /* gray-900 */
+            --text-body: #374151; /* gray-700 */
+            --text-muted: #6b7280; /* gray-500 */
+            --accent-primary: #8b5cf6; /* violet-500 */
+            --accent-primary-light: #f5f3ff; /* violet-50 */
+            --accent-secondary: #10b981; /* emerald-500 */
+            --border-color: #e5e7eb; /* gray-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 4px;
+            background-color: var(--accent-primary);
+            width: 0%;
+            z-index: 50;
+            transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left;}
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #ecfdf5; border-color: var(--accent-secondary) !important; color: #047857; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-gavel text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Civil Process and Liability</h1>
+            <p class="text-xl text-text-muted mt-2">Understanding the Officer's Role in Civil Matters</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section>
+                 <h2 class="text-3xl font-bold mb-6 text-text-heading">Core Concepts</h2>
+                 <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                    <div class="collapsible-item">
+                        <div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Contempt of Court</h3><i class="fas fa-chevron-down"></i></div>
+                        <div class="collapsible-content pt-4 text-gray-700">
+                            <p class="mb-4">Contempt of Court refers to actions that disrespect the court's authority. There are two primary types:</p>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-violet-50 p-4 rounded-lg border border-violet-200">
+                                    <h4 class="font-bold text-lg text-violet-800 mb-2">General Contempt</h4>
+                                    <p class="text-sm">Disruptive behavior that undermines the dignity of court proceedings. Penalties vary by court level.</p>
+                                </div>
+                                <div class="bg-violet-50 p-4 rounded-lg border border-violet-200">
+                                    <h4 class="font-bold text-lg text-violet-800 mb-2">Constructive Contempt</h4>
+                                    <p class="text-sm">Failure to comply with a direct civil court order (e.g., failure to pay child support). Can result in jail time until the order is obeyed.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-item">
+                        <div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Civil Suit Process</h3><i class="fas fa-chevron-down"></i></div>
+                        <div class="collapsible-content pt-4 text-gray-700">
+                             <p class="mb-3">A civil suit begins when a private wrong (tort) cannot be settled. The process involves specific documents and roles that peace officers must understand to perform their duties correctly.</p>
+                             <div class="bg-sky-50 p-4 rounded-lg border-l-4 border-sky-400">
+                                <h4 class="font-bold text-lg text-sky-800 mb-2"><i class="fas fa-list-ol mr-2"></i>Steps in a Civil Suit:</h4>
+                                <ol class="list-decimal list-inside space-y-1">
+                                    <li>A civil wrong occurs.</li>
+                                    <li>Parties (plaintiff and defendant) are identified.</li>
+                                    <li>Plaintiff files a petition with a court of proper jurisdiction.</li>
+                                    <li>The court issues a <strong>Citation</strong>, which directs the defendant on their rights and includes the plaintiff's petition.</li>
+                                    <li>The Citation and Petition must be served on the defendant.</li>
+                                </ol>
+                             </div>
+                        </div>
+                    </div>
+                     <div class="collapsible-item">
+                        <div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Landlord-Tenant Relations & Evictions</h3><i class="fas fa-chevron-down"></i></div>
+                        <div class="collapsible-content pt-4 text-gray-700">
+                            <p class="mb-4">Peace officers, especially constables and sheriffs, are directly involved in the eviction process.</p>
+                             <ul class="list-disc list-inside space-y-2">
+                                 <li><strong>Notice to Tenant:</strong> A landlord must give proper notice before filing for eviction.</li>
+                                 <li><strong>Eviction Hearing:</strong> Held 6-10 days after the tenant is served with the eviction citation.</li>
+                                 <li><strong>Writ of Possession:</strong> If the tenant fails to move out within 5 days after an eviction is upheld, the court issues this writ. It authorizes a sheriff or constable to physically remove the tenant and their property.</li>
+                                 <li><strong>Lockouts:</strong> A landlord may lock out a tenant for non-payment of rent only if the lease allows it and proper written notice is given. The tenant must still be allowed to access their belongings.</li>
+                             </ul>
+                        </div>
+                    </div>
+                 </div>
+            </section>
+            
+            <!-- Flashcards Section -->
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Civil Suit</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-sm">A legal action initiated by a plaintiff against a defendant based on a private wrong (tort) or dispute.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Citation</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-sm">An official court document that commands a defendant to appear in court and answer the plaintiff's petition.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Service of Process</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-sm">The procedure of formally delivering legal documents like citations to the required party. May not be done on Sunday.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Prejudgment Writ</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-sm">A court order to seize property before a judgment is made, to protect its value during the legal proceedings.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Writ of Possession</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-sm">A court order authorizing a sheriff or constable to remove a tenant and their property from a residence after an eviction judgment.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Writ of Reentry</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-sm">A court order that allows a tenant who has been unlawfully locked out to resume residence.</p></div></div></div>
+                </div>
+            </section>
+            
+            <!-- Quiz Section -->
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- Setup Interactive Elements ---
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                const isOpening = content.style.display !== 'block';
+                if(isOpening) {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                } else {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                }
+            });
+        });
+        
+        // --- Setup Quiz ---
+        const quizData = [
+            { q: 'Which of the following is an example of Constructive Contempt of Court?', o: ['Yelling at the judge', 'Failure to pay child support', 'Wearing inappropriate attire', 'Refusing to stand when the judge enters'], a: 'Failure to pay child support', explanation: 'Constructive contempt involves failing to obey a court order, like child support payments, whereas general contempt involves disrespecting the court\'s dignity.' },
+            { q: 'Who is authorized to serve a Writ of Possession for an eviction?', o: ['Any certified process server', 'The landlord', 'A Sheriff or Constable', 'Any peace officer'], a: 'A Sheriff or Constable', explanation: 'Documents that involve the seizure of property or person, including evictions, must be served by a Sheriff, Constable, or their deputies.'},
+            { q: 'A civil citation can legally be served on a Sunday in Texas.', o: ['True', 'False'], a: 'False', explanation: 'The rules explicitly state that civil citations may not be served on a Sunday.' },
+            { q: 'After an eviction judgment is upheld, how many days does a tenant have to move out before a Writ of Possession can be issued?', o: ['3 days', '5 days', '10 days', '30 days'], a: '5 days', explanation: 'The tenant has five days to vacate the property after the judgment. If they fail to do so, the landlord can request a Writ of Possession.' },
+            { q: 'What is the primary purpose of a prejudgment writ?', o: ['To evict a tenant immediately', 'To give the court control over property to protect its value', 'To force a defendant to appear in court', 'To file the initial lawsuit'], a: 'To give the court control over property to protect its value', explanation: 'Prejudgment writs are used to secure property during the lawsuit to ensure it is not sold or destroyed before a final judgment is reached.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-blue-50 border border-blue-200 text-blue-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        // --- Progress Bar ---
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

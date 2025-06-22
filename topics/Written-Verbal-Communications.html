@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Written and Verbal Communications - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f8fafc; /* slate-50 */
+            --bg-card: #ffffff;
+            --text-heading: #1e293b; /* slate-800 */
+            --text-body: #334155; /* slate-700 */
+            --text-muted: #64748b; /* slate-500 */
+            --accent-primary: #059669; /* emerald-600 */
+            --accent-primary-light: #ecfdf5; /* emerald-50 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #a7f3d0; /* emerald-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-pencil-alt text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Written and Verbal Communications</h1>
+            <p class="text-xl text-text-muted mt-2">The Foundation of Effective Policing and Reporting</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. Fundamentals of Effective Writing</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Priority of Clarity</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>In police work, written communication is not about style or ornamentation; the absolute priority is clarity. Reports and notes must be easily understood by others, as the author may not be available to explain them. To achieve clarity, officers must:</p>
+                    <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Write in Complete Sentences:</strong> Every sentence must have a subject and a verb and express a complete thought.</li>
+                        <li><strong>Avoid Sentence Fragments:</strong> Incomplete sentences that lack a subject or verb.</li>
+                        <li><strong>Avoid Run-on Sentences:</strong> Long, confusing sentences that should be broken up.</li>
+                        <li><strong>Use the Active Voice:</strong> The active voice (e.g., "The officer arrested the suspect.") is more direct and clearer than the passive voice (e.g., "The suspect was arrested by the officer.").</li>
+                        <li><strong>Avoid Slang and Jargon:</strong> Use plain, professional language that anyone can understand.</li>
+                        <li><strong>Be Precise and Concise:</strong> Convey all relevant information without unnecessary words or repetition.</li>
+                    </ul>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Major Parts of Speech</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>A basic understanding of grammar is essential for clear report writing.</p>
+                     <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Noun:</strong> Names a person, place, or thing (e.g., officer, street, handcuff).</li>
+                        <li><strong>Pronoun:</strong> Stands in for a noun (e.g., he, she, it, they).</li>
+                        <li><strong>Verb:</strong> Describes an action or state of being (e.g., ran, stopped, was).</li>
+                        <li><strong>Adjective:</strong> Modifies (describes) a noun (e.g., a *red* car, a *tall* suspect).</li>
+                        <li><strong>Adverb:</strong> Modifies a verb, adjective, or another adverb (e.g., he ran *quickly*).</li>
+                        <li><strong>Preposition:</strong> Links a noun to another word (e.g., the suspect was *in* the car).</li>
+                    </ul>
+                </div></div>
+            </section>
+            
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                 <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Field Notes and Official Reports</h2>
+                  <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Importance of Field Notes</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Field notes are brief records of an officer's observations taken at the scene. They are invaluable for several reasons:</p>
+                     <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Foundation of Reports:</strong> They provide the raw data for creating a detailed and accurate official report.</li>
+                        <li><strong>Memory Aid:</strong> They capture small details that might otherwise be forgotten, especially in fast-moving or traumatic situations.</li>
+                        <li><strong>Reduces Follow-up:</strong> Effective notes reduce the need to re-contact witnesses or victims for information.</li>
+                        <li><strong>Accuracy:</strong> They provide greater accuracy regarding the time, sequence, and character of important events.</li>
+                    </ul>
+                </div></div>
+
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Information to Record: From Field Notes to Report</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>An officer must gather specific, detailed information for a report to be complete and useful for an investigation.</p>
+                    <div class="grid md:grid-cols-2 gap-6 mt-4">
+                        <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                            <h4 class="font-bold text-lg text-emerald-800 mb-2"><i class="fas fa-user mr-2"></i>Person Descriptions</h4>
+                            <ul class="list-disc list-inside text-sm space-y-1">
+                                <li>Full Name & Aliases</li>
+                                <li>Race & Gender</li>
+                                <li>Height & Weight</li>
+                                <li>Hair & Eye Color</li>
+                                <li>Complexion, Scars, Tattoos</li>
+                                <li>Clothing</li>
+                                <li>Contact Information (Address, Phone)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                            <h4 class="font-bold text-lg text-emerald-800 mb-2"><i class="fas fa-car mr-2"></i>Vehicle & Property</h4>
+                             <ul class="list-disc list-inside text-sm space-y-1">
+                               <li><strong>CYMBAL:</strong> Color, Year, Make, Body Style, License Plate Number</li>
+                               <li>Vehicle Identification Number (VIN)</li>
+                               <li>Property: Manufacturer, model, serial number, value, color, etc.</li>
+                             </ul>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-4 bg-emerald-50 border-l-4 border-emerald-500">
+                         <h4 class="font-bold text-lg text-emerald-800 mb-2"><i class="fas fa-file-alt mr-2"></i>Essential Report Narrative Information</h4>
+                         <p class="text-sm">Beyond descriptions, a complete report must include: the date, time, and location of the offense; the nature of the crime; possible motives; how the offense occurred; and how the officer became involved.</p>
+                     </div>
+                </div></div>
+            </section>
+
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Field Notes</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Brief, contemporaneous records of an officer's observations and actions at a scene, used as the foundation for official reports.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Active Voice</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A sentence structure where the subject performs the action (e.g., "The officer interviewed the witness."). It is preferred for clarity in police reports.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Passive Voice</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A sentence structure where the subject receives the action (e.g., "The witness was interviewed by the officer."). It should be avoided as it is less direct.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">CYMBAL</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The standard acronym for gathering and broadcasting vehicle descriptions: Color, Year, Make/Model, Body style, And License plate number.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'What is the absolute top priority for a police officer when writing a report?', o: ['Using impressive vocabulary', 'Clarity', 'Following a specific story structure', 'Length'], a: 'Clarity', explanation: 'Police reports must be clear and easy to understand because the author may not be available to explain it later. Clarity overrides all other stylistic concerns.' },
+            { q: 'Which of the following should be AVOIDED in police communications?', o: ['Complete sentences', 'Descriptive adjectives', 'Slang and jargon', 'Chronological order'], a: 'Slang and jargon', explanation: 'Using slang, jargon, or overly technical terms can confuse readers. Plain, professional language should always be used.'},
+            { q: 'What does the "M" in the CYMBAL acronym for vehicle descriptions stand for?', o: ['Mileage', 'Modifications', 'Make or Model', 'Material'], a: 'Make or Model', explanation: 'CYMBAL stands for Color, Year, Make/Model, Body style, and License plate number, providing a standard sequence for broadcasting vehicle information.' },
+            { q: 'Which of the following is an example of a sentence written in the preferred active voice?', o: ['The suspect was arrested by Officer Smith.', 'The evidence was collected at the scene.', 'Officer Smith arrested the suspect.', 'The report was written.'], a: 'Officer Smith arrested the suspect.', explanation: 'In the active voice, the subject (Officer Smith) performs the action (arrested). This is more direct and clearer than the passive voice.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

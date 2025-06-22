@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Policing - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f0f9ff; /* sky-50 */
+            --bg-card: #ffffff;
+            --text-heading: #0c4a6e; /* sky-900 */
+            --text-body: #075985; /* sky-800 */
+            --text-muted: #64748b; /* slate-500 */
+            --accent-primary: #0369a1; /* sky-700 */
+            --accent-primary-light: #e0f2fe; /* sky-100 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #bae6fd; /* sky-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-shield-halved text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Professional Policing</h1>
+            <p class="text-xl text-text-muted mt-2">Evolution, Models, and the Texas Context</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. The Evolution of Policing</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Historical Development of Police Service</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>The role and methodology of policing have changed significantly over the last century, largely driven by technology and shifting philosophies.</p>
+                    <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Early 20th Century:</strong> Characterized by strong social connections between officers and the communities they served.</li>
+                        <li><strong>Impact of Technology:</strong> The introduction of radio and automobiles allowed for faster response times but also created distance between officers and the public as foot patrols became less common.</li>
+                        <li><strong>Mid-Century Issues:</strong> For a long period, law enforcement lacked self-critique and evaluation. The increased use of computers and officer rotations further severed community connections.</li>
+                        <li><strong>Recent Trends:</strong> To combat this disconnection, modern policing has seen an increase in evaluation research and a renewed focus on community outreach and engagement.</li>
+                    </ul>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The History of Policing in Texas</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Texas has a unique law enforcement history shaped by its vast territory and frontier past.</p>
+                     <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Pre-Republic:</strong> As a province of Mexico, the land was policed by the Spanish military.</li>
+                        <li><strong>Texas Republic:</strong> After 1836, policing was handled by a militia organized by Stephen F. Austin, which eventually evolved into the iconic <strong>Texas Rangers</strong>.</li>
+                        <li><strong>Elected Officials:</strong> A key feature of Texas policing is that <strong>Constables</strong> and <strong>Sheriffs</strong> are elected officials.</li>
+                        <li><strong>State Standards:</strong> All licensed Texas law enforcement officers must meet specific requirements, including firearms proficiency, as outlined in the <strong>Commission Rules</strong>.</li>
+                    </ul>
+                </div></div>
+            </section>
+            
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                 <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Models of Policing</h2>
+                  <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Traditional Police Service Model</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>This model is primarily reactive and incident-driven.</p>
+                     <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Focus:</strong> Handling individual situations and events after they occur.</li>
+                        <li><strong>Performance Metrics:</strong> Success is measured by statistics like crime rates and arrest numbers.</li>
+                        <li><strong>Decision Making:</strong> Top-down approach, with decisions made by middle and upper management.</li>
+                        <li><strong>Structure:</strong> Often subdivided into specialized units (e.g., traffic, homicide) that are good at their specific tasks.</li>
+                    </ul>
+                </div></div>
+
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Community Policing Model</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>This model represents a philosophical shift towards proactive and collaborative policing.</p>
+                     <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Focus:</strong> Proactive communication and partnership with citizens and local leaders.</li>
+                        <li><strong>Performance Metrics:</strong> Success is measured by factors like community morale, cleanliness, and reduced fear of crime.</li>
+                        <li><strong>Decision Making:</strong> Collaborative approach, soliciting input from the community.</li>
+                        <li><strong>Officer's Role:</strong> Officers are role models and problem-solvers who build long-term relationships by being assigned to the same district over time.</li>
+                    </ul>
+                </div></div>
+            </section>
+
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Traditional Model</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A reactive, incident-driven style of policing where success is measured by crime rates and arrests.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Community Policing</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A proactive policing philosophy based on partnership with the community to solve problems and improve quality of life.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Commission Rules</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The state-mandated requirements that all licensed Texas peace officers must meet, covering areas like training and proficiency.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'How did the introduction of radio and patrol cars change police service?', o: ['It increased officer foot patrols.', 'It created closer social connections with the community.', 'It allowed for quick response but also created distance from the community.', 'It had no significant impact on policing methods.'], a: 'It allowed for quick response but also created distance from the community.', explanation: 'While technology increased efficiency and response times, it led to officers spending more time in cars, reducing the face-to-face interaction that defined earlier eras of policing.' },
+            { q: 'In Texas, which law enforcement positions are filled through elections?', o: ['Police Chiefs and Captains', 'Texas Rangers and State Troopers', 'Constables and Sheriffs', 'All of the above'], a: 'Constables and Sheriffs', explanation: 'A unique aspect of Texas law enforcement is that constables and sheriffs are elected officials, making them directly accountable to the voters in their counties.'},
+            { q: 'Which of the following is a primary measure of success in the Traditional Police Service Model?', o: ['Community morale', 'Cleanliness of the patrol district', 'Crime and arrest rates', 'Citizen satisfaction surveys'], a: 'Crime and arrest rates', explanation: 'The Traditional Model is heavily reliant on quantitative data like crime statistics and the number of arrests made to evaluate its performance.' },
+            { q: 'Community Policing is best described as a ___________ approach.', o: ['Reactive and incident-driven', 'Proactive and collaborative', 'Statistical and remote', 'Specialized and isolated'], a: 'Proactive and collaborative', explanation: 'Community policing is a philosophy that emphasizes working with the community to prevent crime and solve problems before they become serious incidents.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

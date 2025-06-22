@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategies of Defense: Firearms - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f1f5f9; /* slate-100 */
+            --bg-card: #ffffff;
+            --text-heading: #1e293b; /* slate-800 */
+            --text-body: #334155; /* slate-700 */
+            --text-muted: #64748b; /* slate-500 */
+            --accent-primary: #f97316; /* orange-500 */
+            --accent-primary-light: #fff7ed; /* orange-50 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #fed7aa; /* orange-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-crosshairs text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Strategies of Defense: Firearms</h1>
+            <p class="text-xl text-text-muted mt-2">Proficiency, Safety, and Policy</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. Policy and Safe Handling</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Departmental Policies</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Officers must adhere to their specific departmental policies regarding firearm use in various scenarios. These policies typically govern:</p>
+                    <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li>Shooting at or from a motor vehicle.</li>
+                        <li>The firing of warning shots.</li>
+                        <li>The destruction of an animal.</li>
+                        <li>The carrying of back-up weapons.</li>
+                        <li>The use of off-duty weapons.</li>
+                    </ul>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Fundamental Skills and Safety</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>All peace officers must be able to demonstrate proficiency and safety with their issued weapons.</p>
+                     <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Safe Handling:</strong> Demonstrate the ability to safely handle both a handgun and a shotgun.</li>
+                        <li><strong>Loading/Unloading:</strong> Demonstrate the correct process for loading and unloading these weapons.</li>
+                        <li><strong>Range Safety:</strong> Be familiar with and always follow all rules of the shooting range.</li>
+                        <li><strong>Marksmanship:</strong> Know the techniques of quality marksmanship, including shooting in daylight, low-light, and nighttime conditions.</li>
+                        <li><strong>Weapon Manipulation:</strong> Demonstrate holstering and reloading while maintaining eye contact with a potential threat.</li>
+                         <li><strong>Maintenance:</strong> Demonstrate the ability to properly clean and inspect weapons.</li>
+                    </ul>
+                </div></div>
+            </section>
+            
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                 <h2 class="text-3xl font-bold mb-4 text-text-heading">II. TCOLE Firearms Proficiency Standards</h2>
+                  <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Handgun Qualification Course</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p class="mb-3">The handgun qualification course requires a minimum of <strong>50 rounds</strong>, and must include at least one timed reload.</p>
+                    <div class="relative pl-6 border-l-2 border-accent-primary space-y-4">
+                        <div>
+                            <span class="absolute -left-4 flex items-center justify-center w-8 h-8 bg-white border-2 border-accent-primary rounded-full"><i class="fas fa-ruler-horizontal text-accent-primary"></i></span>
+                            <h4 class="font-bold text-lg">3 Yards</h4>
+                            <p class="text-text-muted">Must be able to shoot with one hand.</p>
+                        </div>
+                         <div>
+                            <span class="absolute -left-4 flex items-center justify-center w-8 h-8 bg-white border-2 border-accent-primary rounded-full"><i class="fas fa-ruler-horizontal text-accent-primary"></i></span>
+                            <h4 class="font-bold text-lg">7 Yards</h4>
+                            <p class="text-text-muted">Must be able to shoot with two hands.</p>
+                        </div>
+                         <div>
+                            <span class="absolute -left-4 flex items-center justify-center w-8 h-8 bg-white border-2 border-accent-primary rounded-full"><i class="fas fa-ruler-horizontal text-accent-primary"></i></span>
+                            <h4 class="font-bold text-lg">15 Yards</h4>
+                            <p class="text-text-muted">Must be able to shoot with two hands.</p>
+                        </div>
+                        <div>
+                            <span class="absolute -left-4 flex items-center justify-center w-8 h-8 bg-white border-2 border-accent-primary rounded-full"><i class="fas fa-ruler-horizontal text-accent-primary"></i></span>
+                            <h4 class="font-bold text-lg">25 Yards</h4>
+                            <p class="text-text-muted">Must be able to shoot with two hands.</p>
+                        </div>
+                    </div>
+                </div></div>
+
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Shotgun Qualification Course</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <p>The shotgun qualification course requires a minimum of <strong>5 rounds</strong> fired at a distance of at least <strong>15 yards</strong>.</p>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Scoring and Exemptions</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <p>The minimum qualification score for both handgun and shotgun courses is <strong>70 percent</strong> of the total possible score. In rare cases, peace officers may be granted an exemption from this annual requirement.</p>
+                </div></div>
+            </section>
+
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Marksmanship</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The skill of shooting with proficiency and accuracy, encompassing grip, stance, sight alignment, trigger control, and breathing.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Timed Reload</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A mandatory component of the handgun qualification course, requiring an officer to efficiently reload their weapon under time pressure.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Proficiency Score</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The minimum score an officer must achieve to pass a firearms qualification. For TCOLE standards, this is 70% of the total possible score.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'What is the minimum number of rounds required for the handgun qualification course?', o: ['25 rounds', '50 rounds', '75 rounds', '100 rounds'], a: '50 rounds', explanation: 'The TCOLE standard mandates a minimum of 50 rounds fired during the handgun qualification.' },
+            { q: 'From what minimum distance must a peace officer qualify with a shotgun?', o: ['10 yards', '15 yards', '25 yards', '50 yards'], a: '15 yards', explanation: 'The shotgun qualification requires firing at least 5 rounds from a minimum distance of 15 yards.'},
+            { q: 'What is the minimum passing score for TCOLE firearms qualification?', o: ['60 percent', '70 percent', '80 percent', '90 percent'], a: '70 percent', explanation: 'Officers must score at least 70 percent of the total possible score to pass both the handgun and shotgun qualifications.' },
+            { q: 'At which distance is one-handed handgun shooting a required part of the qualification course?', o: ['3 yards', '7 yards', '15 yards', '25 yards'], a: '3 yards', explanation: 'The proficiency standards specifically require an officer to demonstrate the ability to shoot a handgun with one hand from a distance of 3 yards.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

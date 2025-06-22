@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f5f3ff; /* violet-50 */
+            --bg-card: #ffffff;
+            --text-heading: #3730a3; /* indigo-800 */
+            --text-body: #4338ca; /* indigo-700 */
+            --text-muted: #64748b; /* slate-500 */
+            --accent-primary: #6d28d9; /* violet-700 */
+            --accent-primary-light: #ede9fe; /* violet-100 */
+            --accent-secondary: #f59e0b; /* amber-500 */
+            --border-color: #ddd6fe; /* violet-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-flag-checkered text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Guide Introduction</h1>
+            <p class="text-xl text-text-muted mt-2">Preparing for Success on Test Day</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">Welcome and Purpose</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Your Path to Success</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Thank you for purchasing this resource! You have made the choice to prepare yourself for a test that could have a huge impact on your future, and this guide is designed to help you be fully ready for test day. Obviously, it’s important to have a solid understanding of the test material, but you also need to be prepared for the unique environment and stressors of the test, so that you can perform to the best of your abilities.</p>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Five Secret Keys</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>The first section of this guide is dedicated to the "Secret Keys." We’ve devoted countless hours to meticulously researching what works and what doesn’t, and we’ve boiled down our findings to the five most impactful steps you can take to improve your performance on the test. We start at the beginning with study planning and move through the preparation process, all the way to the testing strategies that will help you get the most out of what you know when you’re finally sitting in front of the test.</p>
+                    <div class="mt-4 p-4 bg-violet-50 border-l-4 border-violet-400">
+                        <h4 class="font-bold text-lg text-violet-800 mb-2"><i class="fas fa-star mr-2"></i>The Five Keys Are:</h4>
+                        <ol class="list-decimal list-inside text-sm space-y-1">
+                           <li>Plan Big, Study Small</li>
+                           <li>Make Your Studying Count</li>
+                           <li>Practice the Right Way</li>
+                           <li>Pace Yourself</li>
+                           <li>Have a Plan for Guessing</li>
+                        </ol>
+                     </div>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Important Advice for Test Takers</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700 space-y-4">
+                     <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-900 p-4" role="alert">
+                        <p class="font-bold">Last-Minute Studying?</p>
+                        <p class="text-sm">We recommend that you start preparing for your test as far in advance as possible. However, if you’ve bought this guide as a last-minute study resource and only have a few days before your test, we recommend that you <strong>skip over the first two Secret Keys</strong> since they address a long-term study plan.</p>
+                    </div>
+                     <div class="bg-sky-100 border-l-4 border-sky-500 text-sky-900 p-4" role="alert">
+                        <p class="font-bold">Struggle with Test Anxiety?</p>
+                        <p class="text-sm">If you struggle with test anxiety, we strongly encourage you to check out our recommendations for how you can overcome it. Test anxiety is a formidable foe, but it can be beaten, and we want to make sure you have the tools you need to defeat it.</p>
+                    </div>
+                </div></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

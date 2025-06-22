@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Communications - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f5f5f5; /* neutral-100 */
+            --bg-card: #ffffff;
+            --text-heading: #171717; /* neutral-900 */
+            --text-body: #404040; /* neutral-700 */
+            --text-muted: #737373; /* neutral-500 */
+            --accent-primary: #dc2626; /* red-600 */
+            --accent-primary-light: #fee2e2; /* red-50 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #e5e5e5; /* neutral-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-broadcast-tower text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Emergency Communications</h1>
+            <p class="text-xl text-text-muted mt-2">Protocols for Clarity and Precision</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. Principles of Effective Communication</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Importance of Precision</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>In an emergency, every word matters. Communications must be clear, concise, and accurate to ensure a proper response and maintain officer safety.</p>
+                    <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Audience:</strong> Broadcasts should be made over channels that reach the largest and most appropriate audience.</li>
+                        <li><strong>Urgency:</strong> Emergency channels should be reserved for the most extreme circumstances to prevent the public from becoming desensitized ("tuning out").</li>
+                        <li><strong>Clarity:</strong> Messages must clearly state they are for an emergency to command attention immediately.</li>
+                        <li><strong>Timing:</strong> Broadcasts should be delivered at times that maximize the potential audience and impact.</li>
+                    </ul>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Standardized Broadcast Information</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700 space-y-4">
+                     <p>Following a standard order for descriptions ensures that information is transmitted efficiently and can be easily understood by all listening parties.</p>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                            <h4 class="font-bold text-lg text-red-800 mb-2"><i class="fas fa-user-shield mr-2"></i>Person Description</h4>
+                            <ol class="list-decimal list-inside text-sm space-y-1">
+                               <li>Name</li>
+                               <li>Gender</li>
+                               <li>Race</li>
+                               <li>Date of Birth</li>
+                               <li>Height / Weight</li>
+                               <li>Hair / Eye Color</li>
+                               <li>Complexion, Markings, Clothing (as additional details)</li>
+                            </ol>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                            <h4 class="font-bold text-lg text-red-800 mb-2"><i class="fas fa-car mr-2"></i>Vehicle Description (CYMBAL)</h4>
+                            <ol class="list-decimal list-inside text-sm space-y-1">
+                               <li><strong>C</strong>olor</li>
+                               <li><strong>Y</strong>ear</li>
+                               <li><strong>M</strong>ake / Model</li>
+                               <li><strong>B</strong>ody Style</li>
+                               <li><strong>A</strong>nd</li>
+                               <li><strong>L</strong>icense Plate Number</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div></div>
+            </section>
+            
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                 <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Radio Discipline and Technique</h2>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Effective Radio Broadcasting</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>How a message is delivered is as important as what it says. An effective broadcaster demonstrates professionalism and ensures the message is understood.</p>
+                    <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Voice Control:</strong> Project your voice clearly and maintain a calm, controlled tone, regardless of the situation.</li>
+                        <li><strong>Rate of Speech:</strong> Speak at a prescribed, even rate—not too fast and not too slow.</li>
+                        <li><strong>Microphone Positioning:</strong> Understand the correct distance and angle to hold the microphone to avoid distortion or faint transmissions.</li>
+                        <li><strong>Plain Language:</strong> Use clear phrases and pronunciations. Avoid slang and unnecessary jargon.</li>
+                    </ul>
+                 </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Radio Discipline: When NOT to Transmit</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Maintaining clear airwaves is a critical component of radio discipline.</p>
+                    <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Wait for a Clear Channel:</strong> Do not transmit if a dispatcher or another unit asks you to stand by.</li>
+                        <li><strong>Avoid Long Messages:</strong> Keep transmissions concise. If a long message is unavoidable, let dispatch know first.</li>
+                        <li><strong>Respect Emergency Traffic:</strong> If a critical incident is unfolding elsewhere, do not transmit unless absolutely necessary. Your traffic can interfere with life-or-death communications.</li>
+                        <li><strong>Stay Professional:</strong> Do not use the radio for unnecessary traffic unrelated to official duties or unit availability.</li>
+                    </ul>
+                 </div></div>
+            </section>
+
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Precise Communication</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The essential skill of conveying information clearly, accurately, and concisely, especially during an emergency, to ensure proper response and safety.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">CYMBAL</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The standard acronym for broadcasting vehicle descriptions: <strong>C</strong>olor, <strong>Y</strong>ear, <strong>M</strong>ake/Model, <strong>B</strong>ody Style, <strong>A</strong>nd <strong>L</strong>icense Plate.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Radio Discipline</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The practice of using the radio professionally and efficiently, which includes knowing when *not* to transmit to keep airwaves clear for priority traffic.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                const isOpening = content.style.display !== 'block';
+                if(isOpening) {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                } else {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'What does the "M" in the CYMBAL acronym stand for?', o: ['Miles', 'Model Year', 'Make/Model', 'Markings'], a: 'Make/Model', explanation: 'CYMBAL stands for Color, Year, Make/Model, Body Style, And License Plate.' },
+            { q: 'Which of the following is a key reason for strict radio discipline?', o: ['To save battery power', 'To keep conversations private from the public', 'To prevent interference with higher priority or emergency traffic', 'To make broadcasts sound more professional'], a: 'To prevent interference with higher priority or emergency traffic', explanation: 'The primary reason for radio discipline is to ensure that critical, life-or-death transmissions are not blocked by unnecessary chatter.'},
+            { q: 'When broadcasting a description of a person, which piece of information should generally be given first?', o: ['Height', 'Clothing', 'Name', 'Hair Color'], a: 'Name', explanation: 'The standard order for broadcasting a person\'s description begins with Name, Gender, and Race to provide the most critical identifying information first.' },
+            { q: 'An officer should transmit a long, detailed message whenever they feel it is necessary.', o: ['True', 'False'], a: 'False', explanation: 'Officers are generally dissuaded from transmitting long messages. They should keep communications concise and, if a longer message is needed, inform dispatch first if possible.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

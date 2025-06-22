@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiculturalism and Human Relations - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f0f9ff; /* sky-50 */
+            --bg-card: #ffffff;
+            --text-heading: #0c4a6e; /* sky-900 */
+            --text-body: #075985; /* sky-800 */
+            --text-muted: #64748b; /* slate-500 */
+            --accent-primary: #0369a1; /* sky-700 */
+            --accent-primary-light: #e0f2fe; /* sky-100 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #bae6fd; /* sky-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-users text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Multiculturalism & Human Relations</h1>
+            <p class="text-xl text-text-muted mt-2">Principles for Fair and Effective Policing</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. Understanding Prejudice and Bias</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Nature of Prejudice</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Prejudice is a negative opinion formed without knowledge or facts, based instead on assumptions. While most people try to avoid it, everyone holds some form of prejudice. It is better to acknowledge and address these biases than to pretend they don't exist.</p>
+                    <div class="mt-4 p-4 bg-sky-50 border-l-4 border-sky-400">
+                        <h4 class="font-bold text-lg text-sky-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Roots of Prejudice:</h4>
+                        <ul class="list-disc list-inside text-sm space-y-1">
+                           <li><strong>Ethnocentrism:</strong> The belief that one's own group or culture is superior to others.</li>
+                           <li><strong>Stereotyping:</strong> Generalizing about a group of people without regard for individual differences, often out of laziness to learn the truth.</li>
+                           <li><strong>Scapegoating:</strong> Blaming other people or groups for one's own problems or failings.</li>
+                        </ul>
+                     </div>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Mandate for Impartiality</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <p>Because peace officers often work alone and have significant discretion, avoiding even the appearance of bias is critical. Officers must commit to the highest ethical standards.</p>
+                      <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>No Favoritism:</strong> An officer must never favor one person over another in the same situation.</li>
+                        <li><strong>Equal Treatment:</strong> Officers must indicate through both words and actions that no one will receive preferential treatment.</li>
+                        <li><strong>Resist Temptation:</strong> Officers must remain impartial even when acting with bias might seem to produce a "better" or easier outcome, or when they believe biased behavior would go unpunished.</li>
+                    </ul>
+                </div></div>
+            </section>
+            
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                 <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Practicing Sensitivity and Cross-Cultural Communication</h2>
+                  <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Power of Sensitivity</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Policing is more effective when officers are sensitive to the emotions of the citizens they serve. This builds trust and cooperation.</p>
+                     <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Be Nonjudgmental:</strong> See yourself as a detached enforcer of the law.</li>
+                        <li><strong>Be Empathetic:</strong> Strive to understand and honor the feelings of others.</li>
+                        <li><strong>Be Friendly:</strong> Warmth and compassion reap rewards in cooperation and assistance from the community, while a lack of sensitivity can breed ill will and violence.</li>
+                    </ul>
+                </div></div>
+
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Cross-Cultural Conflict Resolution</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Officers must be adept at communicating across diverse cultures, as communication styles can vary significantly. Police behavior that is normal in one culture may be offensive in another.</p>
+                    <div class="mt-4 p-4 bg-sky-50 border-l-4 border-sky-400">
+                        <h4 class="font-bold text-lg text-sky-800 mb-2"><i class="fas fa-handshake mr-2"></i>Example of Cultural Difference:</h4>
+                        <p class="text-sm">In many Middle-Eastern cultures, hospitality is very important. An officer should avoid entering a home uninvited and, if possible, remove their shoes. This formality would not necessarily be expected when entering a Native-American home, demonstrating the need for specific cultural knowledge.</p>
+                     </div>
+                </div></div>
+            </section>
+
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Prejudice</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A negative opinion or judgment formed about a person or group without knowledge or facts; based on assumption.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Ethnocentrism</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The belief that one's own group or culture is inherently superior to others.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Impartiality</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The principle of treating all people and groups equally, without bias or favoritism. A core requirement for peace officers.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'The desire to believe one’s own group is superior to others is known as:', o: ['Stereotyping', 'Prejudice', 'Ethnocentrism', 'Impartiality'], a: 'Ethnocentrism', explanation: 'Ethnocentrism is specifically defined as the belief in the superiority of one\'s own culture or group.' },
+            { q: 'Which of the following is a key component of impartial policing?', o: ['Treating everyone with warmth and compassion', 'Never favoring one person over another in the same situation', 'Using stereotypes to make quick decisions', 'Acting in a way that seems to produce the best outcome'], a: 'Never favoring one person over another in the same situation', explanation: 'The core of impartiality is treating everyone equally under the law, without showing favoritism, regardless of the perceived outcome.'},
+            { q: 'An officer can build trust and cooperation within diverse communities by:', o: ['Being cold and unfeeling to appear detached', 'Ignoring the emotions of citizens', 'Being nonjudgmental, friendly, and empathetic', 'Avoiding all personal interaction'], a: 'Being nonjudgmental, friendly, and empathetic', explanation: 'Treating citizens with sensitivity, warmth, and compassion engenders trust and leads to greater cooperation.' },
+            { q: 'Why is it important for officers to be familiar with the communication styles of diverse cultures?', o: ['So they can mimic the behavior perfectly', 'Because police behavior that is normal in one culture may be offensive in another', 'To prove their cultural superiority', 'It is not important; the law is the same for everyone'], a: 'Because police behavior that is normal in one culture may be offensive in another', explanation: 'Understanding cultural differences in communication prevents misunderstandings and helps officers resolve conflicts effectively without causing offense.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

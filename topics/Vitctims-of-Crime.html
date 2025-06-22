@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Victims of Crime - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f0f9ff; /* sky-50 */
+            --bg-card: #ffffff;
+            --text-heading: #1e3a8a; /* blue-900 */
+            --text-body: #1d4ed8; /* blue-700 */
+            --text-muted: #64748b; /* slate-500 */
+            --accent-primary: #2563eb; /* blue-600 */
+            --accent-primary-light: #dbeafe; /* blue-100 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #bfdbfe; /* blue-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-hands-helping text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Victims of Crime</h1>
+            <p class="text-xl text-text-muted mt-2">Understanding Trauma, Recovery, and Notification</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. The Victim's Experience</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Crisis Reaction</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>The reaction to a traumatic event is remarkably similar across all people and involves both physical and mental components.</p>
+                    <div class="grid md:grid-cols-2 gap-6 mt-3">
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                            <h4 class="font-bold text-lg text-blue-800 mb-2"><i class="fas fa-bolt mr-2"></i>Physical Response (Fight-or-Flight)</h4>
+                            <ul class="list-disc list-inside text-sm space-y-1">
+                               <li>Adrenaline saturates the bloodstream.</li>
+                               <li>Increased heart and breathing rates.</li>
+                               <li>Sharpened senses.</li>
+                               <li>Can lead to vomiting or defecation.</li>
+                               <li>Followed by debilitating effects from adrenaline withdrawal.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                             <h4 class="font-bold text-lg text-blue-800 mb-2"><i class="fas fa-brain mr-2"></i>Mental Response (Three Stages)</h4>
+                             <ol class="list-decimal list-inside text-sm space-y-1">
+                               <li><strong>Shock & Disbelief:</strong> Inability to organize thoughts; denial of the event's severity.</li>
+                               <li><strong>Emotional Cataclysm:</strong> A whirlwind of intense emotions like terror, sorrow, and anger.</li>
+                               <li><strong>Return to Equilibrium:</strong> The brain begins to integrate the experience, restoring emotional balance.</li>
+                             </ol>
+                        </div>
+                    </div>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Recovery From Trauma</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <p class="mb-3">The ability to recover depends on internal and external factors. The reaction to crime can be broken down into three phases:</p>
+                     <ol class="list-decimal list-inside space-y-2">
+                        <li><strong>Impact:</strong> The crime itself occurs.</li>
+                        <li><strong>Recoil:</strong> The victim's emotional trajectory changes as a result of the crime.</li>
+                        <li><strong>Reorganization:</strong> The victim's efforts to restore balance and order to their life.</li>
+                    </ol>
+                    <p class="mt-4">Recovery is also influenced by the severity of the event and the ability to comprehend and articulate what happened. Helping a victim make sense of the event is a key part of healing.</p>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Secondary Victimization</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>This occurs when the victim is mistreated or neglected after the crime, aggravating the original trauma. It can be unintentional but is devastating.</p>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><strong>Sources:</strong> Can come from the criminal justice system, media, or even the medical community.</li>
+                        <li><strong>Officer's Role:</strong> Officers must avoid any behavior or comments that imply guilt on the part of the victim (e.g., "You shouldn’t have been walking alone.").</li>
+                        <li><strong>Impact:</strong> It discourages victims from seeking further help and can cause immense psychological damage.</li>
+                        <li><strong>Secondary Victims:</strong> Family and friends of the immediate victim are also affected and need support.</li>
+                    </ul>
+                </div></div>
+            </section>
+            
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Death Notification Protocol</h2>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Guidelines for Making a Notification</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Notifying next of kin about a death is one of the most difficult duties an officer performs. It must be done with sensitivity and professionalism.</p>
+                     <ol class="list-decimal list-inside space-y-2 mt-3">
+                        <li><strong>Be Timely:</strong> Notify as quickly as possible after the body has been identified.</li>
+                        <li><strong>Go in Person:</strong> Never make a death notification over the phone.</li>
+                        <li><strong>Be in Uniform:</strong> This conveys respect and the official nature of the visit.</li>
+                        <li><strong>Notify an Adult:</strong> Always deliver the news to an adult.</li>
+                        <li><strong>Be Direct and Simple:</strong> Use clear, thoughtful language.</li>
+                        <li><strong>Provide Information:</strong> Answer questions as long as it doesn't compromise an ongoing investigation.</li>
+                        <li><strong>Show Empathy:</strong> Convey genuine sympathy and remain with the family until you have permission to leave.</li>
+                        <li><strong>Never Leave Grieving People Alone:</strong> Offer to help make immediate arrangements (e.g., call other family, clergy).</li>
+                        <li><strong>Respect Privacy:</strong> Never speak to the media without explicit permission from the family.</li>
+                    </ol>
+                </div></div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Crisis Reaction</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The normal human response to trauma, involving both a physical component (fight-or-flight) and a mental component (shock, cataclysm, equilibrium).</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Secondary Victimization</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Mistreatment or neglect of a crime victim by institutions or individuals after the original crime, which aggravates the trauma.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Secondary Victims</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Family, friends, and even service providers who are affected by the trauma experienced by the immediate victim of a crime.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'What is the correct term for the mistreatment a victim suffers from the justice system or media after the initial crime?', o: ['Crisis Reaction', 'Secondary Victimization', 'Recoil Phase', 'Fight-or-Flight'], a: 'Secondary Victimization', explanation: 'Secondary victimization specifically refers to the additional trauma caused by the response of institutions and individuals after the crime has occurred.' },
+            { q: 'Which of the following is NOT one of the three stages of the mental response to crisis?', o: ['Shock and Disbelief', 'Anger and Retaliation', 'Emotional Cataclysm', 'Return to Equilibrium'], a: 'Anger and Retaliation', explanation: 'The three recognized stages are shock/disbelief, a period of overwhelming emotion (emotional cataclysm), and a final return to balance (equilibrium). Anger is part of the cataclysm, but retaliation is not a defined stage.'},
+            { q: 'When making a death notification, what is the proper protocol?', o: ['Call as soon as possible to get it over with', 'Go in person and in uniform', 'Send a chaplain to handle it alone', 'Email the family to give them time to prepare'], a: 'Go in person and in uniform', explanation: 'Making a notification in person and in uniform shows the utmost respect and professionalism during a highly sensitive and difficult task.' },
+            { q: 'The "recoil" phase of reacting to a crime refers to:', o: ['The crime itself', 'The victim\'s efforts to restore balance to their life', 'The changed emotional trajectory of the victim after the crime', 'The physical fight-or-flight response'], a: 'The changed emotional trajectory of the victim after the crime', explanation: 'The three phases are Impact (the crime), Recoil (the immediate emotional aftermath), and Reorganization (long-term recovery).' }
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness, Wellness, and Stress Management - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f0fdf4; /* green-50 */
+            --bg-card: #ffffff;
+            --text-heading: #14532d; /* green-900 */
+            --text-body: #166534; /* green-800 */
+            --text-muted: #6b7280; /* gray-500 */
+            --accent-primary: #16a34a; /* green-600 */
+            --accent-primary-light: #dcfce7; /* green-100 */
+            --accent-secondary: #ea580c; /* orange-600 */
+            --border-color: #bbf7d0; /* green-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-heart-pulse text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Fitness, Wellness, and Stress Management</h1>
+            <p class="text-xl text-text-muted mt-2">Foundations for a Healthy Career in Law Enforcement</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. Principles of Physical Readiness</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Fitness vs. Wellness</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p class="mb-3">It's important to distinguish between these two related concepts:</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Physical Fitness:</strong> The ability to perform job functions without fatigue. It is performance-oriented and includes components like speed, power, agility, and endurance.</li>
+                        <li><strong>Wellness:</strong> An individual's overall state of health and risk of illness. It is possible to be fit but not well.</li>
+                        <li><strong>Influencing Factors:</strong> The key factors, in decreasing order of importance, are: regular exercise, proper nutrition, weight control, tobacco cessation, stress management, and personal responsibility.</li>
+                    </ul>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Principles of Safe & Effective Exercise</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700 space-y-4">
+                    <p>A successful fitness program is built on four core principles:</p>
+                     <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Progressive Overload:</strong> Exercise must be more demanding than daily activity to produce results.</li>
+                        <li><strong>Regularity and Recovery:</strong> Exercise should be consistent, but allow for adequate rest (e.g., 48 hours between working the same muscle groups).</li>
+                        <li><strong>Specificity:</strong> Exercises should be chosen to target specific areas of fitness you wish to improve.</li>
+                        <li><strong>Balance:</strong> Pay attention to all parts of the body and all types of fitness (cardio, strength, flexibility).</li>
+                    </ul>
+                     <div class="mt-4 p-4 bg-green-50 border-l-4 border-green-400">
+                        <h4 class="font-bold text-lg text-green-800 mb-2"><i class="fas fa-clipboard-check mr-2"></i>The FITT Guidelines</h4>
+                        <p class="text-sm"><strong>F</strong>requency (how often), <strong>I</strong>ntensity (how hard), <strong>T</strong>ime (how long), and <strong>T</strong>ype (what kind of exercise).</p>
+                     </div>
+                </div></div>
+
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Nutrition for Peak Performance</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <p class="mb-3">Proper diet is essential for energy and health. The key components are:</p>
+                     <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Carbohydrates (55-60% of calories):</strong> The body's best source of energy. Choose complex carbs (potatoes, vegetables) over simple carbs (sugary drinks).</li>
+                        <li><strong>Protein (12-15% of calories):</strong> Essential for building and maintaining tissues. Found in beans, meat, and eggs.</li>
+                        <li><strong>Fats (no more than 30% of calories):</strong> Necessary for nerve function and protecting organs. Choose unsaturated fats (avocados, nuts) over saturated fats.</li>
+                        <li><strong>Water:</strong> The most important mineral. Drink at least six 8-ounce glasses daily, and more during exercise.</li>
+                     </ul>
+                </div></div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Stress Management for Law Enforcement</h2>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Understanding Stress</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <p class="mb-3">Stress is a biochemical and hormonal response to stimuli. Not all stress is bad.</p>
+                     <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Eustress:</strong> Positive stress that stimulates top performance.</li>
+                        <li><strong>Distress:</strong> Negative, damaging stress.</li>
+                        <li><strong>Acute Stress:</strong> Short-term, easily handled by the body.</li>
+                        <li><strong>Chronic Stress:</strong> Prolonged, damaging to health, and can diminish the body's ability to respond to future stressors.</li>
+                        <li><strong>Critical Incident Stress & PTSD:</strong> A prolonged and painful response to a specific traumatic event. PTSD is a more severe, long-lasting version.</li>
+                    </ul>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Survival Stress and Performance</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <p>An officer's performance is directly tied to their heart rate during a stressful event.</p>
+                     <div class="relative pl-6 border-l-2 border-accent-primary space-y-6 mt-4">
+                        <div class="mb-6">
+                            <span class="absolute -left-4 flex items-center justify-center w-8 h-8 bg-white border-2 border-accent-primary rounded-full"><i class="fas fa-check text-accent-primary"></i></span>
+                            <h4 class="font-bold text-lg">Optimal Performance Zone</h4>
+                            <p class="text-text-muted">Small increases in heart rate enhance ability to act and process information.</p>
+                        </div>
+                         <div class="mb-6">
+                            <span class="absolute -left-4 flex items-center justify-center w-8 h-8 bg-white border-2 border-orange-500 rounded-full"><i class="fas fa-exclamation-triangle text-orange-500"></i></span>
+                            <h4 class="font-bold text-lg">Performance Decline Zone</h4>
+                            <p class="text-text-muted">At <strong>115 bpm</strong>, fine motor skills decline. At <strong>145 bpm</strong>, complex motor skills deteriorate.</p>
+                        </div>
+                         <div>
+                            <span class="absolute -left-4 flex items-center justify-center w-8 h-8 bg-white border-2 border-red-500 rounded-full"><i class="fas fa-times-circle text-red-500"></i></span>
+                            <h4 class="font-bold text-lg">Critical Failure Zone</h4>
+                            <p class="text-text-muted">At <strong>200+ bpm</strong>, an officer is practically incapable of performing duties. Tunnel vision and auditory exclusion are common.</p>
+                        </div>
+                    </div>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Traumatic Event Response & Officer Well-Being</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <p class="mb-3"><strong>The 5 Stages of Traumatic Response:</strong> Denial, Anger, Bargaining, Depression, Acceptance.</p>
+                     <p class="mb-3"><strong>Suicide Risk:</strong> Officers facing extreme stress or trauma are at greater risk. Announcing plans to commit suicide is an immediate call for intervention.</p>
+                     <p><strong>Substance Abuse:</strong> Officers should be vigilant for signs of alcohol and drug abuse in themselves and coworkers. Steroid abuse is a particular risk, identifiable by rapid muscle gain, mood swings, and "roid rage."</p>
+                </div></div>
+
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Wellness</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">An individual's state of health and risk of illness, distinct from physical fitness which is performance-based.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">FITT</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Acronym for the core components of an exercise program: Frequency, Intensity, Time, and Type.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Eustress</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Positive stress that is necessary to stimulate an individual to achieve top performance.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Survival Stress</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The body's physiological response to an extreme threat, characterized by increased heart rate which can impair motor skills and sensory perception.</p></div></div></div>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'According to the FITT principle, which component relates to how hard you exercise?', o: ['Frequency', 'Intensity', 'Time', 'Type'], a: 'Intensity', explanation: 'Intensity refers to the level of effort during exercise, often measured by heart rate or perceived exertion (RPE).' },
+            { q: 'At what heart rate do an officer\'s fine motor skills begin to decline during a survival stress situation?', o: ['90 bpm', '115 bpm', '145 bpm', '200 bpm'], a: '115 bpm', explanation: 'Fine motor skills, necessary for tasks like precise trigger control, begin to decline once the heart rate reaches 115 beats per minute.'},
+            { q: 'Which of the following is NOT one of the five stages of response to a traumatic event?', o: ['Denial', 'Bargaining', 'Confrontation', 'Acceptance'], a: 'Confrontation', explanation: 'The five recognized stages are Denial, Anger, Bargaining, Depression, and Acceptance.' },
+            { q: 'What is the most important mineral for the body, especially during exercise?', o: ['Iron', 'Calcium', 'Potassium', 'Water'], a: 'Water', explanation: 'Water is the most essential mineral for bodily functions, and proper hydration is critical before, during, and after exercise.'},
+            { q: 'A long-lasting, painful response to a severely stressful incident that lasts for more than a month is known as:', o: ['Acute Stress', 'Eustress', 'Critical Incident Stress', 'Posttraumatic Stress Disorder (PTSD)'], a: 'Posttraumatic Stress Disorder (PTSD)', explanation: 'PTSD is distinguished from Critical Incident Stress by its severity and duration, lasting longer than a month and often requiring professional intervention.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

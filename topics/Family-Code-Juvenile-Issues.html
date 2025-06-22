@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Code and Juvenile Issues - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f5f3ff; /* violet-50 */
+            --bg-card: #ffffff;
+            --text-heading: #4c1d95; /* violet-900 */
+            --text-body: #5b21b6; /* violet-800 */
+            --text-muted: #64748b; /* slate-500 */
+            --accent-primary: #7c3aed; /* violet-600 */
+            --accent-primary-light: #ede9fe; /* violet-100 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #ddd6fe; /* violet-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-users text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Family Code & Juvenile Issues</h1>
+            <p class="text-xl text-text-muted mt-2">Understanding and Protecting Vulnerable Populations</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. Understanding Juvenile Behavior</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Adolescent Encounters with Police</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Understanding the psychological drivers behind adolescent behavior can help officers de-escalate encounters. Common factors include:</p>
+                    <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Need for Independence:</strong> Criminal activity can be an expression of rebellion against parental and societal restrictions.</li>
+                        <li><strong>Identity Expression:</strong> Defying authority can be a way for teens to define themselves.</li>
+                        <li><strong>Exploration:</strong> Breaking rules is sometimes a method of learning and testing boundaries.</li>
+                        <li><strong>Peer Pressure:</strong> Young people are highly susceptible to the influence of their peers, which can lead to group criminal activity.</li>
+                    </ul>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Juvenile Gangs: Context and Motivation</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700 space-y-4">
+                    <div>
+                        <h4 class="font-bold">Reasons for Joining:</h4>
+                        <p>Gangs often provide a sense of belonging, identity, economic opportunity, and excitement that may be missing from an adolescent's life, especially in communities with high unemployment and few positive institutions.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold">Stages of Gang Membership:</h4>
+                        <ol class="list-decimal list-inside mt-2 space-y-1">
+                           <li><strong>Minor Acts:</strong> Small acts of violence or property destruction to prove sincerity.</li>
+                           <li><strong>Image Makeover:</strong> Adopting gang colors, tattoos, and clothing.</li>
+                           <li><strong>Serious Offense:</strong> Committing a serious crime to solidify membership and bond with the group.</li>
+                        </ol>
+                    </div>
+                </div></div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Legal Procedures for Juveniles</h2>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Juvenile Custody & Detention</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-3">
+                        <li><strong>Taking into Custody (FC 52.01):</strong> An officer can take a child into custody with a court order or with probable cause that the child has violated a law or condition of probation.</li>
+                        <li><strong>Directive to Apprehend (FC 52.015):</strong> Law enforcement can request a juvenile court to issue this directive based on probable cause.</li>
+                        <li><strong>Non-Secure Custody (CCP 45.058):</strong> A child taken into custody must be held in an unlocked area (like a lobby or office), cannot be handcuffed to a stationary object, must be under constant visual supervision, and cannot be held for more than six hours.</li>
+                         <li><strong>Parent Notification (FC 52.04):</strong> When a child is referred to juvenile court, the law enforcement agency must notify the parents as soon as possible with a full statement of the alleged conduct.</li>
+                    </ul>
+                </div></div>
+
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Juvenile Rights & Statements</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <ul class="list-disc list-inside space-y-3">
+                        <li><strong>Delinquent Conduct (FC 51.03):</strong> Defined as a violation of a penal law, court order, or the Alcoholic Beverage Code. Also includes running away from home or excessive school absences.</li>
+                        <li><strong>Waiver of Rights (FC 51.09):</strong> A child and their attorney can waive rights, but it must be voluntary, in writing, and with full understanding of the consequences.</li>
+                         <li><strong>Admissibility of Statements (FC 51.095):</strong> A child's statement is admissible only if they have been advised of their rights, had an opportunity for counsel, and made the statement in the presence of a magistrate who confirms their understanding.</li>
+                        <li><strong>Fingerprinting/Photographing (FC 58.002):</strong> Cannot be done without juvenile court consent, unless the child is in custody for a felony or jailable misdemeanor. Consent from a parent is required for children not in custody.</li>
+                     </ul>
+                </div></div>
+            </section>
+            
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">III. Child Protection & Missing Persons</h2>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Child Abuse & Neglect Reporting</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Mandatory Reporting (FC 261.101):</strong> ANYONE who has reason to believe a child is being abused or neglected MUST make a report. Professionals have 48 hours to report.</li>
+                        <li><strong>Failure to Report (FC 261.109):</strong> This is a Class A Misdemeanor.</li>
+                        <li><strong>False Report (FC 261.107):</strong> Knowingly making a false report is a State Jail Felony.</li>
+                        <li><strong>Immunity (FC 261.106):</strong> A person who reports in good faith is immune from civil or criminal liability.</li>
+                        <li><strong>Privileged Communication (FC 261.202):</strong> Privilege (e.g., doctor-patient) does not apply in child abuse proceedings, except for attorney-client privilege.</li>
+                    </ul>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Missing Children & AMBER Alert</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p class="mb-3"><strong>Immediate Investigation (CCP 63.009):</strong> Upon receiving a report of a missing child, a law enforcement agency MUST immediately start an investigation and enter the child's name into the state clearinghouse and NCIC.</p>
+                    <p><strong>AMBER Alert System (Gov. Code 411.355):</strong> The Department of Public Safety activates the system at the request of local law enforcement if:</p>
+                     <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li>The abducted child is 13 years of age or younger.</li>
+                        <li>The agency believes the child is in immediate danger of serious bodily injury or death.</li>
+                        <li>There is sufficient information available to disseminate to the public to assist in the recovery.</li>
+                    </ul>
+                </div></div>
+            </section>
+
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Delinquent Conduct</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">FC 51.03: Behavior by a juvenile that violates a penal law, a lawful court order, or involves truancy or running away.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Conservator</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">FC 153.074: A person (like a parent or guardian) who has the legal right and duty to provide care, control, protection, and discipline for a child.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Directive to Apprehend</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">FC 52.015: An order issued by a juvenile court, based on probable cause, that authorizes any peace officer to take a specific child into custody.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Non-Secure Custody</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">CCP 45.058: Holding a juvenile in an unlocked area like a lobby or office for no more than six hours, without handcuffs, and under constant supervision.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                const isOpening = content.style.display !== 'block';
+                if(isOpening) {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                } else {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'According to FC 261.109, what is the penalty for a person who is required to report child abuse but intentionally fails to do so?', o: ['A civil fine only', 'Class C Misdemeanor', 'Class A Misdemeanor', 'State Jail Felony'], a: 'Class A Misdemeanor', explanation: 'Failure to report child abuse or neglect is a Class A misdemeanor, highlighting the seriousness of this duty.' },
+            { q: 'An officer takes a juvenile into non-secure custody. What is the maximum amount of time the juvenile can be held there?', o: ['2 hours', '6 hours', '12 hours', '24 hours'], a: '6 hours', explanation: 'CCP 45.058 strictly limits non-secure custody to a maximum of six hours for the purpose of identification and processing.'},
+            { q: 'For a child\'s statement to be admissible in court, it must be made in the presence of a:', o: ['Parent or guardian', 'School principal', 'Magistrate', 'Defense attorney only'], a: 'Magistrate', explanation: 'FC 51.095 requires that a child\'s statement be made before a magistrate who can ensure the child understands their rights and that the statement is voluntary.' },
+            { q: 'When must a law enforcement agency initiate an investigation after receiving a report of a missing child?', o: ['Within 24 hours', 'After a 48-hour waiting period', 'Immediately', 'After notifying the FBI'], a: 'Immediately', explanation: 'CCP 63.009 mandates that the investigation must begin immediately, and the child\'s information must be entered into the state and national databases without delay.'},
+            { q: 'An AMBER Alert can be activated for a missing 17-year-old if they are believed to be in grave danger.', o: ['True', 'False'], a: 'False', explanation: 'Under Government Code 411.355, the AMBER alert is specifically for abducted children who are 13 years of age or younger.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

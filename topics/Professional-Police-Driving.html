@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Police Driving - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #e2e8f0; /* slate-200 */
+            --bg-card: #ffffff;
+            --text-heading: #1e293b; /* slate-800 */
+            --text-body: #334155; /* slate-700 */
+            --text-muted: #64748b; /* slate-500 */
+            --accent-primary: #f59e0b; /* amber-500 */
+            --accent-primary-light: #fefce8; /* yellow-50 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #fef08a; /* yellow-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-tachometer-alt text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Professional Police Driving</h1>
+            <p class="text-xl text-text-muted mt-2">Liability, Tactics, and Vehicle Dynamics</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. Legal & Policy Framework</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Officer and Agency Liability</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>An officer's actions behind the wheel carry significant legal consequences for both the officer and their department.</p>
+                    <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Failure to Regard Safety:</strong> Officers can be held liable if they fail to drive with appropriate regard for the safety of others on the road.</li>
+                        <li><strong>Lack of Policy:</strong> Law enforcement agencies can be held liable if they fail to develop a formal, written policy regarding police pursuits.</li>
+                        <li><strong>Negligence or Wrongful Acts:</strong> If an officer acts with criminal negligence or commits a wrongful act while driving a department vehicle, the department may be held liable.</li>
+                        <li><strong>Exigent Circumstances:</strong> Liability is higher for accidents that occur when not in direct pursuit of a suspect or responding to an authentic emergency. Emergency driving techniques are only justified in these exigent circumstances.</li>
+                    </ul>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Pursuit Policies and Emergency Equipment</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700 space-y-4">
+                    <p>Departmental pursuit policies outline when to initiate, continue, and terminate a pursuit, as well as the proper use of emergency equipment.</p>
+                    <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-400">
+                        <h4 class="font-bold text-lg text-amber-800 mb-2"><i class="fas fa-bullhorn mr-2"></i>Emergency Equipment Limitations:</h4>
+                         <ul class="list-disc list-inside text-sm space-y-1">
+                           <li><strong>Lights:</strong> Regular headlights can decrease the effectiveness of emergency lights. Visibility is also reduced on bright, sunny days.</li>
+                           <li><strong>Sirens:</strong> Effectiveness diminishes as vehicle speed increases. They are less audible in heavy traffic, around loud equipment, or in dense urban areas where sound reverberates.</li>
+                        </ul>
+                     </div>
+                </div></div>
+            </section>
+            
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                 <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Vehicle Dynamics & Officer Skills</h2>
+                  <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Pre-Shift Vehicle Inspection</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>A thorough pre-shift inspection is mandatory for three reasons: to build officer confidence, maintain the vehicle, and prevent accidents from faulty equipment. The four components are:</p>
+                    <ol class="list-decimal list-inside space-y-1 mt-2">
+                       <li>Interior Check</li>
+                       <li>Exterior Check</li>
+                       <li>Mechanical Check</li>
+                       <li>Required Inventory Check</li>
+                    </ol>
+                </div></div>
+
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Physics of Driving</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Understanding how speed and conditions affect a vehicle is critical for safety and control.</p>
+                     <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Stopping Distance Factors:</strong> Influenced by driver skill, vehicle make/model, road conditions, weather, and speed.</li>
+                        <li><strong>Effects of Speed:</strong> As speed increases, the space needed to turn increases, the risk of exceeding tire traction limits grows, and weight transfer becomes more profound, increasing the risk of rolling over.</li>
+                    </ul>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Common Causes of Law Enforcement Collisions</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Traffic collisions are often preventable and frequently occur due to:</p>
+                     <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Driver Attitude:</strong> Overconfidence and impatience are major contributors.</li>
+                        <li><strong>Distractions:</strong> Use of cell phones or in-car computers diverts attention from the road.</li>
+                        <li><strong>Hazardous Maneuvers:</strong> Backing up, making left turns, and parking are statistically dangerous for officers.</li>
+                        <li><strong>Unsafe Speed:</strong> Driving at a speed that is not reasonable and prudent for the current conditions.</li>
+                        <li><strong>Fatigue:</strong> Slows reaction time and diminishes visual perception.</li>
+                    </ul>
+                </div></div>
+            </section>
+
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Exigent Circumstances</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Emergency conditions that justify using emergency driving techniques, such as being in direct pursuit of a suspect or responding to an authentic emergency call.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Defensive Driving</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A set of driving skills that allows you to defend yourself against possible collisions caused by bad drivers, drunk drivers, and poor weather.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Shuffle Steering</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A steering technique where the hands do not cross over one another, allowing for smoother, more controlled turns and quicker reactions.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Counter Steering</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Steering in the opposite direction of a skid to regain traction and control of the vehicle.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'An agency can be held liable if they fail to have what regarding police pursuits?', o: ['A verbal agreement', 'A formal written policy', 'A minimum number of pursuit-rated vehicles', 'A god-tier training'], a: 'A formal written policy', explanation: 'Departments have a legal responsibility to establish and maintain a formal, written policy that governs all aspects of police pursuits to ensure safety and limit liability.' },
+            { q: 'Which of the following conditions diminishes the effectiveness of a siren?', o: ['Driving at high speeds', 'Driving at night', 'Clear weather', 'Low traffic density'], a: 'Driving at high speeds', explanation: 'As a vehicle\'s speed increases, the sound of the siren is projected forward, making it much less audible to drivers and pedestrians to the side and rear.'},
+            { q: 'Which of the following is NOT one of the primary reasons for a pre-shift vehicle inspection?', o: ['To keep the vehicle in good condition', 'To prevent accidents from faulty equipment', 'To foster the officer\'s confidence in the vehicle', 'To add aftermarket modifications'], a: 'To add aftermarket modifications', explanation: 'The purpose of an inspection is to ensure the vehicle is safe, reliable, and ready for duty, not to modify it.' },
+            { q: 'As vehicle speed increases, the risk of what catastrophic event also increases, especially during turns?', o: ['Engine overheating', 'Tire deflation', 'Rolling over', 'Brake failure'], a: 'Rolling over', explanation: 'Higher speeds lead to more profound weight transfer during turns, which can exceed the vehicle\'s stability limits and cause it to roll over.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

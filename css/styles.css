@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700&display=swap');
+
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #34495e;
+    --accent-color: #3498db;
+    --background-color: #ecf0f1;
+    --text-color: #333;
+    --nav-width: 280px;
+    --header-height: 60px;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    margin: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+#app-container {
+    display: grid;
+    grid-template-columns: var(--nav-width) 1fr;
+    grid-template-rows: var(--header-height) 1fr;
+    height: 100vh;
+}
+
+#app-header {
+    grid-column: 1 / 3;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Pushes title and search apart */
+    padding: 0 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#app-header h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5em;
+    margin: 0;
+    color: #ffffff;
+}
+
+.search-container {
+    position: relative;
+}
+
+#search-input {
+    background-color: var(--secondary-color);
+    color: white;
+    border: 1px solid var(--accent-color);
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    width: 250px;
+    transition: all 0.3s ease;
+}
+
+#search-input::placeholder {
+    color: #bdc3c7;
+}
+
+#search-input:focus {
+    outline: none;
+    box-shadow: 0 0 5px var(--accent-color);
+    background-color: #fff;
+    color: var(--text-color);
+}
+
+#search-input:focus::placeholder {
+    color: #999; /* Darker placeholder on focus */
+}
+
+#app-nav {
+    grid-column: 1 / 2;
+    background-color: var(--secondary-color);
+    padding: 20px 0;
+    overflow-y: auto;
+}
+
+#app-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#app-nav > ul > li > a {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: #ecf0f1; /* Lighter color for better contrast */
+    padding: 15px 20px;
+    display: block;
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+#app-nav > ul > li > a:hover {
+    background-color: rgba(255,255,255,0.1);
+    border-left-color: var(--accent-color);
+}
+
+#app-nav ul ul {
+    list-style: none;
+    padding-left: 20px;
+    display: none; /* Hidden by default */
+}
+
+#app-nav ul ul a {
+    color: #ecf0f1; /* Lighter color for better contrast */
+    padding: 10px 20px;
+    display: block;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+#app-nav ul ul a:hover, #app-nav ul ul a.active {
+    color: white;
+    background-color: var(--accent-color);
+}
+
+#app-main {
+    grid-column: 2 / 3;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+#app-main h2, #app-main h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--primary-color);
+}
+
+#app-main .flashcard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+#app-main .flashcard {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#app-main .flashcard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}

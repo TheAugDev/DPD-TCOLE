@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patrol Procedures & Consular Notification - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f1f5f9; /* slate-100 */
+            --bg-card: #ffffff;
+            --text-heading: #1e293b; /* slate-800 */
+            --text-body: #334155; /* slate-700 */
+            --text-muted: #64748b; /* slate-500 */
+            --accent-primary: #4338ca; /* indigo-700 */
+            --accent-primary-light: #e0e7ff; /* indigo-100 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #c7d2fe; /* indigo-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-street-view text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Patrol Procedures & Consular Notification</h1>
+            <p class="text-xl text-text-muted mt-2">Tactics, Safety, and Diplomatic Protocols</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Patrol Fundamentals Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. Patrol Fundamentals</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Preparation and Knowledge</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Effective patrol begins before the shift starts. An officer's preparedness is key to their effectiveness and safety.</p>
+                    <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Area Familiarity:</strong> Know the geography, socioeconomic characteristics, traffic patterns, and common crime types in your patrol area.</li>
+                        <li><strong>Pre-Shift Briefing:</strong> Be aware of special circumstances like stolen property, outstanding warrants, or planned events.</li>
+                        <li><strong>Personal and Equipment Readiness:</strong> Ensure your uniform is clean and your equipment is prepared and functional before every shift.</li>
+                    </ul>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Patrol Patterns and Strategies</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700 space-y-4">
+                     <p>Varying patrol patterns prevents criminals from predicting officer movements.</p>
+                     <div class="grid md:grid-cols-2 gap-4">
+                        <div><strong>Circular Pattern:</strong> Moving from the center of the beat outward, or from the perimeter inward.</div>
+                        <div><strong>Double-Back Pattern:</strong> Consistently returning to re-check areas, useful for learning a beat or focusing on problem spots.</div>
+                        <div><strong>Random Pattern:</strong> An unpredictable route that prevents criminals from anticipating police presence.</div>
+                     </div>
+                     <div class="mt-4 p-4 bg-indigo-50 border-l-4 border-indigo-400">
+                        <h4 class="font-bold text-lg text-indigo-800 mb-2"><i class="fas fa-car-side mr-2"></i>Patrol Types</h4>
+                        <ul class="list-disc list-inside text-sm space-y-1">
+                           <li><strong>Preventive Patrol:</strong> High visibility to deter crime.</li>
+                           <li><strong>Apprehension Patrol:</strong> Low visibility (concealed) for surveillance and catching criminals in the act.</li>
+                        </ul>
+                     </div>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Modes of Patrol</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <p>Each patrol mode has distinct advantages:</p>
+                     <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Automobile:</strong> Offers speed, visibility, and the ability to carry equipment. The most common mode.</li>
+                        <li><strong>Motorcycle:</strong> Allows for quick response but cannot transport suspects. Often used for traffic enforcement and escorts.</li>
+                        <li><strong>Foot/Bicycle:</strong> Enables personal contact with the community, building trust and gathering intelligence. Bicycles can access areas cars cannot.</li>
+                        <li><strong>Horseback:</strong> Provides excellent visibility and improves community relations, as citizens are often less hostile.</li>
+                        <li><strong>Helicopter:</strong> Covers a large area quickly for surveillance or searches.</li>
+                    </ul>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">One-Officer vs. Two-Officer Patrols</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700 grid md:grid-cols-2 gap-6">
+                    <div><h4 class="font-bold">One-Officer Patrols:</h4><ul class="list-disc list-inside text-sm"><li>Develops more competent and self-reliant officers.</li><li>Reduces personality conflicts.</li><li>Allows for greater patrol coverage with the same number of vehicles.</li></ul></div>
+                    <div><h4 class="font-bold">Two-Officer Patrols:</h4><ul class="list-disc list-inside text-sm"><li>Considered safer for officers.</li><li>Better observation capabilities.</li><li>Easier to manage radio traffic while driving.</li><li>Provides a good training environment for newer officers.</li></ul></div>
+                </div></div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Tactical Considerations and Officer Safety</h2>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Common Patrol Hazards</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p class="font-bold text-red-600 mb-3">Officer safety depends on avoiding predictable and vulnerable situations.</p>
+                     <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Avoid Drawing Attention:</strong> Don't rev engines or slam doors when approaching a scene quietly.</li>
+                        <li><strong>Avoid Silhouetting:</strong> Do not stand in doorways or in front of open windows where you become an easy target against a light background.</li>
+                        <li><strong>Control Hands:</strong> Do not allow a suspect to put their hands in their pockets or remove them without your instruction. Palms-up is the safest position.</li>
+                        <li><strong>Light Discipline:</strong> Never point flashlights at fellow officers at night, as it gives away positions.</li>
+                    </ul>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">High-Risk Situations</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700 space-y-4">
+                    <p><strong>High-Risk Vehicle Stops:</strong> Alert dispatch with location and description, request backup, use lights for illumination, park to the left, and use clear commands to have occupants exit one by one.</p>
+                    <p><strong>Safe Building Searches:</strong> Always have at least two officers enter, secure the perimeter, and use a systematic method like "leap-frogging" to clear rooms.</p>
+                    <p><strong>Bomb Threats:</strong> Evacuate if necessary, secure the area, request specialized assistance, and do NOT touch any suspicious objects. Turn off all radios within 500 feet.</p>
+                </div></div>
+
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Active Shooter / Homicide in Progress Response</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p class="mb-3">The immediate objective is to save as many lives as possible by isolating, disabling, or killing the shooter. This requires immediate action, often with limited information and equipment.</p>
+                    <div class="grid md:grid-cols-2 gap-4">
+                         <div class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-400">
+                            <h4 class="font-bold text-lg text-indigo-800">Contact Team</h4>
+                            <p class="text-sm mt-1">Focuses on locating and neutralizing the suspect. Prioritizes stopping the threat over immediate victim aid.</p>
+                        </div>
+                        <div class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-400">
+                            <h4 class="font-bold text-lg text-indigo-800">Rescue Team</h4>
+                            <p class="text-sm mt-1">Focuses on locating and extracting the wounded and stranded to a safe location.</p>
+                        </div>
+                    </div>
+                    <p class="mt-4">The <strong>Diamond Formation</strong> is a common four-officer tactical movement with a point man, left flank, right flank, and rear guard.</p>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Crowd Management</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>The primary objectives are to arrest offenders and disperse the assembly. It is crucial to understand the type of crowd you are facing:</p>
+                    <ul class="list-disc list-inside space-y-1 mt-2 text-sm">
+                        <li><strong>Casual Crowd:</strong> No common purpose or leadership.</li>
+                        <li><strong>Cohesive Crowd:</strong> Common purpose but no leadership.</li>
+                        <li><strong>Expressive Crowd:</strong> Has a purpose and leadership (e.g., protest); may be emotional but not necessarily hostile.</li>
+                        <li><strong>Aggressive Crowd:</strong> Has a purpose and leadership; likely to be violent and belligerent towards police.</li>
+                         <li><strong>Mob:</strong> A crowd with a single, often destructive, purpose (aggression, looting, escape).</li>
+                    </ul>
+                </div></div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">III. Consular Notification</h2>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Arrest of a Foreign National</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>When a foreign national is arrested, officers have specific obligations under the Vienna Convention on Consular Relations.</p>
+                     <ol class="list-decimal list-inside space-y-2 mt-2">
+                        <li>Determine the arrestee's country of citizenship.</li>
+                        <li>Check if that country is on the "mandatory notification" list.</li>
+                        <li><strong>If Mandatory:</strong> You MUST notify that country's consulate of the arrest without delay.</li>
+                        <li><strong>If Not Mandatory:</strong> You MUST ask the arrestee, "Do you want me to notify your country's consular officials?" Record their answer.</li>
+                        <li>This rule applies to all foreign nationals, regardless of their immigration status.</li>
+                    </ol>
+                     <p class="mt-4">Consular officials have the right to visit, call, or write to the detainee and can assist with legal representation.</p>
+                </div></div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Silhouetting</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A deadly patrol hazard where an officer stands in a doorway or in front of a window, making themselves an easy target against a light background.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Violator Contact Method</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A 7-step process for traffic stops and other citizen contacts that emphasizes professionalism, clear communication, and a safe resolution.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Contact Team</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">In an active shooter response, the team whose primary mission is to locate and neutralize the suspect, prioritizing apprehension over victim aid.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Rescue Team</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">In an active shooter response, the team whose primary mission is to locate and evacuate the wounded and stranded to a safe location.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'An officer standing in a brightly lit doorway at night, making them an easy target, is an example of what patrol hazard?', o: ['Double-Backing', 'Silhouetting', 'Apprehension Patrol', 'Leap-Frogging'], a: 'Silhouetting', explanation: 'Silhouetting is placing oneself in a position where you are framed by a light source, making you a clear target for a potential threat.' },
+            { q: 'In an active shooter event, what is the immediate objective of the first responding officers?', o: ['To establish a secure perimeter and wait for SWAT', 'To begin evacuating the wounded immediately', 'To save as many lives as possible by isolating or neutralizing the shooter', 'To gather witness statements from those fleeing'], a: 'To save as many lives as possible by isolating or neutralizing the shooter', explanation: 'Modern active shooter protocol emphasizes immediate action by first responders to stop the killing, as this is the most effective way to save lives.'},
+            { q: 'Which type of crowd has a common purpose and leadership and is likely to be violent towards police?', o: ['Casual Crowd', 'Cohesive Crowd', 'Expressive Crowd', 'Aggressive Crowd'], a: 'Aggressive Crowd', explanation: 'An aggressive crowd is defined by its organized leadership, common goal, and likelihood of behaving with violence and belligerence.' },
+            { q: 'An officer arrests a foreign national from a country NOT on the mandatory notification list. What must the officer do?', o: ['Immediately notify the consulate anyway', 'Ask the detainee if they want their consulate notified', 'Notify the State Department instead', 'Nothing, because it is not a mandatory notification country'], a: 'Ask the detainee if they want their consulate notified', explanation: 'The Vienna Convention requires that for non-mandatory countries, the officer must inform the detainee of their right to consular notification and ask them if they wish to exercise it.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

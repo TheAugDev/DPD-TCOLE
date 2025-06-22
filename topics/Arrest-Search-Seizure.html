@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrest, Search, and Seizure - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f3f4f6; /* gray-100 */
+            --bg-card: #ffffff;
+            --text-heading: #111827; /* gray-900 */
+            --text-body: #374151; /* gray-700 */
+            --text-muted: #6b7280; /* gray-500 */
+            --accent-primary: #3b82f6; /* blue-500 */
+            --accent-primary-light: #eff6ff; /* blue-50 */
+            --accent-secondary: #10b981; /* emerald-500 */
+            --border-color: #e5e7eb; /* gray-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 4px;
+            background-color: var(--accent-primary);
+            width: 0%;
+            z-index: 50;
+            transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left;}
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #ecfdf5; border-color: var(--accent-secondary) !important; color: #047857; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-search-location text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Arrest, Search, and Seizure</h1>
+            <p class="text-xl text-text-muted mt-2">Mastering the Fourth Amendment Standards</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section>
+                 <h2 class="text-3xl font-bold mb-6 text-text-heading">Core Concepts & Scenarios</h2>
+                 <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-8">
+                    <div class="collapsible-item">
+                        <div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Spectrum of Proof</h3><i class="fas fa-chevron-down"></i></div>
+                        <div class="collapsible-content pt-4 text-gray-700">
+                            <p class="mb-4">Understanding the different levels of proof is critical, as each level justifies a different degree of police intrusion on a citizen's liberty.</p>
+                            <div class="relative pl-6 border-l-2 border-accent-primary space-y-6">
+                                <div>
+                                    <span class="absolute -left-4 flex items-center justify-center w-8 h-8 bg-white border-2 border-accent-primary rounded-full"><i class="fas fa-eye text-accent-primary"></i></span>
+                                    <h4 class="font-bold text-lg">Mere Suspicion / Hunch</h4>
+                                    <p class="text-text-muted">A gut feeling with no supporting facts. This does not allow for any detention. It only justifies continued observation and voluntary conversation, during which the citizen is always free to leave.</p>
+                                </div>
+                                <div>
+                                    <span class="absolute -left-4 flex items-center justify-center w-8 h-8 bg-white border-2 border-accent-primary rounded-full"><i class="fas fa-hand-paper text-accent-primary"></i></span>
+                                    <h4 class="font-bold text-lg">Reasonable Suspicion <span class="text-base font-medium text-text-muted">(Terry v. Ohio)</span></h4>
+                                    <p class="text-text-muted">A standard based on specific, articulable facts that suggest criminal activity is occurring. It allows for a temporary, investigative detention (Terry Stop). During this stop, a person is not required to identify themselves or answer questions. A frisk is only permissible if there is also reasonable suspicion the person is armed.</p>
+                                </div>
+                                <div>
+                                    <span class="absolute -left-4 flex items-center justify-center w-8 h-8 bg-white border-2 border-accent-primary rounded-full"><i class="fas fa-gavel text-accent-primary"></i></span>
+                                    <h4 class="font-bold text-lg">Probable Cause</h4>
+                                    <p class="text-text-muted">The highest standard of proof for an officer in the field. It's a conclusion based on a totality of circumstances that would lead a reasonable person to believe a crime has been committed. It is required to make an arrest or obtain a search warrant.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="collapsible-item">
+                        <div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Building and Applying Probable Cause</h3><i class="fas fa-chevron-down"></i></div>
+                        <div class="collapsible-content pt-4 text-gray-700">
+                             <p class="mb-3">Probable cause is not built from a single factor, but from the totality of the circumstances. An officer can use their training and experience to interpret these factors.</p>
+                             <div class="bg-sky-50 p-4 rounded-lg border-l-4 border-sky-400">
+                                <h4 class="font-bold text-lg text-sky-800 mb-2"><i class="fas fa-clipboard-list mr-2"></i>Factors Contributing to PC:</h4>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li><strong>Furtive Acts:</strong> Secretive or evasive behavior.</li>
+                                    <li><strong>Officer's Knowledge:</strong> Prior history of the suspect.</li>
+                                    <li><strong>Informant's Tip:</strong> Information from a credible source.</li>
+                                    <li><strong>Location:</strong> High-crime area.</li>
+                                    <li><strong>Time of Day:</strong> Unusual time for the observed activity.</li>
+                                    <li><strong>Possession:</strong> Proximity to contraband or tools of a crime.</li>
+                                </ul>
+                             </div>
+                        </div>
+                    </div>
+
+                    <div class="collapsible-item">
+                        <div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Frisks vs. Searches</h3><i class="fas fa-chevron-down"></i></div>
+                        <div class="collapsible-content pt-4 text-gray-700">
+                            <p class="mb-4">While both are intrusions under the Fourth Amendment, their legal justification, purpose, and scope are distinctly different.</p>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                    <h4 class="font-bold text-lg text-blue-800 mb-2">Frisk (Pat-Down)</h4>
+                                    <ul class="list-disc list-inside text-sm space-y-1">
+                                        <li><strong>Purpose:</strong> Officer safety (to find weapons).</li>
+                                        <li><strong>Justification:</strong> Reasonable suspicion that the subject is armed and dangerous.</li>
+                                        <li><strong>Scope:</strong> Limited to the outer clothing; not a search for evidence.</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                                    <h4 class="font-bold text-lg text-emerald-800 mb-2">Search</h4>
+                                    <ul class="list-disc list-inside text-sm space-y-1">
+                                        <li><strong>Purpose:</strong> To find evidence of a crime, contraband, fruits of a crime, or tools of a crime.</li>
+                                        <li><strong>Justification:</strong> Probable cause.</li>
+                                        <li><strong>Scope:</strong> Can be extensive, defined by a warrant or by exceptions like search incident to arrest.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="collapsible-item">
+                        <div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Relevant Legal Codes</h3><i class="fas fa-chevron-down"></i></div>
+                        <div class="collapsible-content pt-4 text-gray-700 space-y-4">
+                             <div class="bg-slate-50 p-4 rounded-lg border-l-4 border-slate-400">
+                                <h4 class="font-bold text-lg text-slate-800 mb-2">CCP Art. 18.16 - Preventing Consequences of Theft</h4>
+                                <p>Grants citizens the right to seize stolen property and the person who stole it, provided they act immediately and take both before a magistrate or peace officer. This is a rare instance of a "citizen's arrest" being codified for a specific purpose.</p>
+                             </div>
+                             <div class="bg-slate-50 p-4 rounded-lg border-l-4 border-slate-400">
+                                <h4 class="font-bold text-lg text-slate-800 mb-2">CCP Art. 51.13 - Uniform Criminal Extradition Act</h4>
+                                <p>Allows a peace officer or private citizen to perform a warrantless arrest if they have reasonable information that the accused has committed a felony in another state (punishable by at least one year in prison). The accused must be taken before a magistrate as soon as possible.</p>
+                             </div>
+                             <div class="bg-slate-50 p-4 rounded-lg border-l-4 border-slate-400">
+                                <h4 class="font-bold text-lg text-slate-800 mb-2">CCP Art. 15.04 & 15.05 - Complaint</h4>
+                                <p>A complaint is a sworn affidavit charging an offense. It must contain the accused's name/description, the offense details (time/place), and the affiant's signature.</p>
+                             </div>
+                        </div>
+                    </div>
+                 </div>
+            </section>
+            
+            <!-- Flashcards Section -->
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Probable Cause</h3><p class="text-sm text-text-muted mt-3 font-medium">CLICK TO REVEAL</p></div><div class="flashcard-face flashcard-back"><p class="text-base text-left">The objective standard of facts that would lead a reasonable person to believe a crime was committed. Required for arrests and warrants.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Reasonable Suspicion</h3><p class="text-sm text-text-muted mt-3 font-medium">CLICK TO REVEAL</p></div><div class="flashcard-face flashcard-back"><p class="text-sm text-left">Facts and circumstances that are less than probable cause but more than a hunch; justifies a temporary stop (Terry Stop).</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Exclusionary Rule</h3><p class="text-sm text-text-muted mt-3 font-medium">CLICK TO REVEAL</p></div><div class="flashcard-face flashcard-back"><p class="text-sm text-left">Prevents evidence obtained illegally from being used in a trial. Includes "fruit of the poisonous tree."</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Frisk</h3><p class="text-sm text-text-muted mt-3 font-medium">CLICK TO REVEAL</p></div><div class="flashcard-face flashcard-back"><p class="text-sm text-left">A careful patting of the outer clothing of a person to check for weapons, not evidence. Justified by a reasonable fear for officer safety.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Search Incident to Arrest</h3><p class="text-sm text-text-muted mt-3 font-medium">CLICK TO REVEAL</p></div><div class="flashcard-face flashcard-back"><p class="text-sm text-left">A lawful search conducted at the time of arrest, limited to the person and the area within their immediate control.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Curtilage</h3><p class="text-sm text-text-muted mt-3 font-medium">CLICK TO REVEAL</p></div><div class="flashcard-face flashcard-back"><p class="text-sm text-left">The area immediately adjacent to a home that is considered part of the house and has Fourth Amendment protection.</p></div></div></div>
+                </div>
+            </section>
+            
+            <!-- Quiz Section -->
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                const isOpening = content.style.display !== 'block';
+                if(isOpening) {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                } else {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'What is the primary purpose of a frisk?', o: ['To find evidence of a crime', 'To ensure officer safety by finding weapons', 'To identify the suspect', 'To confirm a hunch'], a: 'To ensure officer safety by finding weapons', explanation: 'A frisk is strictly a limited search for weapons based on a reasonable suspicion that the person is armed and dangerous.' },
+            { q: 'An officer needs a search warrant to search a person\'s open field that is miles away from their home.', o: ['True', 'False'], a: 'False', explanation: 'The Fourth Amendment does not protect "open fields," which are areas outside the curtilage of a home. No warrant is needed to search them.'},
+            { q: 'Which of the following is NOT a required component of a criminal complaint under CCP Art. 15.05?', o: ['Name or description of the accused', 'The signature of the magistrate', 'The time and place of the offense', 'Reasons to believe an offense was committed'], a: 'The signature of the magistrate', explanation: 'A complaint requires the signature of the affiant (the person making the complaint), not the magistrate.' },
+            { q: 'A search conducted at the same time as a lawful arrest is known as a:', o: ['Terry Search', 'Probable Search', 'Search Incident to Arrest', 'Curtilage Search'], a: 'Search Incident to Arrest', explanation: 'A search incident to a lawful arrest is a recognized exception to the warrant requirement, limited to the suspect\'s person and immediate surroundings.' },
+            { q: 'An officer having a "gut feeling" that something is wrong constitutes what level of proof?', o: ['Reasonable Suspicion', 'Probable Cause', 'Mere Suspicion'], a: 'Mere Suspicion', explanation: 'A hunch or gut feeling without supporting facts is considered mere suspicion and does not justify a detention.'},
+            { q: 'Under CCP Art. 18.16, a private citizen who seizes stolen property must:', o: ['Hold it until the owner is found', 'Immediately take the property and person to a magistrate or peace officer', 'Keep the property as a reward', 'Call the police within 24 hours'], a: 'Immediately take the property and person to a magistrate or peace officer', explanation: 'The law requires immediate action by the citizen to turn over the stolen property and the suspect to the proper authorities.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-blue-50 border border-blue-200 text-blue-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

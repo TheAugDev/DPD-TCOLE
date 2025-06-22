@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code of Criminal Procedure - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f3f4f6; /* gray-100 */
+            --bg-card: #ffffff;
+            --text-heading: #111827; /* gray-900 */
+            --text-body: #374151; /* gray-700 */
+            --text-muted: #6b7280; /* gray-500 */
+            --accent-primary: #059669; /* emerald-600 */
+            --accent-primary-light: #ecfdf5; /* emerald-50 */
+            --accent-secondary: #ea580c; /* orange-600 */
+            --border-color: #e5e7eb; /* gray-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 4px;
+            background-color: var(--accent-primary);
+            width: 0%;
+            z-index: 50;
+            transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-book-reader text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Code of Criminal Procedure</h1>
+            <p class="text-xl text-text-muted mt-2">A Comprehensive Review of Principles, Rights, and Duties</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. Rights, Duties, and Jurisdiction</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Foundational Principles & Rights (Chapter 1)</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content"><ul class="list-disc list-inside space-y-2">
+                    <li><strong>Art. 1.03 (Objects of Code):</strong> To prevent crime, ensure speedy/fair trials, and guarantee sentence execution.</li>
+                    <li><strong>Art. 1.04 (Due Course of Law):</strong> Prohibits deprivation of life, liberty, or property without due course of law.</li>
+                    <li><strong>Art. 1.05 & 1.051 (Rights of Accused):</strong> Guarantees speedy public trial, knowledge of charges, right to counsel (appointed if indigent), protection from self-incrimination, and right to confront witnesses.</li>
+                    <li><strong>Art. 1.06 (Searches and Seizures):</strong> Protects against unreasonable searches and seizures; requires probable cause for warrants.</li>
+                    <li><strong>Art. 1.07 & 1.09 (Bail & Punishment):</strong> Establishes eligibility for bail (except capital offenses) and prohibits excessive bail/fines and cruel/unusual punishment.</li>
+                    <li><strong>Art. 1.08 (Habeas Corpus):</strong> The right to challenge unlawful detention shall never be suspended.</li>
+                    <li><strong>Art. 1.10 & 1.11 (Double Jeopardy):</strong> Prohibits being tried twice for the same offense, unless the first court lacked jurisdiction.</li>
+                    <li><strong>Art. 1.12 - 1.15 (Trial by Jury):</strong> A defendant can waive a jury trial (except in most death penalty cases), but a felony conviction requires a jury verdict unless waived.</li>
+                </ul></div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Duties & Authority of Officers (Chapters 2, 6, 8)</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content"><ul class="list-disc list-inside space-y-2">
+                    <li><strong>Art. 2.12 (Peace Officers):</strong> Identifies sheriffs, deputies, constables, police, rangers, etc., as peace officers.</li>
+                    <li><strong>Art. 2.13 (Primary Duty):</strong> To preserve peace, prevent/suppress crime, execute lawful process, and arrest offenders.</li>
+                    <li><strong>Art. 2.27 (Child Abuse Response):</strong> High-priority child abuse allegations require an immediate joint investigation by law enforcement and the Department of Protective and Regulatory Services (within 24 hours).</li>
+                    <li><strong>Art. 3.05 (Racial Profiling Defined):</strong> Law enforcement action based on race/ethnicity instead of behavior. It is outlawed (Art. 2.131).</li>
+                    <li><strong>Art. 6.05 & 6.06 (Duty Regarding Threats):</strong> An officer aware of a threat must use all lawful means to prevent injury to persons or property.</li>
+                    <li><strong>Art. 8.04 (Dispersing Riots):</strong> Every magistrate and peace officer has the responsibility to disperse a riot, by command or arrest.</li>
+                </ul></div></div>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Jurisdiction & Time Limitations (Chapters 4, 12)</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content"><ul class="list-disc list-inside space-y-2">
+                    <li><strong>Art. 4.01 (Jurisdiction):</strong> Names the courts with criminal jurisdiction (Court of Criminal Appeals, District Courts, County Courts, etc.).</li>
+                    <li><strong>Art. 12.01 (Statute of Limitations - Felonies):</strong> <strong>No limit</strong> for murder, manslaughter, sexual assault of a child. <strong>10 years</strong> for forgery, arson, injury to elderly. <strong>7 years</strong> for money laundering, credit card abuse. <strong>5 years</strong> for theft, robbery, kidnapping.</li>
+                    <li><strong>Art. 12.02 (Statute of Limitations - Misdemeanors):</strong> Indictment must be presented within <strong>2 years</strong> for Class A and B misdemeanors.</li>
+                </ul></div></div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Procedures from Arrest to Trial</h2>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Arrest, Custody, & Warrants (Chapters 14, 15, 17)</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content"><ul class="list-disc list-inside space-y-2">
+                    <li><strong>Art. 14.01-14.04 (Warrantless Arrest):</strong> Permitted for offenses in view, felonies, breaches of peace, violations of protective orders, family violence, or based on credible information that a felon is about to escape.</li>
+                    <li><strong>Art. 14.06 (Arrest Without Warrant):</strong> Person must be taken before a magistrate without unnecessary delay, and no later than 48 hours.</li>
+                    <li><strong>Art. 15.01 & 15.02 (Arrest Warrant):</strong> A written order from a magistrate to arrest a person. Must name/describe the person, state the offense, and be signed.</li>
+                    <li><strong>Art. 15.17 (Duties of Arresting Officer/Magistrate):</strong> Officer must take arrestee before a magistrate, who then informs the arrestee of their rights (Miranda warnings), right to an examining trial, and sets bail.</li>
+                    <li><strong>Art. 17.01 & 17.15 (Bail):</strong> Security given to ensure appearance in court. The amount must be sufficient to ensure compliance but not be an instrument of oppression.</li>
+                </ul></div></div>
+
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Search Warrants (Chapter 18)</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content"><ul class="list-disc list-inside space-y-2">
+                    <li><strong>Art. 18.01 (Search Warrant):</strong> An order from a magistrate directing an officer to search for and seize property/persons. Requires a sworn affidavit showing probable cause.</li>
+                    <li><strong>Art. 18.02 (Grounds for Issuance):</strong> May be issued for stolen property, items designed for crime, illegal weapons, drugs, or any item that is evidence of an offense.</li>
+                    <li><strong>Art. 18.06 (Execution):</strong> Must be executed without delay and within 3 whole days (or 15 for DNA). Officer must present a copy of the warrant and an inventory of seized items.</li>
+                 </ul></div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Pre-Trial Procedures (Chapters 16, 21, 23, 24)</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content"><ul class="list-disc list-inside space-y-2">
+                    <li><strong>Art. 15.04 (Complaint):</strong> A sworn affidavit made before a magistrate or DA that charges the commission of an offense.</li>
+                    <li><strong>Art. 21.01 (Indictment):</strong> A grand jury's written statement accusing a person of a felony.</li>
+                    <li><strong>Art. 24.01 (Subpoena):</strong> A writ ordering a person to appear in court to testify. A Subpoena Duces Tecum requires them to bring an object/document.</li>
+                    <li><strong>Art. 23.01 (Capias):</strong> A writ issued by a judge/clerk ordering the arrest of a defendant, typically after indictment or for failure to appear.</li>
+                </ul></div></div>
+            </section>
+            
+            <!-- Flashcards Section -->
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Writ of Habeas Corpus</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Art. 1.08: A court order demanding a public official deliver an imprisoned individual to the court and show a valid reason for their detention.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Double Jeopardy</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Art. 1.10: The constitutional protection against being prosecuted or punished twice for the same offense after an acquittal or conviction.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Indictment</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Art. 21.01: The formal written statement from a grand jury accusing a person of an act that constitutes a felony offense.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Capias</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Art. 23.01: A writ issued by a judge ordering the arrest of a person, typically after they have already been charged but before trial.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Inquest</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Art. 49.01: An official investigation into the cause and circumstances of a death to determine if it resulted from an unlawful act.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Racial Profiling</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Art. 3.05: Any law enforcement action based on an individual's race or ethnicity rather than on their behavior or on information identifying them as having engaged in criminal activity.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Bail</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Art. 17.01: Security given by an accused person to ensure they will appear in court to answer the charges against them.</p></div></div></div>
+                     <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Commitment</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Art. 16.20: A magistrate's written order directing a sheriff to receive and confine a person in jail.</p></div></div></div>
+                </div>
+            </section>
+            
+            <!-- Quiz Section -->
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                const isOpening = content.style.display !== 'block';
+                if(isOpening) {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                } else {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'Which of the following offenses has NO statute of limitations under Art. 12.01?', o: ['Robbery', 'Arson', 'Murder', 'Insurance Fraud'], a: 'Murder', explanation: 'Article 12.01 explicitly states there is no statute of limitations for murder, manslaughter, and sexual assault of a child, among others.' },
+            { q: 'What is the primary duty of a peace officer according to Art. 2.13?', o: ['To issue citations', 'To investigate all reported crimes', 'To preserve the peace', 'To assist the district attorney'], a: 'To preserve the peace', explanation: 'Article 2.13 states the primary duty is to preserve the peace. This is accomplished by preventing crime, executing process, and arresting offenders.'},
+            { q: 'A search warrant must be executed within ___ days, unless it is for DNA evidence, in which case it is ___ days.', o: ['5, 10', '3, 15', '7, 30', '10, 20'], a: '3, 15', explanation: 'Art. 18.06 specifies a 3-day limit for most search warrants, while Art. 18.07 extends this to 15 days for warrants to seize DNA specimens.' },
+            { q: 'Under Art. 1.13, a defendant may waive a jury trial in all cases EXCEPT:', o: ['Class A Misdemeanors', 'State Jail Felonies', 'Capital felonies where the state is seeking the death penalty', 'All felonies'], a: 'Capital felonies where the state is seeking the death penalty', explanation: 'A defendant cannot waive their right to a jury trial in a death penalty case. They may waive it in other capital cases if the state is not seeking death.' },
+            { q: 'Who is responsible for conducting an inquest when a person dies in jail?', o: ['The lead detective', 'The District Attorney', 'The Justice of the Peace', 'The Chief of Police'], a: 'The Justice of the Peace', explanation: 'Art. 49.04 and 49.18 mandate that a Justice of the Peace (or medical examiner) must conduct an inquest for any death occurring in a penal institution.'},
+            { q: 'A peace officer from Oklahoma is transporting a prisoner through Texas. According to Art. 2.124, what authority does this officer have?', o: ['None, they must surrender the prisoner at the border', 'Only the authority to drive on highways', 'The same powers and duties as a Texas peace officer', 'Only the power to use deadly force if the prisoner escapes'], a: 'The same powers and duties as a Texas peace officer', explanation: 'Art. 2.124 grants peace officers from neighboring states the same authority as Texas officers while in the discharge of an official duty, such as transporting a prisoner.'},
+            { q: 'Under what condition may a peace officer break down the door to execute a felony arrest warrant (Art. 15.25)?', o: ['At any time after announcing their presence', 'If they are refused entrance after giving notice of their authority and purpose', 'Only if they hear sounds of evidence being destroyed', 'They are never allowed to break down a door'], a: 'If they are refused entrance after giving notice of their authority and purpose', explanation: 'Article 15.25 specifically allows an officer to break down a door for a felony arrest warrant if, and only if, they are denied entry after announcing who they are and why they are there.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        // --- Progress Bar ---
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

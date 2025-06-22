@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategies of Defense: Mechanics of Arrest - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f1f5f9; /* slate-100 */
+            --bg-card: #ffffff;
+            --text-heading: #1e293b; /* slate-800 */
+            --text-body: #334155; /* slate-700 */
+            --text-muted: #64748b; /* slate-500 */
+            --accent-primary: #3b82f6; /* blue-500 */
+            --accent-primary-light: #eff6ff; /* blue-50 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #dbeafe; /* blue-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-user-shield text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Strategies of Defense: Mechanics of Arrest</h1>
+            <p class="text-xl text-text-muted mt-2">Tactics for Control, Safety, and Legal Justification</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Core Concepts Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. Use of Force & Weapon Systems</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Weaponless Strategies</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>These strategies require excellent body control, coordination, and situational awareness. Key elements include:</p>
+                    <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Situational Awareness:</strong> Being aware of the suspect's body, potential weapons, accomplices, and escape routes.</li>
+                        <li><strong>Verbal Communication:</strong> Constant communication with the suspect and fellow officers is essential.</li>
+                        <li><strong>Safe Distance:</strong> Maintain enough distance to observe furtive movements and react to threats.</li>
+                        <li><strong>Common Methods:</strong> Joint-locking, pressure points, hand/foot strikes, and blocks with hands, arms, or legs.</li>
+                    </ul>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Impact Weapons (Batons)</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700 space-y-4">
+                     <p>Impact weapons like straight, expandable, or side-handle batons are appropriate when force is necessary but deadly force is not justified.</p>
+                     <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                             <h4 class="font-bold text-lg text-blue-800 mb-2"><i class="fas fa-check-circle mr-2"></i>When to Use:</h4>
+                             <ul class="list-disc list-inside text-sm space-y-1">
+                                <li>A suspect fails to comply with verbal commands.</li>
+                                <li>An officer is assaulted by an unarmed suspect.</li>
+                                <li>An officer is assaulted by a suspect with a weapon other than a firearm.</li>
+                                <li>During crowd control as part of a tactical squad.</li>
+                             </ul>
+                        </div>
+                         <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                             <h4 class="font-bold text-lg text-red-800 mb-2"><i class="fas fa-times-circle mr-2"></i>Targeting and Prohibitions:</h4>
+                             <ul class="list-disc list-inside text-sm space-y-1">
+                               <li><strong>Target Areas:</strong> Meaty areas of the arms, legs, or the abdomen.</li>
+                               <li><strong>Prohibited Areas:</strong> Never intentionally strike the head, throat, chest, groin, or center of the back.</li>
+                               <li><strong>Stance:</strong> Maintain a defensive posture, holding the baton between the officer and the suspect.</li>
+                             </ul>
+                        </div>
+                     </div>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Deadly Force</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Deadly force should only be used as a last resort when an officer's life or the life of another person is under direct and imminent threat of death or serious bodily injury. Deadly force can be applied with firearms, control weapons, vehicles, or even empty hands.</p>
+                </div></div>
+            </section>
+            
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                 <h2 class="text-3xl font-bold mb-4 text-text-heading">II. The Arrest Process: From Approach to Transport</h2>
+                  <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">The Decision to Arrest</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>An officer uses judgment and discretion to decide on the necessity of an arrest, considering factors like:</p>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><strong>Suspect's Behavior:</strong> Does the suspect have a behavioral disorder? Are they intoxicated?</li>
+                        <li><strong>Time and Location:</strong> Suspects are more likely to flee or conceal weapons at night.</li>
+                        <li><strong>Presence of Others:</strong> The presence of spectators or associates may require a quick arrest to de-escalate the situation.</li>
+                    </ul>
+                </div></div>
+
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Suspect Approach Tactics</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p class="mb-3">How an officer approaches a suspect can determine the outcome of the encounter.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Direct Approach:</strong> Allows full observation of the suspect's movements but gives them time to prepare an attack or escape.</li>
+                        <li><strong>Rear Approach:</strong> Allows for surprise but can cause a violent or unpredictable reaction.</li>
+                        <li><strong>Side Approach:</strong> A compromise, but limits the officer's ability to see all of the suspect's actions (e.g., their other hand).</li>
+                        <li><strong>Two-Officer Approach:</strong> One officer should take the lead (contact officer) while the second observes (cover officer). They should not approach from the same side.</li>
+                    </ul>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Handcuffing Techniques</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Proper handcuffing is a critical skill for officer and suspect safety.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Standard Application:</strong> Bring hands behind the back, palms facing out, keyholes up.</li>
+                        <li><strong>Double-Lock:</strong> Handcuffs MUST be double-locked to prevent them from tightening and to make them more difficult to pick.</li>
+                        <li><strong>Two Suspects, One Cuff:</strong> Cuff right hand to right hand OR left hand to left hand to impede their ability to run.</li>
+                        <li><strong>Never Too Tight:</strong> Cuffs applied too tightly can cause injury and lead to charges of excessive force.</li>
+                    </ul>
+                </div></div>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Searching & Transporting Suspects</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p><strong>Physical Search Positions:</strong> A suspect can be searched while standing, kneeling (legs crossed, fingers interlaced behind head), or prone (lying down with arms and legs spread). Always control the suspect's hands.</p>
+                    <p class="mt-3"><strong>Transporting (No Cage):</strong></p>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><strong>One Officer, One Suspect:</strong> Suspect in right front seat, seatbelted, doors locked. Officer's weapon is on their left side, away from the suspect.</li>
+                        <li><strong>Two Officers, One Suspect:</strong> Suspect in right rear seat. One officer drives, the other sits in the left rear seat behind the driver.</li>
+                    </ul>
+                </div></div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Weaponless Defense</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Defensive tactics that do not involve a weapon, such as joint-locking, pressure points, hand/foot strikes, and blocks.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Impact Weapon</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A less-lethal weapon, such as a straight, expandable, or side-handle baton, used to gain compliance or defend against assault.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Contact/Cover</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A two-officer tactic where one officer (Contact) conducts the business of the stop (interviewing, cuffing) while the second officer (Cover) observes for threats.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Double-Locking</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Activating the mechanism on handcuffs that prevents them from tightening further, which protects the suspect from injury and makes the cuffs harder to defeat.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'Which of the following is NOT a recommended target area for an impact weapon (baton)?', o: ['Meaty part of the arm', 'Abdomen', 'Center of the back', 'Meaty part of the leg'], a: 'Center of the back', explanation: 'Officers are trained to avoid striking the head, throat, chest, groin, and center of the back (spine) with a baton to prevent serious injury or death.' },
+            { q: 'When handcuffing a suspect, the handcuffs should be applied with the keyholes facing up and then:', o: ['Left single-locked', 'Double-locked', 'Loosened slightly', 'Removed once in the vehicle'], a: 'Double-locked', explanation: 'Double-locking handcuffs is a mandatory step to prevent them from overtightening on the suspect\'s wrists and to make them more secure.'},
+            { q: 'When a single officer transports a single suspect in a vehicle without a cage, where should the suspect be placed?', o: ['In the left rear seat', 'In the right front seat', 'In the trunk', 'In the driver\'s seat'], a: 'In the right front seat', explanation: 'The suspect is placed in the right front seat so the officer can maintain observation. The officer\'s weapon should be on their left side, away from the suspect.' },
+            { q: 'Which approach tactic allows an officer to surprise a suspect but also carries the risk of a violent, unpredictable reaction?', o: ['Direct approach', 'Side approach', 'Rear approach', 'Interview approach'], a: 'Rear approach', explanation: 'Approaching from the rear offers the element of surprise but can startle the suspect, leading to a "fight or flight" reaction because they do not immediately know it is a police officer.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health and Safety Code (Controlled Substances) - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #f0f9ff; /* sky-50 */
+            --bg-card: #ffffff;
+            --text-heading: #082f49; /* sky-900 */
+            --text-body: #075985; /* sky-800 */
+            --text-muted: #64748b; /* slate-500 */
+            --accent-primary: #0369a1; /* sky-700 */
+            --accent-primary-light: #e0f2fe; /* sky-100 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #bae6fd; /* sky-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-pills text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">Health & Safety Code: Controlled Substances</h1>
+            <p class="text-xl text-text-muted mt-2">A Guide to Drug Laws, Mental Health, and Crisis Intervention</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Mental Health Section -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">I. Mental Health Awareness for Officers</h2>
+                
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Defining Mental Illness & Insanity</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p><strong>Mental Illness:</strong> A diagnosable condition that impairs thought, behavior, or perception of reality. It's diagnosed by professionals using the DSM-5. Main categories include personality disorders, mood disorders, anxiety disorders, psychosis, and developmental disorders.</p>
+                    <p class="mt-2"><strong>Insanity:</strong> A legal term, not a psychological one. It refers to a decreased ability to distinguish right from wrong at the time of a criminal act.</p>
+                </div></div>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Common Disorders Encountered</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Personality Disorders:</strong> Includes Paranoid (irrational mistrust), Antisocial (destructive patterns, often in males), and Borderline (unstable relationships, often in females).</li>
+                        <li><strong>Mood Disorders:</strong> Includes Depression (low energy, lack of interest, suicide risk) and Bipolar Disorder (cycles of manic highs and depressive lows).</li>
+                        <li><strong>Psychosis:</strong> Characterized by delusions (false beliefs) and hallucinations (faulty perceptions). Schizophrenia is a common psychotic disorder.</li>
+                        <li><strong>Developmental Disabilities:</strong> Lifelong impairments like Autism or Intellectual Disability. Individuals may be highly sensitive to touch, prone to false confessions, and require simple, slow communication.</li>
+                    </ul>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Crisis Intervention (CIT) Principles</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <p class="mb-3">CIT was developed to help officers de-escalate situations with mentally ill individuals. Key principles include:</p>
+                     <ul class="list-disc list-inside space-y-2">
+                         <li><strong>LEAPS Communication Model:</strong> Listen, Empathize, Ask, Paraphrase, Summarize.</li>
+                         <li><strong>Modeling:</strong> The officer embodies calm, rational behavior to influence the person in crisis.</li>
+                         <li><strong>Emergency Detention:</strong> Officers may detain a person without a warrant if they are mentally ill and pose a risk of harm to self or others. This person should be taken to a medical facility, not jail, except in emergencies.</li>
+                         <li><strong>Jail Diversion:</strong> A Texas initiative to separate the mentally ill from the criminal justice system, reducing costs, stigma, and violence.</li>
+                     </ul>
+                </div></div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">II. The Texas Controlled Substances Act</h2>
+
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Penalty Groups 1 & 1-A</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p class="mb-3">These groups include the most dangerous and highly addictive substances, such as heroin, cocaine, and methamphetamine. LSD is in Group 1-A.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Manufacture/Delivery (Sec 481.112, 481.1121):</strong> Ranges from a state jail felony for small amounts to a first-degree felony or higher for large amounts, with potential life sentences and massive fines.</li>
+                        <li><strong>Possession (Sec 481.115, 481.1151):</strong> Ranges from a state jail felony for less than 1 gram (or <20 abuse units) to a first-degree felony or higher for large amounts.</li>
+                    </ul>
+                </div></div>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Penalty Groups 2, 3, & 4</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <p class="mb-3">These groups include other controlled substances with varying potential for abuse, such as hallucinogens (Group 2), stimulants/depressants (Group 3), and narcotics with medical uses (Group 4).</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Manufacture/Delivery (Sec 481.113, 481.114):</strong> Penalties scale with weight, starting at a state jail felony and increasing to first-degree or higher for large quantities.</li>
+                        <li><strong>Possession (Sec 481.116, 481.117, 481.118):</strong> Penalties vary significantly by group. Possession of a small amount of a Group 4 substance is a Class B misdemeanor, while a small amount of a Group 2 substance is a state jail felony.</li>
+                    </ul>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Marijuana Offenses</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <p class="mb-3">Marijuana has its own penalty structure separate from the main penalty groups.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Possession (Sec 481.121):</strong> 2 ounces or less is a Class B misdemeanor. 2-4 ounces is a Class A misdemeanor. 4 ounces to 5 pounds is a state jail felony. Penalties increase significantly with weight.</li>
+                        <li><strong>Delivery (Sec 481.120):</strong> Delivering less than a quarter-ounce for no pay is a Class B misdemeanor. If for pay, it's a Class A misdemeanor. Penalties scale up to a first-degree felony or higher for large amounts.</li>
+                    </ul>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Other Drug-Related Offenses</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Dangerous Drugs (Ch. 483):</strong> Possession is a Class A misdemeanor. Delivery or manufacture is a state jail felony. Forging a prescription is a Class B misdemeanor.</li>
+                        <li><strong>Abusable Volatile Chemicals (Ch. 485):</strong> Possessing or using chemicals like aerosol paint for intoxication is a Class B misdemeanor. Selling them without a permit is also a Class B misdemeanor.</li>
+                        <li><strong>Drug Paraphernalia (Sec 481.125):</strong> Possession is a Class C misdemeanor. Delivery or manufacture is a Class A misdemeanor.</li>
+                    </ul>
+                </div></div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Mental Illness</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A diagnosable condition, defined in the DSM-5, that impairs a person's thought, behavior, or perception of reality.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Insanity</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A legal term, not a medical one, that refers to a person's inability to distinguish right from wrong at the time of an offense.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Psychosis</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A mental state characterized by a break from reality, involving delusions (false beliefs) and hallucinations (false perceptions).</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">LEAPS Model</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A crisis communication model: Listen, Empathize, Ask, Paraphrase, Summarize.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Penalty Group 1</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The most serious category of controlled substances, including opioids like heroin and stimulants like cocaine and methamphetamine.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Dangerous Drug</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A device or drug that is unsafe for self-medication and is not included in Penalty Groups 1-4. Typically, these are prescription medications.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Abusable Volatile Chemical</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A chemical, like aerosol paint or certain industrial solvents, that can be inhaled to produce a state of intoxication.</p></div></div></div>
+                     <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Drug Paraphernalia</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Equipment, a product, or material that is used or intended for use in growing, processing, packaging, or consuming a controlled substance.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'What is the key difference between "mental illness" and "insanity"?', o: ['They are the same thing', 'Mental illness is a medical diagnosis, while insanity is a legal term', 'Insanity only applies to violent crimes', 'Mental illness is temporary, insanity is permanent'], a: 'Mental illness is a medical diagnosis, while insanity is a legal term', explanation: 'Mental illness is a clinical diagnosis based on the DSM-5, while insanity is a legal concept concerning a defendant\'s ability to know right from wrong at the time of the crime.' },
+            { q: 'Under the Health and Safety Code, what is the penalty for possessing less than 1 gram of a Penalty Group 1 substance?', o: ['Class A Misdemeanor', 'Class B Misdemeanor', 'State Jail Felony', 'Third-Degree Felony'], a: 'State Jail Felony', explanation: 'Possession of even a small amount of a Penalty Group 1 substance like cocaine or heroin is a state jail felony under Sec. 481.115.'},
+            { q: 'Which communication model is a cornerstone of Crisis Intervention Training?', o: ['FITT', 'SARA', 'CYMBAL', 'LEAPS'], a: 'LEAPS', explanation: 'The LEAPS model (Listen, Empathize, Ask, Paraphrase, Summarize) is a fundamental technique taught in CIT for effective de-escalation.' },
+            { q: 'Possession of drug paraphernalia, such as a pipe, is what level of offense?', o: ['Class C Misdemeanor', 'Class B Misdemeanor', 'Class A Misdemeanor', 'No offense'], a: 'Class C Misdemeanor', explanation: 'Under Sec. 481.125, intentionally or knowingly using or possessing drug paraphernalia is a Class C misdemeanor.'},
+            { q: 'What is the primary goal of the Texas Jail Diversion Ideal?', o: ['To ensure all mentally ill offenders serve jail time', 'To separate mentally ill individuals from the criminal justice system', 'To provide medication to all inmates', 'To increase the number of mental health courts'], a: 'To separate mentally ill individuals from the criminal justice system', explanation: 'The core purpose of jail diversion is to steer individuals whose offenses stem from mental illness into treatment programs rather than the traditional criminal justice system.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>

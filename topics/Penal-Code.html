@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Texas Penal Code - TCOLE Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #fdf2f8; /* pink-50 */
+            --bg-card: #ffffff;
+            --text-heading: #581c87; /* purple-900 */
+            --text-body: #6b21a8; /* purple-800 */
+            --text-muted: #64748b; /* slate-500 */
+            --accent-primary: #9333ea; /* purple-600 */
+            --accent-primary-light: #f3e8ff; /* purple-100 */
+            --accent-secondary: #16a34a; /* green-600 */
+            --border-color: #e9d5ff; /* purple-200 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+        }
+        #progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 4px; background-color: var(--accent-primary);
+            width: 0%; z-index: 50; transition: width 0.1s linear;
+        }
+        .flashcard-container { perspective: 1000px; min-height: 180px; }
+        .flashcard {
+            width: 100%; height: 100%; position: relative;
+            transition: transform 0.7s; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        .flashcard-front { background-color: var(--bg-card); border: 1px solid var(--border-color); }
+        .flashcard-back { transform: rotateY(180deg); background-color: var(--accent-primary-light); border: 1px solid var(--accent-primary); text-align: left; padding: 1.5rem; }
+        
+        .quiz-option { transition: background-color 0.2s, border-color 0.2s; }
+        .quiz-option.correct { background-color: #dcfce7; border-color: #16a34a !important; color: #166534; }
+        .quiz-option.incorrect { background-color: #fef2f2; border-color: #ef4444 !important; color: #b91c1c; }
+        .quiz-explanation { display: none; }
+        .collapsible-header { cursor: pointer; }
+        .collapsible-content { display: none; padding-top: 1rem; }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="progress-bar"></div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 text-center">
+            <i class="fas fa-balance-scale text-5xl text-accent-primary mb-4"></i>
+            <h1 class="text-5xl font-extrabold text-text-heading">The Texas Penal Code</h1>
+            <p class="text-xl text-text-muted mt-2">A Comprehensive Review of Offenses and Punishments</p>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Sections for Penal Code content -->
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                 <h2 class="text-3xl font-bold mb-4 text-text-heading">I. General Principles & Culpability</h2>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">General Provisions (Ch. 1-3)</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Sec. 1.02 (Objectives):</strong> To establish penalties, ensure public safety, define offenses, and protect non-criminal behavior.</li>
+                        <li><strong>Sec. 1.04 (Territorial Jurisdiction):</strong> Texas has jurisdiction over offenses committed within its borders or attempts to commit offenses within the state.</li>
+                        <li><strong>Sec. 2.01 (Burden of Proof):</strong> All persons are presumed innocent until guilt is proven beyond a reasonable doubt.</li>
+                        <li><strong>Sec. 3.01 (Criminal Episode):</strong> The commission of two or more offenses in the same transaction or as part of a common scheme.</li>
+                    </ul>
+                 </div></div>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Culpability & Responsibility (Ch. 6-7)</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <p>An offense requires a voluntary act and a culpable mental state. The four mental states, from highest to lowest, are:</p>
+                     <ol class="list-decimal list-inside space-y-2 mt-2 mb-4">
+                        <li><strong>Intentionally:</strong> Conscious objective to engage in the conduct or cause the result.</li>
+                        <li><strong>Knowingly:</strong> Aware that conduct is reasonably certain to cause the result.</li>
+                        <li><strong>Recklessly:</strong> Aware of but consciously disregards a substantial and unjustifiable risk.</li>
+                        <li><strong>Criminal Negligence:</strong> Ought to be aware of a substantial and unjustifiable risk.</li>
+                     </ol>
+                     <p>A person can also be held criminally responsible for the conduct of another if they act as a party to the offense (Sec 7.02).</p>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Defenses to Culpability (Ch. 8)</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Sec. 8.01 (Insanity):</strong> Affirmative defense if a severe mental defect prevented knowing the conduct was wrong.</li>
+                        <li><strong>Sec. 8.04 (Voluntary Intoxication):</strong> Not a defense to guilt, but can be used to mitigate punishment.</li>
+                        <li><strong>Sec. 8.05 (Duress):</strong> Affirmative defense if compelled by a threat of imminent death or serious bodily injury.</li>
+                        <li><strong>Sec. 8.06 (Entrapment):</strong> Defense if induced by law enforcement using persuasion likely to cause the offense.</li>
+                        <li><strong>Sec. 8.07 (Age):</strong> A person generally cannot be prosecuted for an offense committed when younger than 15.</li>
+                    </ul>
+                </div></div>
+            </section>
+            
+            <section class="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+                <h2 class="text-3xl font-bold mb-4 text-text-heading">II. Offenses & Punishments</h2>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Punishments (Ch. 12)</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700 grid md:grid-cols-2 gap-6">
+                    <div><h4 class="font-bold">Misdemeanors:</h4><ul class="list-disc list-inside text-sm"><li><strong>Class A:</strong> Up to 1 year in jail, $4,000 fine.</li><li><strong>Class B:</strong> Up to 180 days in jail, $2,000 fine.</li><li><strong>Class C:</strong> Up to $500 fine.</li></ul></div>
+                    <div><h4 class="font-bold">Felonies:</h4><ul class="list-disc list-inside text-sm"><li><strong>Capital:</strong> Life without parole or death.</li><li><strong>1st Degree:</strong> 5-99 years or life, $10,000 fine.</li><li><strong>2nd Degree:</strong> 2-20 years, $10,000 fine.</li><li><strong>3rd Degree:</strong> 2-10 years, $10,000 fine.</li><li><strong>State Jail:</strong> 180 days - 2 years, $10,000 fine.</li></ul></div>
+                </div></div>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Preparatory (Inchoate) Offenses (Ch. 15)</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Criminal Attempt (Sec. 15.01):</strong> Taking a substantial step toward an offense. Generally punished one category lower than the target offense.</li>
+                        <li><strong>Criminal Conspiracy (Sec. 15.02):</strong> Agreeing with others to commit a felony and one person performs an overt act. Punished one category lower than the target offense.</li>
+                        <li><strong>Criminal Solicitation (Sec. 15.03):</strong> Requesting or commanding another to commit a capital or first-degree felony.</li>
+                    </ul>
+                </div></div>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Offenses Against Persons (Ch. 19-25)</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                     <p>Includes Criminal Homicide (Ch. 19), Kidnapping and Unlawful Restraint (Ch. 20), Sexual Offenses (Ch. 21), Assaultive Offenses (Ch. 22), and Offenses Against the Family (Ch. 25).</p>
+                </div></div>
+                <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Offenses Against Property (Ch. 28-35)</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>Includes Arson and Criminal Mischief (Ch. 28), Robbery (Ch. 29), Burglary and Criminal Trespass (Ch. 30), Theft (Ch. 31), and Fraud (Ch. 32-35).</p>
+                </div></div>
+                 <div class="collapsible-item"><div class="collapsible-header flex justify-between items-center py-3 border-b"><h3 class="text-xl font-semibold">Offenses Against Public Order & Administration (Ch. 36-49, 71)</h3><i class="fas fa-chevron-down"></i></div><div class="collapsible-content text-gray-700">
+                    <p>A broad category including Bribery (Ch. 36), Perjury (Ch. 37), Obstruction of Governmental Operation (Ch. 38), Disorderly Conduct (Ch. 42), Prostitution (Ch. 43), Weapons Offenses (Ch. 46), Gambling (Ch. 47), and Intoxication Offenses (Ch. 49). Engaging in Organized Criminal Activity (Ch. 71) enhances the punishment for underlying crimes.</p>
+                </div></div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Key Term Flashcards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Intentionally</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">The highest culpable mental state; a person's conscious objective or desire to cause a result.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Knowingly</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Awareness that one's conduct is of a certain nature or that a specific result is reasonably certain to occur.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Recklessly</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Being aware of but consciously disregarding a substantial and unjustifiable risk.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Criminal Negligence</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">A person ought to be aware of a substantial and unjustifiable risk, but fails to perceive it.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Criminal Attempt</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">An act that is more than mere preparation, done with the specific intent to commit an offense, but failing to complete it.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Robbery</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Causing or threatening bodily injury to another person during the course of committing theft.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Burglary</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Unlawfully entering a building or habitation with the intent to commit a felony, theft, or assault.</p></div></div></div>
+                    <div class="flashcard-container"><div class="flashcard"><div class="flashcard-face flashcard-front"><h3 class="text-xl font-bold">Capital Murder</h3><p class="text-sm text-text-muted mt-3 font-medium">(Click to Flip)</p></div><div class="flashcard-face flashcard-back"><p class="text-base">Murder plus specific aggravating circumstances, such as killing a police officer, killing during another felony, or killing a child under 6.</p></div></div></div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-6 text-text-heading">Knowledge Check</h2>
+                <div id="mini-quiz-container" class="bg-white p-6 rounded-lg shadow-lg"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.flashcard').forEach(card => card.addEventListener('click', () => card.classList.toggle('is-flipped')));
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                } else {
+                    content.style.display = 'block';
+                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                }
+            });
+        });
+        
+        const quizData = [
+            { q: 'Which of the following is the lowest level of culpable mental state?', o: ['Knowingly', 'Recklessly', 'Intentionally', 'Criminal Negligence'], a: 'Criminal Negligence', explanation: 'The four culpable mental states from highest to lowest are: Intentionally, Knowingly, Recklessly, and with Criminal Negligence.' },
+            { q: 'What is the penalty for Robbery (Sec. 29.02)?', o: ['State Jail Felony', 'Third-Degree Felony', 'Second-Degree Felony', 'First-Degree Felony'], a: 'Second-Degree Felony', explanation: 'Robbery is a second-degree felony. It becomes Aggravated Robbery (a first-degree felony) if it causes serious bodily injury or involves a deadly weapon.'},
+            { q: 'A person who ought to be aware of a substantial and unjustifiable risk but fails to perceive it acts with:', o: ['Intent', 'Knowledge', 'Recklessness', 'Criminal Negligence'], a: 'Criminal Negligence', explanation: 'Criminal Negligence is a failure to perceive a substantial risk that an ordinary person would have perceived. Recklessness involves perceiving the risk and disregarding it.' },
+            { q: 'Under Sec. 12.47, a crime committed because of bias or prejudice is enhanced to:', o: ['The next highest category of offense', 'A mandatory life sentence', 'A Class A misdemeanor', 'A state jail felony'], a: 'The next highest category of offense', explanation: 'Hate crime enhancements increase the punishment range to the next highest category (e.g., a Class A Misdemeanor becomes a State Jail Felony).'},
+            { q: 'What is the offense for knowingly installing a tracking device on another person’s motor vehicle (Sec. 16.06)?', o: ['Third-Degree Felony', 'Class C Misdemeanor', 'Class A Misdemeanor', 'State Jail Felony'], a: 'Class A Misdemeanor', explanation: 'Sec 16.06 specifies that knowingly installing a tracking device on another person\'s vehicle is a Class A Misdemeanor.'}
+        ];
+        
+        const quizContainer = document.getElementById('mini-quiz-container');
+        quizData.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mb-6 pb-6 border-b border-gray-200 last:border-b-0 last:pb-0 last:mb-0';
+            qDiv.innerHTML = `<p class="font-semibold mb-3">${index + 1}. ${item.q}</p>`;
+            const optsDiv = document.createElement('div');
+            optsDiv.className = 'space-y-2';
+            const explanationDiv = document.createElement('div');
+            explanationDiv.className = 'quiz-explanation mt-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md';
+            explanationDiv.innerHTML = `<strong class="font-bold">Explanation:</strong> ${item.explanation}`;
+            item.o.forEach(optText => {
+                const opt = document.createElement('div');
+                opt.textContent = optText;
+                opt.className = 'quiz-option p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100';
+                opt.addEventListener('click', () => {
+                    if (optsDiv.dataset.answered) return;
+                    optsDiv.dataset.answered = 'true';
+                    optsDiv.querySelectorAll('.quiz-option').forEach(el => {
+                        el.style.cursor = 'default';
+                        el.classList.remove('hover:bg-gray-100');
+                    });
+                    if(optText === item.a) {
+                        opt.classList.add('correct');
+                    } else {
+                        opt.classList.add('incorrect');
+                        Array.from(optsDiv.children).find(child => child.textContent === item.a).classList.add('correct');
+                    }
+                    explanationDiv.style.display = 'block';
+                });
+                optsDiv.appendChild(opt);
+            });
+            qDiv.appendChild(optsDiv);
+            qDiv.appendChild(explanationDiv);
+            quizContainer.appendChild(qDiv);
+        });
+
+        const progressBar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            if (scrollableHeight > 0) {
+                progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+    });
+    </script>
+</body>
+</html>
