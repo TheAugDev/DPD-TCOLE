@@ -299,9 +299,7 @@
         
         .practice-test-button:active {
             transform: scale(0.98);
-        }
-
-        /* Header Styles */
+        }        /* Header Styles */
         #app-header {
             background-color: var(--sidebar-bg);
             color: var(--sidebar-text);
@@ -311,6 +309,19 @@
             align-items: center;
             border-bottom: 1px solid #334155;
         }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .header-logo {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+        
         #app-header h1 {
             font-size: 1.5rem;
             font-weight: 600;
@@ -336,25 +347,414 @@
             outline: none;
             border-color: var(--accent-color);
         }
-        
-        @keyframes searching {
+          @keyframes searching {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--sidebar-text);
+            font-size: 1.25rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s;
+        }        .mobile-menu-btn:hover {
+            background-color: var(--sidebar-hover-bg);
+        }        /* Mobile Close Button */
+        .mobile-close-btn-container {
+            display: none;
+            padding: 1rem;
+            border-bottom: 1px solid #334155;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mobile-sidebar-header {
+            display: none; /* Hidden by default, shown in mobile media query */
+        }
+
+        .mobile-close-btn {
+            background: none;
+            border: none;
+            color: var(--sidebar-text);
+            font-size: 1.25rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s;
+            flex-shrink: 0;
+        }.mobile-close-btn:hover {
+            background-color: var(--sidebar-hover-bg);
+        }
+
+        /* Desktop styles - ensure sidebar works properly on larger screens */
+        @media (min-width: 769px) {
+            .mobile-menu-btn {
+                display: none !important;
+            }
+
+            .mobile-close-btn-container {
+                display: none !important;
+            }
+
+            #sidebar {
+                position: static !important;
+                left: auto !important;
+                top: auto !important;
+                height: auto !important;
+                width: 18rem !important;
+                z-index: auto !important;
+                transition: none !important;
+                padding-top: 0 !important;
+            }
+
+            #sidebar.show {
+                left: auto !important;
+            }
+
+            #main-content {
+                margin-left: 0 !important;
+                width: auto !important;
+                padding: 1.5rem 2.5rem !important;
+            }
+
+            .mobile-overlay {
+                display: none !important;
+            }
+        }
+
+        /* Mobile Responsive Styles */@media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }            .mobile-close-btn-container {
+                display: flex;
+                background-color: var(--sidebar-bg) !important;
+                border-bottom: 1px solid var(--sidebar-hover-bg) !important;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem;
+            }
+
+            .mobile-sidebar-header {
+                display: flex !important;
+                align-items: center;
+                gap: 0.75rem;
+                flex: 1;
+            }
+
+            .mobile-sidebar-logo {
+                height: 32px;
+                width: auto;
+                object-fit: contain;
+            }
+
+            .mobile-sidebar-title {
+                color: var(--sidebar-text-active) !important;
+                font-size: 1.1rem;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+
+            .mobile-close-btn {
+                color: var(--sidebar-text) !important;
+                flex-shrink: 0;
+            }
+
+            .mobile-close-btn:hover {
+                background-color: var(--sidebar-hover-bg) !important;
+            }#sidebar {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                height: 100vh;
+                width: 280px;
+                z-index: 1000;
+                transition: left 0.3s ease-in-out;
+                padding-top: 4rem;
+                background-color: var(--sidebar-bg) !important;
+                color: var(--sidebar-text) !important;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+            }
+
+            #sidebar.show {
+                left: 0;
+            }
+
+            #main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 1rem;
+            }
+
+            .header-left {
+                gap: 0.75rem;
+            }
+
+            .header-logo {
+                height: 32px;
+            }
+
+            #app-header h1 {
+                font-size: 1.25rem;
+            }
+
+            .search-container {
+                max-width: 200px;
+            }
+
+            #search-input {
+                font-size: 14px;
+                padding: 0.5rem;
+            }
+
+            /* Mobile overlay */
+            .mobile-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s, visibility 0.3s;
+            }            .mobile-overlay.show {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            /* Mobile sidebar content styling */
+            #sidebar .sidebar-link {
+                color: var(--sidebar-text) !important;
+                background-color: transparent !important;
+            }
+
+            #sidebar .sidebar-link:hover {
+                background-color: var(--sidebar-hover-bg) !important;
+                color: var(--sidebar-text) !important;
+            }
+
+            #sidebar .sidebar-link.active {
+                background-color: var(--sidebar-active-bg) !important;
+                color: var(--sidebar-text-active) !important;
+            }
+
+            #sidebar ul {
+                background-color: transparent !important;
+            }            #sidebar nav {
+                background-color: transparent !important;
+            }
+
+            /* Sidebar icons and text styling */
+            #sidebar .sidebar-link i {
+                color: var(--sidebar-text) !important;
+            }
+
+            #sidebar .sidebar-link:hover i {
+                color: var(--sidebar-text) !important;
+            }
+
+            #sidebar .sidebar-link.active i {
+                color: var(--sidebar-text-active) !important;
+            }
+
+            #sidebar .sidebar-link span {
+                color: inherit !important;
+            }
+
+            /* Adjust main container for mobile */
+            .flex.h-screen {
+                flex-direction: column;
+            }
+
+            /* Topic content mobile optimization */
+            .content-section {
+                padding: 1rem;
+            }
+
+            .max-w-3xl {
+                max-width: 100%;
+            }
+
+            /* Practice test mobile adjustments */
+            .practice-test-button {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.875rem;
+            }
+
+            /* Flashcard mobile optimization */
+            .flashcard {
+                margin: 1rem 0;
+                min-height: 200px;
+            }
+
+            /* Question navigation mobile */
+            .question-nav {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .question-nav button {
+                min-width: 40px;
+                padding: 0.5rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Tablet responsive styles */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            #sidebar {
+                width: 240px;
+            }
+
+            #main-content {
+                padding: 1.5rem;
+            }            .header-logo {
+                height: 36px;
+            }
+        }
+
+        /* Page Navigation Buttons */
+        .page-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+            gap: 1rem;
+        }
+
+        .nav-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            min-height: 44px;
+        }
+
+        .nav-button:hover {
+            background-color: #0284c7;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+        }
+
+        .nav-button:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .nav-button.prev-button {
+            flex-direction: row;
+        }
+
+        .nav-button.next-button {
+            flex-direction: row-reverse;
+        }
+
+        .nav-button-spacer {
+            flex: 1;
+        }        @media (max-width: 768px) {
+            .page-navigation {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .nav-button {
+                width: 100%;
+                justify-content: center;
+                padding: 1rem;
+            }
+
+            .nav-button-spacer {
+                display: none;
+            }
+        }
+
+        /* Get Started Button */
+        .get-started-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #0284c7 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+            margin-top: 2rem;
+        }
+
+        .get-started-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
+            background: linear-gradient(135deg, #0284c7 0%, var(--accent-color) 100%);
+        }
+
+        .get-started-button:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .get-started-button {
+                width: 100%;
+                justify-content: center;
+                padding: 1.25rem 2rem;
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
-<body>
-
-    <div id="app-container">        <header id="app-header">
-            <h1><a href="#" onclick="goToMainPage()" style="color: inherit; text-decoration: none; cursor: pointer;">TCOLE Study Guide</a></h1>
+<body>    <div id="app-container">        <header id="app-header">
+            <div class="header-left">
+                <button id="mobile-menu-toggle" class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <img src="assets/DPD email logo.png" alt="DPD Logo" class="header-logo">
+                <h1><a href="#" onclick="goToMainPage()" style="color: inherit; text-decoration: none; cursor: pointer;">TCOLE Study Guide</a></h1>
+            </div>
             <div class="search-container">
                 <input type="search" id="search-input" placeholder="Search topics...">
-            </div>
-        </header>
+            </div>        </header>
 
-        <div class="flex h-screen">
-            <!-- Sidebar -->            <aside id="sidebar" class="w-72 bg-sidebar-bg text-sidebar-text flex-shrink-0 flex flex-col">                <nav class="flex-1 overflow-y-auto custom-scrollbar">
+        <!-- Mobile Overlay -->
+        <div id="mobile-overlay" class="mobile-overlay"></div>
+
+        <div class="flex h-screen">            <!-- Sidebar -->            <aside id="sidebar" class="w-72 bg-sidebar-bg text-sidebar-text flex-shrink-0 flex flex-col">                <!-- Mobile Close Button -->
+                <div class="mobile-close-btn-container">
+                    <div class="mobile-sidebar-header">
+                        <img src="assets/DPD email logo.png" alt="DPD Logo" class="mobile-sidebar-logo">
+                        <span class="mobile-sidebar-title">TCOLE Study Guide</span>
+                    </div>
+                    <button id="mobile-close-btn" class="mobile-close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <nav class="flex-1 overflow-y-auto custom-scrollbar">
                     <ul id="topic-list" class="py-4">
                         <!-- Topics will be inserted here by JavaScript -->
                     </ul>
@@ -363,12 +763,18 @@
 
             <!-- Main Content -->
             <main id="main-content" class="flex-1 p-6 md:p-10 overflow-y-auto">
-                <div id="welcome-section" class="content-section text-center">
-                     <div class="max-w-3xl mx-auto">
-                        <i class="fas fa-shield-halved text-6xl text-accent-color mb-6"></i>
-                        <h2 class="text-4xl font-bold mb-4">Welcome to Your Enhanced Study Guide</h2>
-                        <p class="text-lg text-text-secondary mb-8">Select a topic from the sidebar to begin your studies. This guide is designed to be interactive and help you master the material for the TCOLE exam.</p>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div id="welcome-section" class="content-section text-center">                     <div class="max-w-3xl mx-auto">
+                        <i class="fas fa-shield-halved text-6xl text-accent-color mb-6"></i>                        <h2 class="text-4xl font-bold mb-4">Welcome to Your Enhanced Study Guide</h2>
+                        <p class="text-lg text-text-secondary mb-6">Select a topic from the sidebar to begin your studies. This guide is designed to be interactive and help you master the material for the TCOLE exam.</p>
+                        <p class="text-base text-text-secondary mb-8">Ready to begin your TCOLE preparation journey? Start with the introduction and work your way through each topic systematically.</p>
+                        
+                        <!-- Get Started Button -->
+                        <button class="get-started-button" onclick="startStudyGuide()">
+                            <i class="fas fa-play"></i>
+                            Get Started
+                        </button>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
                             <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-accent-color">
                                 <i class="fas fa-list-check text-3xl text-accent-color mb-3"></i>
                                 <h3 class="font-semibold text-lg mb-2">Organized Topics</h3>
@@ -408,12 +814,117 @@
             if (firstSection) {
                 firstSection.classList.add('active');
                 // Also activate the first navigation link
-                const firstNavLink = document.querySelector('.sidebar-link');
-                if (firstNavLink) {
+                const firstNavLink = document.querySelector('.sidebar-link');                if (firstNavLink) {
                     firstNavLink.classList.add('active');
                 }
+            }        }
+
+        // Function to start the study guide (navigate to first topic)
+        function startStudyGuide() {
+            // Find the first topic link and click it
+            const firstTopicLink = document.querySelector('.sidebar-link');
+            if (firstTopicLink) {
+                firstTopicLink.click();
+                
+                // Scroll to top smoothly
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Close mobile menu if open
+                if (window.innerWidth <= 768) {
+                    const sidebar = document.getElementById('sidebar');
+                    const mobileOverlay = document.getElementById('mobile-overlay');
+                    if (sidebar.classList.contains('show')) {
+                        sidebar.classList.remove('show');
+                        mobileOverlay.classList.remove('show');
+                        document.body.style.overflow = '';
+                    }
+                }
             }
-        }        document.addEventListener('DOMContentLoaded', function () {            // List of topics in the correct order as specified
+        }
+
+        // Navigation function for prev/next buttons
+        function navigateToTopic(topicId) {
+            // Find and click the corresponding sidebar link
+            const targetLink = document.querySelector(`[data-target="${topicId}"]`);
+            if (targetLink) {
+                targetLink.click();
+                
+                // Scroll to top of the page
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Close mobile menu if open
+                if (window.innerWidth <= 768) {
+                    const sidebar = document.getElementById('sidebar');
+                    const mobileOverlay = document.getElementById('mobile-overlay');
+                    if (sidebar.classList.contains('show')) {
+                        sidebar.classList.remove('show');
+                        mobileOverlay.classList.remove('show');
+                        document.body.style.overflow = '';
+                    }
+                }
+            }
+        }
+
+        // Mobile menu functionality
+        function initializeMobileMenu() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mobileCloseBtn = document.getElementById('mobile-close-btn');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+
+            // Check if we're on mobile
+            function isMobile() {
+                return window.innerWidth <= 768;
+            }
+
+            // Toggle mobile menu
+            function toggleMobileMenu() {
+                if (!isMobile()) return; // Only work on mobile
+                sidebar.classList.toggle('show');
+                mobileOverlay.classList.toggle('show');
+                document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : '';
+            }
+
+            // Close mobile menu
+            function closeMobileMenu() {
+                sidebar.classList.remove('show');
+                mobileOverlay.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+
+            // Event listeners
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+            }
+
+            if (mobileCloseBtn) {
+                mobileCloseBtn.addEventListener('click', closeMobileMenu);
+            }
+
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', closeMobileMenu);
+            }            // Close menu when clicking on a sidebar link (mobile only)
+            document.addEventListener('click', (e) => {
+                if (e.target.closest('.sidebar-link') && isMobile()) {
+                    closeMobileMenu();
+                }
+            });
+
+            // Close menu on window resize if switching to desktop
+            window.addEventListener('resize', () => {
+                if (!isMobile()) {
+                    closeMobileMenu();
+                }
+            });            // Handle escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && sidebar.classList.contains('show') && isMobile()) {
+                    closeMobileMenu();
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // List of topics in the correct order as specified
             const topics = [
                 "INTRODUCTION",
                 "SECRET KEY #1 – PLAN BIG, STUDY SMALL",
@@ -514,16 +1025,58 @@
                 }                a.dataset.target = id;
                 a.dataset.topic = topic; // Store the original topic name
                 li.appendChild(a);
-                topicList.appendChild(li);
-
-                // Create Main Content Section
+                topicList.appendChild(li);                // Create Main Content Section
                 const section = document.createElement('div');
                 section.id = id;
                 section.className = 'content-section';
-                section.innerHTML = `<h2 class="text-3xl font-bold mb-6 pb-2 border-b">${topic}</h2><div class="bg-white p-6 rounded-lg shadow-sm"><p class="text-text-secondary">Loading content...</p></div>`;
+                
+                // Create navigation buttons HTML
+                const currentIndex = topics.indexOf(topic);
+                const prevTopic = currentIndex > 0 ? topics[currentIndex - 1] : null;
+                const nextTopic = currentIndex < topics.length - 1 ? topics[currentIndex + 1] : null;
+                
+                const prevId = prevTopic ? prevTopic.toLowerCase().replace(/[\s—,/]/g, '-').replace(/[()]/g, '') : null;
+                const nextId = nextTopic ? nextTopic.toLowerCase().replace(/[\s—,/]/g, '-').replace(/[()]/g, '') : null;
+                
+                const navigationHTML = `
+                    <div class="page-navigation">
+                        ${prevTopic ? 
+                            `<button class="nav-button prev-button" onclick="navigateToTopic('${prevId}')">
+                                <i class="fas fa-chevron-left"></i>
+                                <div>
+                                    <div style="font-size: 0.75rem; opacity: 0.8;">Previous</div>
+                                    <div style="font-size: 0.875rem;">${prevTopic.length > 30 ? prevTopic.substring(0, 30) + '...' : prevTopic}</div>
+                                </div>
+                            </button>` : 
+                            '<div class="nav-button-spacer"></div>'
+                        }
+                        ${nextTopic ? 
+                            `<button class="nav-button next-button" onclick="navigateToTopic('${nextId}')">
+                                <i class="fas fa-chevron-right"></i>
+                                <div>
+                                    <div style="font-size: 0.75rem; opacity: 0.8;">Next</div>
+                                    <div style="font-size: 0.875rem;">${nextTopic.length > 30 ? nextTopic.substring(0, 30) + '...' : nextTopic}</div>
+                                </div>
+                            </button>` : 
+                            '<div class="nav-button-spacer"></div>'
+                        }
+                    </div>
+                `;
+                
+                section.innerHTML = `
+                    <h2 class="text-3xl font-bold mb-6 pb-2 border-b">${topic}</h2>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <p class="text-text-secondary">Loading content...</p>
+                    </div>
+                    ${navigationHTML}
+                `;
+                
                 mainContent.appendChild(section);
             });
-              // --- Function to load HTML content ---            // --- Practice Test Functions ---
+
+            // Initialize mobile menu functionality
+            initializeMobileMenu();
+              // --- Function to load HTML content ---// --- Practice Test Functions ---
             let allQuizQuestions = [];
             let currentPracticeTestQuestions = [];
             let practiceTestResults = {};
@@ -2102,10 +2655,17 @@
                             <div class="bg-white p-6 rounded-lg shadow-sm">
                                 <p class="text-text-secondary">Content file not found for this topic. This section is under development.</p>
                             </div>
-                        `;
+                        `;                    }
+                    
+                    // Preserve existing navigation
+                    const existingNavigation = targetSection.querySelector('.page-navigation');
+                    targetSection.innerHTML = `<h2 class="text-3xl font-bold mb-6 pb-2 border-b">${topic}</h2>${placeholderContent}`;
+                    
+                    // Re-add navigation if it existed
+                    if (existingNavigation) {
+                        targetSection.appendChild(existingNavigation);
                     }
                     
-                    targetSection.innerHTML = `<h2 class="text-3xl font-bold mb-6 pb-2 border-b">${topic}</h2>${placeholderContent}`;
                     return;
                 }
 
@@ -2137,9 +2697,20 @@
                         styleElement.setAttribute('data-topic', topic);
                         document.head.appendChild(styleElement);
                     }
+                      // Set the content while preserving navigation
+                    const existingNavigation = targetSection.querySelector('.page-navigation');
+                    const titleElement = targetSection.querySelector('h2');
+                    const titleText = titleElement ? titleElement.textContent : topic;
                     
-                    // Set the content
-                    targetSection.innerHTML = bodyContent;                    // Extract and execute JavaScript
+                    targetSection.innerHTML = `
+                        <h2 class="text-3xl font-bold mb-6 pb-2 border-b">${titleText}</h2>
+                        ${bodyContent}
+                    `;
+                    
+                    // Re-add navigation if it existed
+                    if (existingNavigation) {
+                        targetSection.appendChild(existingNavigation);
+                    }// Extract and execute JavaScript
                     const scripts = doc.querySelectorAll('script');
                     scripts.forEach(script => {
                         if (script.textContent.trim()) {
