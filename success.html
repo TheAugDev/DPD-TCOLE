@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Successful - TCOLE Study Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .success-animation {
+            animation: successPulse 2s ease-in-out infinite;
+        }
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto">
+            <!-- Success Message -->
+            <div class="text-center">
+                <div class="success-animation inline-block mb-6">
+                    <div class="w-24 h-24 gradient-bg rounded-full flex items-center justify-center mx-auto">
+                        <i class="fas fa-check text-white text-4xl"></i>
+                    </div>
+                </div>
+                
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">Welcome to TCOLE Study Guide!</h1>
+                <p class="text-xl text-gray-600 mb-8">Your subscription has been successfully activated.</p>
+                
+                <!-- Subscription Details -->
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">Subscription Details</h2>
+                    <div class="space-y-3 text-left">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Plan:</span>
+                            <span class="font-semibold">Monthly Subscription</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Price:</span>
+                            <span class="font-semibold">$49.99/month</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Billing:</span>
+                            <span class="font-semibold">Auto-renews monthly until cancelled</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Access:</span>
+                            <span class="font-semibold">Immediate</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- What's Included -->
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                    <h2 class="text-2xl font-semibold mb-4">What's Included</h2>
+                    <div class="grid md:grid-cols-2 gap-4 text-left">
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span>30+ comprehensive TCOLE topics</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span>Interactive study materials</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span>Mobile-optimized interface</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span>Regular content updates</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span>Progress tracking</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-3"></i>
+                            <span>Cancel anytime</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="space-y-4">
+                    <a href="/index.html" class="w-full block bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold text-lg transition">
+                        Start Studying Now
+                    </a>
+                    
+                    <div class="text-sm text-gray-600">
+                        <p class="mb-2">Need help? Contact support at support@tcolestudyguide.com</p>
+                        <p>Your subscription will automatically renew on <span id="renewal-date" class="font-semibold"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Calculate and display renewal date (30 days from now)
+        const renewalDate = new Date();
+        renewalDate.setDate(renewalDate.getDate() + 30);
+        document.getElementById('renewal-date').textContent = renewalDate.toLocaleDateString();
+        
+        // Auto redirect to main app after 10 seconds
+        setTimeout(() => {
+            window.location.href = '/index.html';
+        }, 10000);
+        
+        // Show countdown
+        let countdown = 10;
+        const countdownElement = document.createElement('p');
+        countdownElement.className = 'text-sm text-gray-500 mt-4';
+        countdownElement.innerHTML = `Redirecting to study materials in <span class="font-semibold">${countdown}</span> seconds...`;
+        document.querySelector('.space-y-4').appendChild(countdownElement);
+        
+        const countdownInterval = setInterval(() => {
+            countdown--;
+            countdownElement.innerHTML = `Redirecting to study materials in <span class="font-semibold">${countdown}</span> seconds...`;
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

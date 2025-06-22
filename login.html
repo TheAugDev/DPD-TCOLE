@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - TCOLE Study Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50 flex items-center justify-center">
+    <div class="max-w-md w-full space-y-8 p-8">
+        <div class="text-center">
+            <i class="fas fa-shield-halved text-5xl text-blue-500 mb-4"></i>
+            <h2 class="text-3xl font-bold text-gray-900">TCOLE Study Guide</h2>
+            <p class="mt-2 text-gray-600">Sign in to access your study materials</p>
+        </div>
+        
+        <div class="bg-white p-8 rounded-lg shadow-lg">
+            <div id="error-message" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"></div>
+            
+            <form id="auth-form" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <button type="submit" id="auth-button" class="w-full gradient-bg text-white py-2 px-4 rounded-md hover:opacity-90 transition font-medium">
+                    Sign In
+                </button>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    <span id="switch-text">Don't have an account?</span>
+                    <button id="switch-mode" class="text-blue-500 hover:text-blue-700 font-medium">Sign up</button>
+                </p>
+            </div>
+        </div>
+        
+        <div class="text-center text-sm text-gray-500">
+            <p>Monthly subscription: $49.99/month</p>
+            <p>Cancel anytime • Secure payments via Stripe</p>
+        </div>
+    </div>
+
+    <script>
+        let isLoginMode = true;
+        
+        const authForm = document.getElementById('auth-form');
+        const authButton = document.getElementById('auth-button');
+        const switchMode = document.getElementById('switch-mode');
+        const switchText = document.getElementById('switch-text');
+        const errorMessage = document.getElementById('error-message');
+        
+        switchMode.addEventListener('click', () => {
+            isLoginMode = !isLoginMode;
+            
+            if (isLoginMode) {
+                authButton.textContent = 'Sign In';
+                switchText.textContent = "Don't have an account?";
+                switchMode.textContent = 'Sign up';
+            } else {
+                authButton.textContent = 'Create Account';
+                switchText.textContent = 'Already have an account?';
+                switchMode.textContent = 'Sign in';
+            }
+            
+            hideError();
+        });
+        
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                authButton.textContent = 'Processing...';
+                authButton.disabled = true;
+                
+                const endpoint = isLoginMode ? '/api/auth/login' : '/api/auth/register';
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Check subscription status
+                    const subResponse = await fetch('/api/subscription-status', {
+                        credentials: 'include'
+                    });
+                    const subData = await subResponse.json();
+                    
+                    if (subData.hasActiveSubscription) {
+                        window.location.href = '/index.html';
+                    } else {
+                        window.location.href = '/subscription.html';
+                    }
+                } else {
+                    showError(data.error);
+                }
+            } catch (error) {
+                showError('Network error. Please try again.');
+            } finally {
+                authButton.textContent = isLoginMode ? 'Sign In' : 'Create Account';
+                authButton.disabled = false;
+            }
+        });
+        
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.remove('hidden');
+        }
+        
+        function hideError() {
+            errorMessage.classList.add('hidden');
+        }            // Check if user is already logged in
+            fetch('/api/subscription-status', { credentials: 'include' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.hasActiveSubscription) {
+                        window.location.href = '/index.html';
+                    }
+                })
+                .catch(() => {
+                    // User not logged in, stay on login page
+                });
+        </script>
+        
+        <!-- Legal Footer -->
+        <div class="text-center mt-8 text-sm text-gray-500">
+            <p>&copy; 2025 TCOLE Study Guide. All rights reserved.</p>
+            <div class="mt-2 space-x-4">
+                <a href="/privacy.html" class="text-blue-600 hover:text-blue-700 underline">Privacy Policy</a>
+                <a href="/disclaimer.html" class="text-blue-600 hover:text-blue-700 underline">Disclaimer</a>
+                <a href="/terms.html" class="text-blue-600 hover:text-blue-700 underline">Terms of Service</a>
+            </div>
+        </div>
+    </body>
+    </html>

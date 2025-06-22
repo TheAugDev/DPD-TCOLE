@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe - TCOLE Study Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <i class="fas fa-shield-halved text-5xl text-blue-500 mb-4"></i>
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">Choose Your Plan</h1>
+                <p class="text-xl text-gray-600">Get unlimited access to all TCOLE study materials</p>
+            </div>
+            
+            <!-- Pricing Card -->
+            <div class="max-w-md mx-auto">
+                <div class="bg-white rounded-lg shadow-xl overflow-hidden border-2 border-blue-500">
+                    <div class="gradient-bg text-white text-center py-6">
+                        <h3 class="text-2xl font-bold">Monthly Subscription</h3>
+                        <div class="mt-4">
+                            <span class="text-4xl font-bold">$49.99</span>
+                            <span class="text-lg">/month</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-8">
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Access to all TCOLE study topics</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Comprehensive practice tests</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Interactive flashcards</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Progress tracking</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Mobile-friendly design</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Cancel anytime</span>
+                            </li>
+                        </ul>
+                          <button id="subscribe-button" class="w-full gradient-bg text-white py-3 px-6 rounded-lg font-semibold text-lg hover:opacity-90 transition">
+                            Start Your Subscription
+                        </button>
+                          <div class="mt-4 text-xs text-gray-500 text-center">
+                            <label class="flex items-center justify-center space-x-2 mb-3">
+                                <input type="checkbox" id="terms-checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <span>I agree to the <a href="/terms.html" target="_blank" class="text-blue-600 hover:text-blue-700 underline">Terms of Service</a> and <a href="/privacy.html" target="_blank" class="text-blue-600 hover:text-blue-700 underline">Privacy Policy</a></span>
+                            </label>
+                            <p>By subscribing, you agree to our terms:</p>
+                            <p class="mt-1">• All sales are final and non-refundable</p>
+                            <p>• Subscription auto-renews monthly until cancelled</p>
+                            <p>• Cancel anytime - access continues until period end</p>
+                        </div>
+                          <div class="mt-6 text-center text-sm text-gray-500">
+                            <p class="font-medium text-gray-700 mb-2">Automatically renews monthly at $49.99 until cancelled</p>
+                            <p>Secure payment processing by Stripe</p>
+                            <p class="mt-2">
+                                <i class="fas fa-lock mr-1"></i>
+                                SSL encrypted • PCI compliant
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- FAQ Section -->
+            <div class="mt-16 max-w-2xl mx-auto">
+                <h2 class="text-2xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+                
+                <div class="space-y-6">                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="font-semibold mb-2">How does auto-renewal work?</h3>
+                        <p class="text-gray-600">Your subscription automatically renews every month at $49.99 until you cancel. You'll be charged on the same day each month. No commitment required - cancel anytime before your next billing cycle.</p>
+                    </div>
+                      <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="font-semibold mb-2">Can I cancel anytime?</h3>
+                        <p class="text-gray-600">Yes, you can cancel your subscription at any time. You'll continue to have full access until the end of your current billing period, and no future charges will occur. No refunds are provided for partial billing periods.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="font-semibold mb-2">What payment methods do you accept?</h3>
+                        <p class="text-gray-600">We accept all major credit cards (Visa, MasterCard, American Express) through our secure Stripe payment processor.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="font-semibold mb-2">Is my payment information secure?</h3>
+                        <p class="text-gray-600">Absolutely. All payments are processed by Stripe, which is PCI Level 1 certified - the highest level of security in the payments industry.</p>
+                    </div>
+                      <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="font-semibold mb-2">What is your refund policy?</h3>
+                        <p class="text-gray-600">All sales are final and non-refundable. When you cancel your subscription, you'll maintain full access to all study materials until the end of your current billing period.</p>
+                    </div>
+                </div>
+            </div>
+              <!-- Logout Option -->
+            <div class="text-center mt-12">
+                <button id="logout-button" class="text-gray-500 hover:text-gray-700 underline">
+                    Not ready to subscribe? Logout
+                </button>
+            </div>
+            
+            <!-- Legal Footer -->
+            <div class="text-center mt-8 text-sm text-gray-500">
+                <p>&copy; 2025 TCOLE Study Guide. All rights reserved.</p>
+                <div class="mt-2 space-x-4">
+                    <a href="/privacy.html" class="text-blue-600 hover:text-blue-700 underline">Privacy Policy</a>
+                    <a href="/disclaimer.html" class="text-blue-600 hover:text-blue-700 underline">Disclaimer</a>
+                    <a href="/terms.html" class="text-blue-600 hover:text-blue-700 underline">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>        document.getElementById('subscribe-button').addEventListener('click', async () => {
+            try {
+                const termsCheckbox = document.getElementById('terms-checkbox');
+                if (!termsCheckbox.checked) {
+                    alert('Please agree to the Terms of Service and Privacy Policy before subscribing.');
+                    return;
+                }
+                
+                const button = document.getElementById('subscribe-button');
+                button.textContent = 'Processing...';
+                button.disabled = true;
+                
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    throw new Error('Failed to create checkout session');
+                }
+            } catch (error) {
+                alert('Error starting subscription. Please try again.');
+                const button = document.getElementById('subscribe-button');
+                button.textContent = 'Start Your Subscription';
+                button.disabled = false;
+            }
+        });
+        
+        document.getElementById('logout-button').addEventListener('click', async () => {
+            try {
+                await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                window.location.href = '/login.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+                window.location.href = '/login.html';
+            }
+        });
+        
+        // Check if user already has active subscription
+        fetch('/api/subscription-status', { credentials: 'include' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.hasActiveSubscription) {
+                    window.location.href = '/index.html';
+                }
+            })
+            .catch(() => {
+                window.location.href = '/login.html';
+            });
+    </script>
+</body>
+</html>

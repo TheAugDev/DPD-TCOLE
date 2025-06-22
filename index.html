@@ -724,12 +724,37 @@
                     <button id="mobile-close-btn" class="mobile-close-btn">
                         <i class="fas fa-times"></i>
                     </button>
-                </div>
-                <nav class="flex-1 overflow-y-auto custom-scrollbar">
+                </div>                <nav class="flex-1 overflow-y-auto custom-scrollbar">
                     <ul id="topic-list" class="py-4">
                         <!-- Topics will be inserted here by JavaScript -->
                     </ul>
                 </nav>
+                
+                <!-- User Menu Section -->
+                <div class="border-t border-slate-600 p-4">
+                    <div class="text-xs text-slate-400 mb-2">Account</div>
+                    <div class="space-y-2">
+                        <a href="/cancel.html" class="flex items-center px-3 py-2 text-sm text-slate-300 hover:bg-slate-700 rounded transition">
+                            <i class="fas fa-times-circle mr-3"></i>
+                            Cancel Subscription
+                        </a>
+                        <button id="logout-btn" class="w-full flex items-center px-3 py-2 text-sm text-slate-300 hover:bg-slate-700 rounded transition">
+                            <i class="fas fa-sign-out-alt mr-3"></i>
+                            Logout
+                        </button>
+                    </div>                    <div class="mt-3 pt-3 border-t border-slate-600">
+                        <div class="text-xs text-slate-400">Subscription: Active</div>
+                        <div class="text-xs text-slate-500">$49.99/month</div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-slate-600">
+                        <div class="text-xs text-slate-400 mb-1">Legal</div>
+                        <div class="space-y-1">
+                            <a href="/privacy.html" class="block text-xs text-slate-400 hover:text-slate-300">Privacy Policy</a>
+                            <a href="/disclaimer.html" class="block text-xs text-slate-400 hover:text-slate-300">Disclaimer</a>
+                            <a href="/terms.html" class="block text-xs text-slate-400 hover:text-slate-300">Terms of Service</a>
+                        </div>
+                    </div>
+                </div>
             </aside>
 
             <!-- Main Content -->
@@ -3083,13 +3108,49 @@
                 backToTopButton.addEventListener('click', () => {
                     mainContent.scrollTo({ top: 0, behavior: 'smooth' });
                 });
-            }
-
-            // Show Welcome Section by default
+            }            // Show Welcome Section by default
             if (welcomeSection) {
                 welcomeSection.classList.add('active');
             }
+            
+            // Logout functionality
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                    try {
+                        await fetch('/api/auth/logout', {
+                            method: 'POST',
+                            credentials: 'include'
+                        });
+                        window.location.href = '/login.html';
+                    } catch (error) {
+                        console.error('Logout error:', error);
+                        window.location.href = '/login.html';
+                    }
+                });
+            }
+            
+            // Check authentication and subscription status on page load
+            fetch('/api/subscription-status', { credentials: 'include' })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.hasActiveSubscription) {
+                        window.location.href = '/subscription.html';
+                    }
+                })                .catch(() => {
+                    window.location.href = '/login.html';
+                });
         });
     </script>
+    
+    <!-- Legal Footer (Hidden by default, can be made visible via CSS) -->
+    <div id="legal-footer" class="hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 text-xs text-center text-gray-500 z-50">
+        <div class="space-x-4">
+            <a href="/privacy.html" class="text-blue-600 hover:text-blue-700">Privacy</a>
+            <a href="/disclaimer.html" class="text-blue-600 hover:text-blue-700">Disclaimer</a>
+            <a href="/terms.html" class="text-blue-600 hover:text-blue-700">Terms</a>
+            <span>&copy; 2025 TCOLE Study Guide</span>
+        </div>
+    </div>
 </body>
 </html>
